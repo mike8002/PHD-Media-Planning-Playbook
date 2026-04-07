@@ -182,11 +182,11 @@ const ProgressBar = ({ value, max, color = "#3b82f6" }) => (
 
 // DATA
 const planningStages = [
-  { stage: "1. Brief Intake & Objective Setting", what: "Receive and interrogate the client brief. Clarify the single most important objective — awareness, consideration, or conversion. Identify target audience, geography, flight dates, blackout periods.", actions: "Complete a brief interrogation checklist. Document: objective, KPI, audience, markets, budget, flight, creative status, measurement requirements, past campaign data.", mistake: "Accepting a brief at face value without asking 'what does success look like in a number?'" },
-  { stage: "2. Audience & Market Analysis", what: "Define the target audience with precision: demographics, platform behaviour, language preference (Arabic vs English), device usage, and GCC-specific cultural context.", actions: "Pull platform audience estimates. Cross-reference with GCC-specific data (e.g. Snapchat penetration by market). Document audience size per platform per market.", mistake: "Treating GCC as a monolith. KSA is Snap/TikTok-dominant. Kuwait over-indexes on Snapchat. UAE has the most diverse audience." },
-  { stage: "3. Platform Selection & Justification", what: "Select platforms based on: (a) where your audience is, (b) which formats support the objective, (c) whether budget is sufficient. Every platform needs a written rationale.", actions: "Use the Platform × Objective matrix. Document why each platform is included. Remove platforms without meaningful budget.", mistake: "Adding platforms because they're trending — not because they're right for the objective." },
-  { stage: "4. Budget Allocation & Channel Mix", what: "Distribute budget across platforms and funnel stages. Always allocate enough per platform to exit the learning phase.", actions: "Build a budget allocation table: platform | monthly budget | % of total | buying type | expected KPI range. Flag platforms below minimum.", mistake: "Spreading budget equally across too many platforms. Meta needs minimum ~$5K/month." },
-  { stage: "5. Format & Creative Planning", what: "Identify which ad formats are required per platform per objective. Brief creative team with precise specs.", actions: "Produce a creative requirements matrix: platform | format | aspect ratio | duration | spec | deadline. Flag creative gaps.", mistake: "Adapting a landscape TV edit to vertical mobile placements. Planning TikTok without a hook in the first 2 seconds." },
+  { stage: "1. Brief Intake & Objective Setting", what: "Receive and interrogate the client brief. Clarify the single most important objective. Identify target audience, geography (which regions and markets?), flight dates, blackout periods, and cultural calendar conflicts. For multi-market campaigns: confirm if strategy is global, regional, or market-specific.", actions: "Complete a brief interrogation checklist. Document: objective, KPI, audience, markets (WEST/CENTRAL/EAST split), budget per market, flight, creative status per language, measurement requirements. For global briefs: confirm single vs. multi-market reporting requirements.", mistake: "Accepting a brief at face value without asking 'what does success look like in a number?' Running a 'global' campaign with a single creative and assuming one platform mix fits all regions." },
+  { stage: "2. Audience & Market Analysis", what: "Define the target audience with precision: demographics, platform behaviour, language preference, device usage, and regional cultural context. WEST: mature digital markets, privacy-first (GDPR, CCPA). CENTRAL: mobile-first, Arabic/English bilingual, high social media usage, cultural calendar critical (Ramadan, Eid, National Days). EAST: walled-garden ecosystems (China: WeChat/Douyin, not Google/Meta), mobile-dominant, high CTV adoption in Japan/Korea.", actions: "Pull platform audience estimates per region. Map platform dominance by market — e.g. Snapchat dominates KSA/Kuwait, LINE dominates Thailand, WeChat dominates China, VK dominates Russia. Document audience size per platform per market.", mistake: "Treating any region as a monolith. WEST varies hugely (US ≠ UK ≠ Germany). CENTRAL varies (UAE ≠ KSA ≠ Egypt). EAST varies (China ≠ India ≠ Japan). Each market has different platform dominance, language needs, and cultural context." },
+  { stage: "3. Platform Selection & Justification", what: "Select platforms based on: (a) where your audience is in each market, (b) which formats support the objective, (c) whether budget is sufficient per market. For multi-market: platform mix WILL differ by region — Meta+TikTok works globally, but Snapchat is critical in MENA, LINE in Thailand, WeChat in China, VK in Russia. Every platform needs a written rationale per market.", actions: "Use the Platform × Objective matrix. Document why each platform is included per region. Build a market × platform matrix showing which platforms are active in which markets. Remove platforms that can't hit meaningful minimums in any given market.", mistake: "Using the same platform mix across all regions. 'We should be on everything everywhere' is not a strategy. A platform that dominates in one market may be irrelevant in another." },
+  { stage: "4. Budget Allocation & Channel Mix", what: "Distribute budget across platforms, funnel stages, AND markets. Allocate enough per platform per market to exit the learning phase. For multi-market: decide whether to run centralised campaigns (one account, multiple geos) or market-specific campaigns (separate accounts per market). CPMs vary dramatically by region — WEST is typically most expensive, CENTRAL spikes during Ramadan, EAST varies by platform.", actions: "Build a budget allocation table: market | platform | monthly budget | % of total | buying type | expected KPI range. Include a market weighting column. Flag platforms below minimum budget per market. Account for CPM seasonality per region.", mistake: "Spreading budget equally across too many platforms AND too many markets. A $50K global budget split across 5 markets and 4 platforms per market = $2.5K per platform per market, which is below learning thresholds everywhere." },
+  { stage: "5. Format & Creative Planning", what: "Identify which ad formats are required per platform per objective per market. Brief creative team with precise specs AND language/localisation requirements. Multi-market campaigns need: language variants (Arabic, English, Mandarin, Russian, etc.), culturally adapted messaging (not just translation), and market-specific formats (e.g. WeChat mini-programs for China).", actions: "Produce a creative requirements matrix: market | platform | format | aspect ratio | duration | language | localisation notes | deadline. Flag creative gaps by market. Confirm which markets need fully localised creative vs. adapted global creative.", mistake: "Running a single English creative globally. Treating translation as localisation. Planning for China without Mandarin creative. Running MENA campaigns without Arabic. Assuming one creative works across all cultures." },
   { stage: "6. Measurement Framework Setup", what: "Define measurement framework before the campaign goes live. Confirm tracking is in place: Meta Pixel + CAPI, TikTok Events API, Snap Pixel, LinkedIn Insight Tag.", actions: "Produce a measurement plan: KPI | target | source | reporting cadence | attribution window. Validate pixel firing.", mistake: "Setting up measurement after launch. Using inconsistent UTM naming across campaigns." },
   { stage: "7. Campaign Launch & QA", what: "Run a pre-launch QA checklist: pixels firing, tracking links working, creative approved, targeting correct, budget pacing set, naming conventions applied.", actions: "Complete QA checklist. Get two-person sign-off. Document go-live date and first reporting date.", mistake: "Launching without checking that pixels are firing. Forgetting frequency caps on awareness campaigns." },
   { stage: "8. Optimisation & Mid-Flight", what: "Optimise based on data. Wait for the learning phase (7–14 days or 50 conversion events) before changes. Change one variable at a time.", actions: "Weekly optimisation report: spend vs pacing, CPM/CPC/CPL vs benchmark, CTR, creative performance ranking.", mistake: "Making daily bid changes that reset the learning phase. Ignoring creative fatigue until performance collapses." },
@@ -194,8 +194,8 @@ const planningStages = [
 ];
 
 const platforms = [
-  { name: "Meta (Facebook + Instagram)", strengths: ["Broadest audience reach (18–55+) at any budget", "Most mature auction system — exits learning phase fastest", "Full-funnel: awareness through conversion in one platform", "Advantage+ / Andromeda AI optimises creative-to-audience matching", "CAPI enables strong server-side measurement", "WhatsApp Status + Threads extend reach further"], kpis: ["Awareness: CPM $3–$11, Reach, Frequency", "Traffic: CPC $0.30–$1.10, LPV, CTR", "Leads: CPL $5–$30, Form Completion Rate", "Conversions: ROAS 2–5x, CPA, CVR"], audienceFit: "Almost universal. Strongest 25–54 but effective across all demos. Both Arabic & English audiences. Expat + national reach in all GCC markets.", capabilities: "Full-funnel bidding (awareness→conversion). Pixel + CAPI tracking. Custom/Lookalike audiences. Catalogue/DPA. Lead Gen Forms. A/B testing. DCO. Advantage+ Sales for e-commerce.", evaluate: "Is our audience on Meta? → Almost certainly yes. Do we have Pixel + CAPI? → Required for conversion campaigns. Budget $5K+/month? → Minimum for learning phase. Creative in 9:16? → Needed for Reels/Stories (now 90% of inventory). Past performance? → Check historical CPA/ROAS benchmarks.", gcc: "Essential baseline for all GCC campaigns. Dual-language (AR+EN) recommended. Ramadan CPMs spike 2–3x — budget accordingly. Threads ads now live globally (Feb 2026). WhatsApp Status ads auto-activate in Traffic campaigns.", minBudget: "$5K/month", color: "blue" },
-  { name: "TikTok", strengths: ["Dominant for 18–34 audience regionally", "Highest time-spent per session of any platform", "Creative IS targeting — algorithm finds audience based on content", "Spark Ads (creator content) drive 70% higher CTR than brand content", "New formats: Logo Takeover, Prime Time, TopReach, Pulse"], kpis: ["Awareness: CPM $5–$20, Reach, VCR", "Video Views: CPV $0.02–$0.08, Completion Rate", "Traffic: CPC $0.20–$1.00, LPV", "Conversions: ROAS 1.5–4x, CPA"], audienceFit: "Dominant 18–34. Growing 35–44. Weaker 45+. Arabic-language content critical. KSA & UAE are among highest TikTok usage globally. Entertainment-first audience mindset.", capabilities: "In-Feed video, TopView (CPM auction), Spark Ads, Branded Hashtag Challenges, Dynamic Showcase Ads. Events API for server-side tracking. Smart+ (AI automation). TikTok Shop not yet regionally.", evaluate: "Is target audience 18–34? → Strong signal to include. Can we produce native/UGC-style creative? → Essential — polished TV-style underperforms. Events API implemented? → Required for conversion campaigns. Budget $5K+/month? → Minimum. Is there a cultural moment to leverage? → TikTok excels at moment-based campaigns.", gcc: "Among highest usage globally. Arabic content and trending sounds are critical. Book TopView/TopReach 4–6 weeks ahead for peak moments. Spark Ads are underused by GCC agencies.", minBudget: "$5K/month", color: "purple" },
+  { name: "Meta (Facebook + Instagram)", strengths: ["Broadest audience reach (18–55+) at any budget", "Most mature auction system — exits learning phase fastest", "Full-funnel: awareness through conversion in one platform", "Advantage+ / Andromeda AI optimises creative-to-audience matching", "CAPI enables strong server-side measurement", "WhatsApp Status + Threads extend reach further"], kpis: ["Awareness: CPM $3–$11, Reach, Frequency", "Traffic: CPC $0.30–$1.10, LPV, CTR", "Leads: CPL $5–$30, Form Completion Rate", "Conversions: ROAS 2–5x, CPA, CVR"], audienceFit: "Almost universal. Strongest 25–54 but effective across all demos. Both Arabic & English audiences. Expat + national reach in all regional markets.", capabilities: "Full-funnel bidding (awareness→conversion). Pixel + CAPI tracking. Custom/Lookalike audiences. Catalogue/DPA. Lead Gen Forms. A/B testing. DCO. Advantage+ Sales for e-commerce.", evaluate: "Is our audience on Meta? → Almost certainly yes. Do we have Pixel + CAPI? → Required for conversion campaigns. Budget $5K+/month? → Minimum for learning phase. Creative in 9:16? → Needed for Reels/Stories (now 90% of inventory). Past performance? → Check historical CPA/ROAS benchmarks.", gcc: "Essential baseline for all campaigns. Dual-language (AR+EN) recommended. Ramadan CPMs spike 2–3x — budget accordingly. Threads ads now live globally (Feb 2026). WhatsApp Status ads auto-activate in Traffic campaigns.", minBudget: "$5K/month", color: "blue" },
+  { name: "TikTok", strengths: ["Dominant for 18–34 audience regionally", "Highest time-spent per session of any platform", "Creative IS targeting — algorithm finds audience based on content", "Spark Ads (creator content) drive 70% higher CTR than brand content", "New formats: Logo Takeover, Prime Time, TopReach, Pulse"], kpis: ["Awareness: CPM $5–$20, Reach, VCR", "Video Views: CPV $0.02–$0.08, Completion Rate", "Traffic: CPC $0.20–$1.00, LPV", "Conversions: ROAS 1.5–4x, CPA"], audienceFit: "Dominant 18–34. Growing 35–44. Weaker 45+. Arabic-language content critical. KSA & UAE are among highest TikTok usage globally. Entertainment-first audience mindset.", capabilities: "In-Feed video, TopView (CPM auction), Spark Ads, Branded Hashtag Challenges, Dynamic Showcase Ads. Events API for server-side tracking. Smart+ (AI automation). TikTok Shop not yet regionally.", evaluate: "Is target audience 18–34? → Strong signal to include. Can we produce native/UGC-style creative? → Essential — polished TV-style underperforms. Events API implemented? → Required for conversion campaigns. Budget $5K+/month? → Minimum. Is there a cultural moment to leverage? → TikTok excels at moment-based campaigns.", gcc: "Among highest usage globally. Arabic content and trending sounds are critical. Book TopView/TopReach 4–6 weeks ahead for peak moments. Spark Ads are underused by regional agencies.", minBudget: "$5K/month", color: "purple" },
   { name: "Snapchat", strengths: ["60–70% penetration in KSA & Kuwait — non-negotiable for these markets", "Strongest AR/Lens capabilities of any platform", "New: Total Snap Takeover, Sponsored Snaps, Reminder Ads", "Inbox-first usage behaviour = high ad attention", "Smart Bidding + Smart Budget for automated optimisation"], kpis: ["Awareness: CPM $3–$10, Reach, Swipe-Up Rate", "Video: CPV $0.01–$0.05, Completion Rate", "Leads: CPL $8–$34, Form Completion Rate", "Conversions: ROAS 1.5–3.5x, CPA"], audienceFit: "Dominant 13–34 in KSA and Kuwait. Important but less dominant in UAE. Weaker for 45+ and B2B audiences. Arabic-speaking, mobile-native users.", capabilities: "AR Lenses (incl. AI Lenses), First Story, Commercials (non-skippable 6s), Dynamic Ads, Sponsored Snaps (inbox), Reminder Ads, Story Ads. Snap Pixel + CAPI.", evaluate: "Does the campaign target KSA or Kuwait? → Snapchat is mandatory, not optional. Audience 13–34? → Strong fit. AR or experiential component? → Snap is the leader. Budget to produce Snap-specific vertical creative? → Required. Past Snap performance in market? → Check historical CPMs and swipe rates.", gcc: "KSA & Kuwait penetration is 60–70% — cannot be excluded for these markets. Total Snap Takeover (Mar 2026) dominates entire app. Sponsored Snaps appear in Chat inbox.", minBudget: "$5K/month", color: "amber" },
   { name: "YouTube / Google Video", strengths: ["#1 video platform regionally by time-spent", "Massive Arabic content consumption", "Non-skippable formats guarantee message delivery", "Masthead for maximum single-day reach", "Demand Gen spans YouTube + Shorts + Gmail + Discover"], kpis: ["Awareness: CPM $5–$15, Reach, Brand Lift", "Video Views: CPV $0.01–$0.05, VTR, Completion Rate", "Demand Gen: CPC $0.50–$2.00, ROAS 2–6x"], audienceFit: "Broadest video audience regionally. All ages. Strong for audiences that research before buying (auto, real estate, B2B, tech, travel). Both Arabic and English content consumption.", capabilities: "TrueView (skippable), Non-Skip (15–20s), Bumpers (6s), Shorts, Masthead. Demand Gen (multi-surface). PMax (all Google surfaces). YouTube Select (top 5% content).", evaluate: "Is video storytelling important for this campaign? → YouTube is the primary platform. Does the audience research before purchasing? → YouTube is in the consideration path. Budget for $5K+/month? → Minimum. Video assets available? → Required. Need guaranteed message delivery? → Use non-skip or bumpers.", gcc: "#1 video platform regionally. Arabic content consumption is extremely high. Masthead book 4–8 weeks in advance. Demand Gen is strongest Google mid-funnel format for the market.", minBudget: "$5K/month", color: "red" },
   { name: "Google Performance Max", strengths: ["Covers ALL Google surfaces from one campaign", "AI-driven creative and audience optimisation", "Strong for e-commerce with product feeds", "Enhanced Conversions for accurate measurement"], kpis: ["Conversions: ROAS 3–8x (e-commerce), CPA varies", "New Customer Rate, Impression Share"], audienceFit: "Broad — lets Google AI find the right audience. Best for brands with existing conversion data (50+ monthly conversions). Strongest for e-commerce, travel, auto regionally.", capabilities: "Automated across YouTube, Search, GDN, Gmail, Discover, Maps, Shopping. AI generates ad combinations from asset library. Requires product feed for shopping, Enhanced Conversions.", evaluate: "Is the objective e-commerce conversions? → PMax is Google's strongest format. Do we have 50+ monthly conversions? → Required for AI to optimise. Enhanced Conversions implemented? → Non-negotiable. Product feed available? → Required for Shopping inventory. Budget $15K+/month? → Minimum for meaningful AI learning.", gcc: "GCC fashion, electronics, FMCG see strong ROAS. Not suitable for early-stage brands without conversion history.", minBudget: "$15K/month", color: "teal" },
@@ -212,7 +212,7 @@ const frameworkData = [
   { platform: "Meta", objective: "Lead Gen", type: "Lead Ads", format: "Lead Form/Instant Form", buying: "CPL", kpi: "CPL/Volume", benchmark: "CPL: $5–$30", notes: "Arabic form fields improve completion in KSA/Kuwait." },
   { platform: "Meta", objective: "Conversions", type: "Advantage+ Sales", format: "Image/Video/Carousel/DPA", buying: "CPA", kpi: "ROAS/CPA", benchmark: "ROAS: 2–5x", notes: "Flexible Multi-Format. Ensure CAPI implemented." },
   { platform: "TikTok", objective: "Awareness", type: "Brand Awareness", format: "TopView/TopReach/Logo Takeover/Prime Time", buying: "CPM/Reservation", kpi: "Reach/CPM", benchmark: "CPM: $5–$20", notes: "TopReach bundles TopView+TopFeed. Logo Takeover highest-impact. Book 4–6 wks." },
-  { platform: "TikTok", objective: "Video Views", type: "Video Views", format: "In-Feed (up to 10min), Pulse", buying: "CPV", kpi: "View Rate/VTR", benchmark: "CPV: $0.02–$0.08", notes: "Pulse Mentions/Tastemakers new. GCC time-spent among highest globally." },
+  { platform: "TikTok", objective: "Video Views", type: "Video Views", format: "In-Feed (up to 10min), Pulse", buying: "CPV", kpi: "View Rate/VTR", benchmark: "CPV: $0.02–$0.08", notes: "Pulse Mentions/Tastemakers new. regional time-spent among highest globally." },
   { platform: "TikTok", objective: "Conversions", type: "Product Sales", format: "In-Feed/Dynamic Showcase", buying: "CPA", kpi: "ROAS/CPA", benchmark: "ROAS: 1.5–4x", notes: "Smart+ growing. Events API required for attribution." },
   { platform: "Snapchat", objective: "Awareness", type: "Brand Awareness", format: "Story/Commercial/AR/Sponsored Snaps/Takeover", buying: "CPM", kpi: "Reach/CPM", benchmark: "CPM: $3–$10", notes: "Total Snap Takeover (Mar 2026) — first ad across all tabs. 60–70% reach KSA/Kuwait." },
   { platform: "Snapchat", objective: "AR Engagement", type: "AR Lens/AI Lens", format: "AR Lens/Sponsored AI Lens", buying: "Reservation", kpi: "Lens Plays/Shares", benchmark: "$15K–$41K+", notes: "AI Lenses use generative AI. High earned media regionally." },
@@ -229,7 +229,7 @@ const highImpactFormats = [
   { platform: "Meta", name: "Trending Reels Ads", type: "Full-Screen Video", use: "Product launches, trend-jacking, Gen Z", cost: "CPM Reservation", specs: "9:16, up to 60s, auto-play sound-on", gcc: "Ads after top 5% Reels. Hook in 2s. Arabic Reels high amplification.", isNew: false },
   { platform: "Meta", name: "Advantage+ Sales", type: "AI Full-Funnel", use: "Always-on e-commerce, Eid, White Friday, DSF", cost: "CPA/ROAS", specs: "AI selects audience, placement & creative", gcc: "Replaces Advantage+ Shopping. Flexible Multi-Format. 8–12 creatives. COD important in KSA.", isNew: true },
   { platform: "Meta", name: "Click-to-WhatsApp", type: "Conversational", use: "Lead gen, customer service, high-intent", cost: "CPC $0.30–$1.50", specs: "Opens WhatsApp chat from ad", gcc: "WhatsApp penetration ~95%+ GCC. Ideal for real estate, auto, hospitality.", isNew: false },
-  { platform: "TikTok", name: "Logo Takeover ★", type: "App-Splash Co-Brand", use: "Major launches, Ramadan day-1, National Day", cost: "Reservation (above TopView)", specs: "Brand logo co-brands TikTok splash screen", gcc: "Highest-impact format on TikTok. First brand: Warner Bros. GCC availability TBC.", isNew: true },
+  { platform: "TikTok", name: "Logo Takeover ★", type: "App-Splash Co-Brand", use: "Major launches, Ramadan day-1, National Day", cost: "Reservation (above TopView)", specs: "Brand logo co-brands TikTok splash screen", gcc: "Highest-impact format on TikTok. First brand: Warner Bros. regional availability TBC.", isNew: true },
   { platform: "TikTok", name: "Prime Time ★", type: "Sequential Live-Moment", use: "Live events (F1, FIFA, Ramadan nights)", cost: "Reservation premium", specs: "Up to 3 sequential ads, 15-min window", gcc: "Perfect for F1 Abu Dhabi, Eid night, Ramadan Iftar. 3-act narrative.", isNew: true },
   { platform: "TikTok", name: "TopReach ★", type: "Bundled Premium Reach", use: "Max one-day reach, cultural moments", cost: "CPM-based single buy", specs: "TopView + TopFeed bundled", gcc: "More efficient than separate buys. Ideal for Ramadan launch day, National Day.", isNew: true },
   { platform: "TikTok", name: "Pulse Mentions ★", type: "Contextual Creator-Adjacent", use: "Brand relevance, social proof", cost: "CPM auction", specs: "Ads next to content discussing your brand", gcc: "Own the conversation around your category regionally.", isNew: true },
@@ -237,7 +237,7 @@ const highImpactFormats = [
   { platform: "Snapchat", name: "Sponsored Snaps ★", type: "Native Inbox Ad", use: "Product launches, time-sensitive offers", cost: "CPM $4–$12", specs: "Ads in Chat/Inbox as brand Snaps", gcc: "Inbox-first usage in KSA & Kuwait. High open rates. Strong for Eid/Ramadan.", isNew: true },
   { platform: "Snapchat", name: "Reminder Ads ★", type: "Intent-to-Return", use: "Countdown to launches, sale dates, live events", cost: "CPM auction", specs: "Users set in-app reminder, push notification sent", gcc: "Ramadan countdown, Eid launches, F1 moments. No equivalent elsewhere.", isNew: true },
   { platform: "Snapchat", name: "Sponsored AI Lenses", type: "Generative AI AR", use: "Personalised brand moments", cost: "$15K–$50K+", specs: "AI-generated personalised experiences", gcc: "Different from fixed AR. Strong for beauty, fashion, FMCG.", isNew: true },
-  { platform: "YouTube", name: "Masthead", type: "Homepage Takeover", use: "Mass reach, product launches, Ramadan", cost: "$50K–$200K/day", specs: "Top of YouTube Home, auto-play muted", gcc: "Best for maximum GCC-wide reach. Book 6–8 weeks ahead.", isNew: false },
+  { platform: "YouTube", name: "Masthead", type: "Homepage Takeover", use: "Mass reach, product launches, Ramadan", cost: "$50K–$200K/day", specs: "Top of YouTube Home, auto-play muted", gcc: "Best for maximum region-wide reach. Book 6–8 weeks ahead.", isNew: false },
   { platform: "YouTube", name: "Demand Gen ★", type: "AI Multi-Surface", use: "E-commerce, lead gen, consideration", cost: "CPM/CPC/CPA/tROAS", specs: "YouTube + Shorts + Gmail + Discover in one", gcc: "Best Google format below Masthead. Strong for fashion, retail, travel.", isNew: true },
   { platform: "YouTube", name: "Performance Max ★", type: "Fully Automated Cross-Channel", use: "E-commerce, always-on conversions", cost: "CPA/tROAS automated", specs: "All Google surfaces, AI-generated combos", gcc: "Fashion, electronics, FMCG see strong ROAS. Needs 50+ conv/month.", isNew: true },
 ];
@@ -348,12 +348,12 @@ const attributionCaveats = [
 ];
 
 const caveats = [
-  { area: "Benchmarks Are Directional", risk: "Actual costs vary by vertical, creative quality, audience, competition, algorithm state.", handle: "Never guarantee. Present as ranges. Your own data always beats published benchmarks.", flag: "Client asks for a KPI guarantee in writing." },
+  { area: "Benchmarks Are Directional & Region-Dependent", risk: "Actual costs vary by vertical, creative quality, audience, competition, algorithm state, AND market. CPMs in Western Europe are 2–3x higher than Southeast Asia. MENA spikes 2–3x during Ramadan. China operates entirely different pricing through BAT ecosystems.", handle: "Never guarantee. Present as ranges per region. Your own data always beats published benchmarks. Build separate benchmark databases per region.", flag: "Client asks for a KPI guarantee in writing. Using US benchmarks for a MENA campaign or vice versa." },
   { area: "Reservation Pricing Volatility", risk: "Pricing changes frequently, fluctuates with demand especially during Ramadan, National Days, sports.", handle: "Always get a formal rep quote. Quotes expire — confirm before presenting.", flag: "Plan includes reservation based on quote older than 2 weeks." },
   { area: "Platform Algorithm Changes", risk: "Meta had 83 changes in 2025. TikTok launched 4 formats in Mar 2026.", handle: "Check newsrooms monthly. Audit settings each campaign.", flag: "Plan uses template not updated in 6+ months." },
   { area: "Creative Is #1 Variable", risk: "Algorithm uses creative as primary targeting signal. Weak creative kills performance regardless of strategy.", handle: "Make creative quality non-negotiable. Flag non-native creative. Recommend A/B testing.", flag: "Single creative asset. No 9:16 vertical available." },
-  { area: "GCC Cultural Sensitivity", risk: "Content acceptable globally may be restricted regionally markets.", handle: "Review all creative against GCC guidelines. Check platform policies for market restrictions.", flag: "Global creative applied to GCC without local review." },
-  { area: "Ramadan Complexity", risk: "CPMs spike 2–3x. Inventory sells out. Audiences shift to post-Iftar (8pm–1am).", handle: "Begin planning 8–10 weeks in advance. Lock reservation formats.", flag: "Ramadan planning starts in the same month." },
+  { area: "Regional Cultural & Legal Sensitivity", risk: "Content acceptable globally may be restricted regionally markets.", handle: "Review all creative against regional guidelines. Check platform policies for market restrictions.", flag: "Global creative applied to regional without local review." },
+  { area: "Regional Cultural Calendar Conflicts", risk: "Every region has peak media periods that spike CPMs: Ramadan/Eid (MENA, 2–3x CPM), Black Friday/Christmas (WEST), Singles Day/Golden Week/Chinese New Year (EAST), Diwali (India). Multi-market campaigns must account for these independently.", handle: "Build a global cultural calendar mapping peak periods per region. Plan budgets per market with seasonal weighting. Book reservation formats 6–10 weeks ahead for peak moments in any region.", flag: "A global campaign ignoring regional peak periods. Running flat monthly budgets across markets with different seasonal patterns." },
   { area: "Minimum Budgets", risk: "Below thresholds, results are statistically unreliable.", handle: "Meta ~$5K/mo, TikTok ~$5K/mo, LinkedIn ~$5K+/mo practical minimum.", flag: "Any platform with <$3K/month." },
   { area: "Data Privacy & First-Party Data", risk: "Third-party cookies declining. Retargeting capabilities reducing.", handle: "CAPI/server-side baseline. Build first-party data (CRM, loyalty, emails).", flag: "Conversion campaign with no first-party data strategy." },
   { area: "Brand Safety", risk: "Ads appearing alongside inappropriate content causes brand damage.", handle: "Apply platform controls. Use PMPs for programmatic. Keyword exclusion lists.", flag: "Programmatic open exchange without DV/IAS." },
@@ -364,7 +364,7 @@ const qaChecklist = {
     "Objective is clearly defined with measurable KPI and target range",
     "Target audience documented (demographics, markets, language)",
     "Budget allocation confirmed per platform per month",
-    "Flight dates confirmed — align with GCC cultural calendar",
+    "Flight dates confirmed — align with regional cultural calendar",
     "Client signed off on final media plan in writing",
   ],
   "Creative": [
@@ -404,7 +404,7 @@ const qaChecklist = {
 };
 
 const commonMistakes = [
-  { mistake: "Treating GCC as one market", why: "Brief says 'GCC campaign' — same mix used everywhere", fix: "Segment by market. At minimum separate UAE, KSA, Kuwait.", rule: "Document platform priority per market, not just per campaign." },
+  { mistake: "Treating regional as one market", why: "Brief says 'GCC campaign' — same mix used everywhere", fix: "Segment by market. At minimum separate UAE, KSA, Kuwait.", rule: "Document platform priority per market, not just per campaign." },
   { mistake: "Optimising before learning phase ends", why: "Client/AM panics at early CPAs and forces changes in week 1", fix: "Set expectations before launch. Share learning phase timeline.", rule: "No structural changes in first 7–14 days." },
   { mistake: "Claiming ROAS without attribution caveats", why: "Platform ROAS reported without noting view-through / double-counting", fix: "Always label as 'platform-reported'. Use GA4 as cross-channel truth.", rule: "Every ROAS figure must include source and attribution model." },
   { mistake: "Planning without confirmed creative", why: "Plan built before knowing creative will be delivered in right specs", fix: "Creative requirements are prerequisite of brief sign-off.", rule: "Don't activate without confirmed creative." },
@@ -477,7 +477,7 @@ export default function App() {
   const [funnelHover, setFunnelHover] = useState(null);
   const [budgetTotal, setBudgetTotal] = useState(50000);
   const [budgetObjective, setBudgetObjective] = useState("Full Funnel");
-  const [budgetMarket, setBudgetMarket] = useState("UAE");
+  const [budgetMarket, setBudgetMarket] = useState("UAE/MENA");
   const [briefData, setBriefData] = useState({ objective: "Awareness", audience: "", markets: [], budget: "", dates: "", creative: "", kpi: "", notes: "" });
   const [selectedPlatforms, setSelectedPlatforms] = useState(["Meta", "TikTok"]);
   const [comparePlatforms, setComparePlatforms] = useState(["Meta (Facebook + Instagram)", "TikTok", "Snapchat"]);
@@ -551,7 +551,7 @@ export default function App() {
         <div style={{ padding: "20px 16px 12px", borderBottom: "1px solid #1a2540" }}>
           <div style={{ fontSize: 13, fontWeight: 800, color: "#3b82f6", letterSpacing: "0.08em", textTransform: "uppercase" }}>Global Digital Media</div>
           <div style={{ fontSize: 18, fontWeight: 800, color: "#e2e8f0", marginTop: 2 }}>Planning Playbook</div>
-          <div style={{ fontSize: 10, color: "#475569", marginTop: 4 }}>Updated March 2026 · PHD</div>
+          <div style={{ fontSize: 10, color: "#475569", marginTop: 4 }}>Updated March 2026 · UM Global</div>
         </div>
         <div style={{ flex: 1, overflowY: "auto", padding: "8px 8px" }}>
           {SECTIONS.map(s => s.id === "divider" ? (
@@ -586,7 +586,7 @@ export default function App() {
           {activeSection === "overview" && (
             <div>
               <SectionTitle>Global Digital Media Planning Framework 2026</SectionTitle>
-              <SectionDesc>The complete internal reference for digital media planning across global markets — WEST (Americas/Europe), CENTRAL (MENA/Africa), and EAST (APAC/China/India). Contains the full planning toolkit: platform-by-objective framework with benchmarks, verified 2026 platform updates, high-impact format guidance, GCC cultural calendar, budget recommendations, and QA checklists.</SectionDesc>
+              <SectionDesc>The complete internal reference for digital media planning across global markets — WEST (Americas/Europe), CENTRAL (MENA/Africa), and EAST (APAC/China/India). Contains the full planning toolkit: platform-by-objective framework with benchmarks, verified 2026 platform updates, high-impact format guidance, regional cultural calendar, budget recommendations, and QA checklists.</SectionDesc>
 
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: 12, marginBottom: 24 }}>
                 {SECTIONS.filter(s => s.id !== "overview").map(s => (
@@ -598,7 +598,7 @@ export default function App() {
               </div>
 
               <Card style={{ background: "linear-gradient(135deg, #1a2744 0%, #0d1425 100%)", border: "1px solid #2a4060" }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#7eb8ff", marginBottom: 8 }}>⚡ Key 2026 Changes</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#7eb8ff", marginBottom: 8 }}>⚡ Key 2026 Changes (Global)</div>
                 <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.8 }}>
                   • <strong style={{ color: "#e2e8f0" }}>Meta Andromeda</strong> — Creative is now the primary targeting signal (8–12 assets per campaign)<br/>
                   • <strong style={{ color: "#e2e8f0" }}>TikTok NewFronts</strong> — Logo Takeover, Prime Time, TopReach, Pulse Mentions all new<br/>
@@ -708,7 +708,7 @@ export default function App() {
           {activeSection === "framework" && (
             <div>
               <SectionTitle>Media Planning Framework</SectionTitle>
-              <SectionDesc>Platform × Objective matrix with buying units, KPIs, USD benchmarks, and GCC planning notes.</SectionDesc>
+              <SectionDesc>Platform × Objective matrix with buying units, KPIs, USD benchmarks, and regional planning notes.</SectionDesc>
               <div style={{ overflowX: "auto" }}>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 11.5 }}>
                   <thead>
@@ -740,7 +740,7 @@ export default function App() {
           {activeSection === "formats" && (
             <div>
               <SectionTitle>High Impact Ad Formats</SectionTitle>
-              <SectionDesc>The highest-impact ad units on each platform — when to use them, costs, specs, and GCC considerations. ★ marks new 2025–2026 formats.</SectionDesc>
+              <SectionDesc>The highest-impact ad units on each platform — when to use them, costs, specs, and regional considerations. ★ marks new 2025–2026 formats.</SectionDesc>
               {highImpactFormats.filter(f => !filterText || JSON.stringify(f).toLowerCase().includes(filterText)).map((f, i) => (
                 <Accordion key={i} title={f.name} subtitle={`${f.platform} · ${f.type}`} badge={f.isNew ? <Chip color="green">NEW</Chip> : null}>
                   <div style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.7 }}>
@@ -807,7 +807,7 @@ export default function App() {
               <h3 style={{ fontSize: 15, fontWeight: 700, color: "#7eb8ff", marginBottom: 12, marginTop: 28 }}>🔍 What to Look Out For</h3>
               {[
                 { area: "Viewability", what: "Industry average is 54–60% — meaning 40–46% of impressions you pay for are never seen.", action: "Use viewable CPM (vCPM) bidding. Set viewability threshold at 70%+. Use DV or IAS for independent measurement. CTV and DOOH have near-100% viewability — factor this into channel mix decisions.", metric: "Target: 70%+ viewability on display, 90%+ on video/CTV" },
-                { area: "Ad Fraud / Invalid Traffic (IVT)", what: "Ad fraud costs the industry ~$84 billion annually. Bots, click farms, and spoofed domains inflate impressions and clicks. GCC open exchange inventory has moderate fraud risk.", action: "Enable pre-bid fraud filtering in your DSP. Use DV/IAS for IVT monitoring. Build publisher inclusion lists instead of trying to block all bad inventory. Use PMPs over open exchange. Monitor for abnormally high CTRs with zero conversions.", metric: "Target: <3% IVT rate on PMPs, <5% on open exchange" },
+                { area: "Ad Fraud / Invalid Traffic (IVT)", what: "Ad fraud costs the industry ~$84 billion annually. Bots, click farms, and spoofed domains inflate impressions and clicks. regional open exchange inventory has moderate fraud risk.", action: "Enable pre-bid fraud filtering in your DSP. Use DV/IAS for IVT monitoring. Build publisher inclusion lists instead of trying to block all bad inventory. Use PMPs over open exchange. Monitor for abnormally high CTRs with zero conversions.", metric: "Target: <3% IVT rate on PMPs, <5% on open exchange" },
                 { area: "Brand Safety Incidents", what: "Ads appearing next to inappropriate content — violence, misinformation, politically sensitive, or content contradicting Islamic values. Especially risky regionally where cultural standards are strict.", action: "Configure DV/IAS brand safety categories per client. Block: violence, adult, political extremism, gambling, alcohol. Use custom keyword exclusion lists. Review placement reports weekly. For programmatic video, use PMPs only — open exchange video has highest brand safety risk.", metric: "Target: 0 brand safety incidents per campaign" },
                 { area: "Frequency Oversaturation", what: "Without proper caps, programmatic will hammer the same users repeatedly — leading to ad fatigue, negative brand perception, and wasted spend.", action: "Set frequency caps in the DSP: 3–5x/week for awareness, 7–10x/week for retargeting. Use cross-campaign frequency management via CM360. Monitor frequency distribution — if >20% of users see the ad 10+ times, you have a problem.", metric: "Target: 3–5x/week (awareness), 7–10x/week (retargeting)" },
                 { area: "Domain Spoofing & Low-Quality Inventory", what: "Some publishers misrepresent their domains to attract premium ad spend. Your ad thinks it's on a premium news site but it's actually on a low-quality content farm.", action: "Use ads.txt/app-ads.txt verification. Build inclusion lists of approved domains. Avoid buying on 'long-tail' open exchange without verification. Review placement reports — flag any domain you don't recognise.", metric: "Check placement reports weekly" },
@@ -859,7 +859,7 @@ export default function App() {
                   "Custom keyword exclusion list applied",
                   "Viewability threshold set (70%+ display, 90%+ video)",
                   "IVT / fraud monitoring enabled (pre-bid filtering on)",
-                  "Geographic targeting verified — correct GCC markets selected",
+                  "Geographic targeting verified — correct regional markets selected",
                 ],
                 "Campaign Settings": [
                   "Frequency caps configured (3–5x/week awareness, 7–10x retargeting)",
@@ -969,7 +969,7 @@ export default function App() {
                           {v.what}
                         </div>
                         <div style={{ marginBottom: 10, padding: 10, background: "#0f1726", borderRadius: 8 }}>
-                          <strong style={{ color: "#ffcb7e" }}>🌍 GCC Relevance / How to Use:</strong><br/>{v.gcc}
+                          <strong style={{ color: "#ffcb7e" }}>🌍 regional Relevance / How to Use:</strong><br/>{v.gcc}
                         </div>
                         <InfoRow label="Best For" value={v.bestFor} />
                         {v.minBudget && v.minBudget !== "N/A" && <InfoRow label="Min Budget" value={<span style={{ color: "#7effb8", fontWeight: 600 }}>{v.minBudget}</span>} />}
@@ -1022,7 +1022,7 @@ export default function App() {
                 </table>
               </div>
 
-              <h3 style={{ fontSize: 15, fontWeight: 700, color: "#7eb8ff", marginTop: 28, marginBottom: 12 }}>Seasonal Budget Weighting</h3>
+              <h3 style={{ fontSize: 15, fontWeight: 700, color: "#7eb8ff", marginTop: 28, marginBottom: 12 }}>Seasonal Budget Weighting (by Region)</h3>
               {seasonalCalendar.filter(s => !filterText || JSON.stringify(s).toLowerCase().includes(filterText)).map((s, i) => (
                 <Accordion key={i} title={s.period} subtitle={`${s.months} · ${s.weight} of annual`} badge={<Chip color={s.color}>{s.cpm}</Chip>}>
                   <div style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.7 }}>
@@ -1805,7 +1805,7 @@ export default function App() {
                   </div>
                   <div style={{ minWidth: 100 }}>
                     <div style={{ fontSize: 11, fontWeight: 700, color: "#64748b", marginBottom: 6 }}>Market</div>
-                    {["UAE", "KSA", "Kuwait", "GCC Wide"].map(m => (
+                    {["US/Canada", "UK/Europe", "UAE/MENA", "KSA", "India", "China", "SEA", "Multi-Market"].map(m => (
                       <button key={m} onClick={() => setBudgetMarket(m)} style={{ display: "block", width: "100%", padding: "4px 8px", margin: "2px 0", border: budgetMarket === m ? "1px solid #3b82f6" : "1px solid transparent", borderRadius: 6, background: budgetMarket === m ? "#1a2744" : "transparent", color: budgetMarket === m ? "#7eb8ff" : "#64748b", fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>{m}</button>
                     ))}
                   </div>
@@ -1814,7 +1814,7 @@ export default function App() {
 
               {(() => {
                 const mixes = { "Brand Awareness": { Meta: 30, TikTok: 20, Snapchat: 15, YouTube: 20, "X (Twitter)": 5, Programmatic: 10 }, "Video Views": { Meta: 25, TikTok: 30, Snapchat: 15, YouTube: 25, "X (Twitter)": 5 }, "Traffic": { Meta: 40, TikTok: 15, Snapchat: 15, Google: 15, LinkedIn: 5, "X (Twitter)": 5, Programmatic: 5 }, "Lead Gen": { Meta: 40, TikTok: 15, Snapchat: 15, Google: 10, LinkedIn: 15, "X (Twitter)": 5 }, "E-commerce": { Meta: 45, TikTok: 15, Snapchat: 10, Google: 20, Programmatic: 10 }, "App Installs": { Meta: 40, TikTok: 20, Snapchat: 15, Google: 20, Programmatic: 5 }, "B2B": { Meta: 20, Google: 15, LinkedIn: 50, "X (Twitter)": 10, Programmatic: 5 }, "Full Funnel": { Meta: 30, TikTok: 15, Snapchat: 12, YouTube: 10, Google: 15, LinkedIn: 8, "X (Twitter)": 5, Programmatic: 5 } };
-                const cpms = { Meta: { UAE: 7, KSA: 9, Kuwait: 8, "GCC Wide": 8 }, TikTok: { UAE: 10, KSA: 12, Kuwait: 11, "GCC Wide": 11 }, Snapchat: { UAE: 6, KSA: 5, Kuwait: 5, "GCC Wide": 5.5 }, YouTube: { UAE: 10, KSA: 9, Kuwait: 10, "GCC Wide": 9.5 }, Google: { UAE: 8, KSA: 7, Kuwait: 8, "GCC Wide": 7.5 }, LinkedIn: { UAE: 35, KSA: 30, Kuwait: 32, "GCC Wide": 32 }, "X (Twitter)": { UAE: 12, KSA: 11, Kuwait: 12, "GCC Wide": 11.5 }, Programmatic: { UAE: 8, KSA: 6, Kuwait: 7, "GCC Wide": 7 } };
+                const cpms = { Meta: { UAE: 7, KSA: 9, Kuwait: 8, "Multi-Market": 8 }, TikTok: { UAE: 10, KSA: 12, Kuwait: 11, "Multi-Market": 11 }, Snapchat: { UAE: 6, KSA: 5, Kuwait: 5, "Multi-Market": 5.5 }, YouTube: { UAE: 10, KSA: 9, Kuwait: 10, "Multi-Market": 9.5 }, Google: { UAE: 8, KSA: 7, Kuwait: 8, "Multi-Market": 7.5 }, LinkedIn: { UAE: 35, KSA: 30, Kuwait: 32, "Multi-Market": 32 }, "X (Twitter)": { UAE: 12, KSA: 11, Kuwait: 12, "Multi-Market": 11.5 }, Programmatic: { UAE: 8, KSA: 6, Kuwait: 7, "Multi-Market": 7 } };
                 const mix = mixes[budgetObjective] || mixes["Full Funnel"];
                 const tier = budgetTotal < 15000 ? "Starter" : budgetTotal < 50000 ? "Growth" : budgetTotal < 150000 ? "Mid-Market" : budgetTotal < 400000 ? "Premium" : "Enterprise";
 
@@ -1849,7 +1849,7 @@ export default function App() {
                     <div style={{ fontSize: 12, fontWeight: 700, color: "#e2e8f0", marginBottom: 8 }}>Total Estimated Reach</div>
                     <div style={{ fontSize: 10, color: "#94a3b8" }}>
                       Total Impressions: <strong style={{ color: "#7effb8" }}>{(Object.entries(mix).reduce((a, [p, pct]) => a + ((budgetTotal * pct / 100) / (cpms[p]?.[budgetMarket] || 10)) * 1000, 0) / 1000000).toFixed(1)}M</strong> · 
-                      Note: Estimates based on directional GCC CPM benchmarks. Actual results will vary by creative quality, audience, season, and competition.
+                      Note: Estimates based on directional regional CPM benchmarks. Actual results will vary by creative quality, audience, season, and competition.
                     </div>
                   </Card>
                 </>);
@@ -1955,8 +1955,8 @@ export default function App() {
           {/* CPM HEATMAP */}
           {activeSection === "heatmap" && (
             <div>
-              <SectionTitle>Seasonal CPM Heatmap</SectionTitle>
-              <SectionDesc>Expected CPM pressure by month across platforms. Green = low/efficient, Yellow = moderate, Red = high/expensive.</SectionDesc>
+              <SectionTitle>Seasonal CPM Heatmap (Global)</SectionTitle>
+              <SectionDesc>Expected CPM pressure by month across platforms and regions. Green = low/efficient, Yellow = moderate, Red = high/expensive. Note: MENA peaks during Ramadan (Feb-Mar), WEST peaks during Q4 holidays, EAST peaks during Golden Week/Singles Day.</SectionDesc>
 
               {(() => {
                 const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -2097,14 +2097,14 @@ export default function App() {
                       headers: { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
                       body: JSON.stringify({
                         model: "claude-sonnet-4-20250514", max_tokens: 3000,
-                        messages: [{ role: "user", content: `You are a senior GCC digital media planner. Based on this brief, generate a media plan as JSON ONLY. No markdown, no backticks, no explanation — ONLY valid JSON.\n\n${JSON.stringify({
+                        messages: [{ role: "user", content: `You are a senior digital media planner. Based on this brief, generate a media plan as JSON ONLY. No markdown, no backticks, no explanation — ONLY valid JSON.\n\n${JSON.stringify({
                           format: {
                             campaign: { client: "string", brand: "string", campaign_name: "string", campaign_type: "string", objective: "string", target_audience: "string", market: "string", period: "string", total_budget_usd: "number" },
                             line_items: [{ market: "string", platform: "string (e.g. META, Google Ads, TikTok, LinkedIn, Snapchat)", placement: "string (e.g. Feed + Stories + Reels, Google: Search, Google: PMax)", objective: "string", media_type: "string (e.g. Social Display, Google Ads, Programmatic)", buying_method: "Auction or Reservation", dates: "string", duration_months: "number", ad_format: "string", language: "string", device: "string", audience_description: "string", targeting_description: "string", buying_unit: "string (CPM, CPC, CPL, CPA)", currency: "USD", unit_cost: "number", estimated_impressions: "number", estimated_clicks: "number", ctr_percent: "number", media_cost_usd: "number", agency_fee_pct: 0.03, agency_fee_usd: "number", total_cost_usd: "number" }],
-                            notes: ["string — GCC considerations, creative requirements, measurement setup, key risks"],
+                            notes: ["string — regional considerations, creative requirements, measurement setup, key risks"],
                             summary: { total_media_usd: "number", total_fees_usd: "number", total_investment_usd: "number" }
                           }
-                        })}\n\nProvide 3-6 line items with realistic GCC benchmark numbers. Use real CPM/CPC/CPL ranges.\n\nBrief: ${aiPrompt}` }]
+                        })}\n\nProvide 3-6 line items with realistic regional benchmark numbers. Use real CPM/CPC/CPL ranges.\n\nBrief: ${aiPrompt}` }]
                       })
                     });
                     const data = await res.json();
@@ -2153,7 +2153,7 @@ export default function App() {
                   <tr><td class="label" colspan="2">Total Agency Fees</td><td colspan="3">$${(s.total_fees_usd||0).toLocaleString(undefined,{minimumFractionDigits:2})}</td></tr>
                   <tr><td class="label" colspan="2">Total Investment</td><td colspan="3" class="money" style="font-size:12pt">$${(s.total_investment_usd||0).toLocaleString(undefined,{minimumFractionDigits:2})}</td></tr>
                   <tr><td colspan="12"></td></tr>
-                  <tr class="section"><td colspan="12">NOTES & GCC CONSIDERATIONS</td></tr>
+                  <tr class="section"><td colspan="12">NOTES & regional CONSIDERATIONS</td></tr>
                   ${notes.map(n => `<tr><td colspan="12" style="color:#555">• ${n}</td></tr>`).join("")}
                   </table></body></html>`;
 
@@ -2228,7 +2228,7 @@ export default function App() {
 
                     {notes.length > 0 && (
                       <Card>
-                        <div style={{ fontSize: 13, fontWeight: 700, color: "#ffcb7e", marginBottom: 8 }}>📝 Notes & GCC Considerations</div>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: "#ffcb7e", marginBottom: 8 }}>📝 Notes & regional Considerations</div>
                         {notes.map((n,i) => <div key={i} style={{ fontSize: 12, color: "#94a3b8", marginBottom: 4, lineHeight: 1.6 }}>• {n}</div>)}
                       </Card>
                     )}
@@ -2285,7 +2285,7 @@ export default function App() {
                   <Card style={{ padding: 14 }}>
                     <div style={{ fontSize: 10, fontWeight: 700, color: "#64748b", marginBottom: 6 }}>Markets</div>
                     <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
-                      {["UAE", "KSA", "Kuwait", "Qatar", "GCC Wide"].map(m => (
+                      {["UAE", "KSA", "Kuwait", "Qatar", "Multi-Market"].map(m => (
                         <button key={m} onClick={() => setPlanInputs(p => ({...p, markets: p.markets.includes(m) ? p.markets.filter(x => x !== m) : [...p.markets, m]}))} style={{ padding: "4px 10px", borderRadius: 14, border: planInputs.markets.includes(m) ? "1px solid #3b82f6" : "1px solid #1e2d45", background: planInputs.markets.includes(m) ? "#1a2744" : "transparent", color: planInputs.markets.includes(m) ? "#7eb8ff" : "#64748b", fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{m}</button>
                       ))}
                     </div>
@@ -2328,8 +2328,8 @@ export default function App() {
                 const isApp = obj === "App Installs";
                 const isLead = obj === "Lead Generation";
                 const isAwareness = obj === "Brand Awareness" || obj === "Video Views";
-                const hasKSA = planInputs.markets.includes("KSA") || planInputs.markets.includes("GCC Wide");
-                const hasKuwait = planInputs.markets.includes("Kuwait") || planInputs.markets.includes("GCC Wide");
+                const hasKSA = planInputs.markets.includes("KSA") || planInputs.markets.includes("Multi-Market");
+                const hasKuwait = planInputs.markets.includes("Kuwait") || planInputs.markets.includes("Multi-Market");
                 const tier = b < 15000 ? "Starter" : b < 50000 ? "Growth" : b < 150000 ? "Mid-Market" : b < 400000 ? "Premium" : "Enterprise";
 
                 const mix = isB2B ? { LinkedIn: 45, Meta: 20, Google: 15, "X (Twitter)": 10, Programmatic: 10 }
