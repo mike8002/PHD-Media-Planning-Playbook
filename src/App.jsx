@@ -609,7 +609,7 @@ export default function App() {
   const [aiResult, setAiResult] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
   const [gameActive, setGameActive] = useState(false);
-  const [gameTimer, setGameTimer] = useState(60);
+  const [gameTimer, setGameTimer] = useState(120);
   const [foundPikas, setFoundPikas] = useState({});
   const [gameWon, setGameWon] = useState(false);
   const [gameOver, setGameOver] = useState(false);
@@ -618,7 +618,7 @@ export default function App() {
   const gameTimerRef = useRef(null);
 
   const startGame = () => {
-    setGameActive(true); setGameTimer(60); setFoundPikas({}); setGameWon(false); setGameOver(false); setShowConfetti(false);
+    setGameActive(true); setGameTimer(120); setFoundPikas({}); setGameWon(false); setGameOver(false); setShowConfetti(false);
     if (gameTimerRef.current) clearInterval(gameTimerRef.current);
     gameTimerRef.current = setInterval(() => {
       setGameTimer(prev => {
@@ -793,16 +793,26 @@ export default function App() {
                   <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
                     <div style={{ width: 36, height: 36, borderRadius: "50%", background: gameTimer <= 10 ? "#ffebee" : "#f0faf5", border: gameTimer <= 10 ? "2px solid #cc3333" : "2px solid #7AC143", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 800, color: gameTimer <= 10 ? "#cc3333" : "#2D1768", fontFamily: "monospace", animation: gameTimer <= 10 ? "pulse 0.5s ease-in-out infinite" : "none" }}>{gameTimer}</div>
                     <div>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: "#2D1768" }}>Find the creatures! <span style={{ color: "#7AC143" }}>{foundCount}/{TOTAL_PIKAS}</span></div>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: "#2D1768" }}>Find the Pikachu! <span style={{ color: "#7AC143" }}>{foundCount}/{TOTAL_PIKAS}</span></div>
                       <div style={{ height: 4, width: 160, background: "#e0e0e8", borderRadius: 2, marginTop: 3, overflow: "hidden" }}><div style={{ height: "100%", width: `${(foundCount / TOTAL_PIKAS) * 100}%`, background: "#7AC143", borderRadius: 2, transition: "width 0.3s" }} /></div>
                     </div>
                   </div>
-                  <span style={{ fontSize: 11, color: "#6a6a7e" }}>They're hiding in section titles - navigate around!</span>
+                  <span style={{ fontSize: 11, color: "#6a6a7e" }}>They're hiding everywhere - scroll and explore!</span>
                 </div>
               )}
               {gameWon && (
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16 }}>
-                  <span style={{ fontSize: 16, fontWeight: 800, color: "#7AC143" }}>🎉 YOU WIN! All 20 found with {gameTimer}s left!</span>
+                  <svg width="32" height="32" viewBox="0 0 40 40" style={{ animation: "pikaJump 1s ease-in-out infinite" }}>
+                    <circle cx="20" cy="20" r="16" fill="#f0f0f4" stroke="#333" strokeWidth="2"/>
+                    <rect x="4" y="18" width="32" height="4" fill="#333"/>
+                    <path d="M4 20 A16 16 0 0 1 36 20" fill="#E03030" stroke="#333" strokeWidth="2"/>
+                    <circle cx="20" cy="20" r="5" fill="white" stroke="#333" strokeWidth="2"/>
+                    <circle cx="20" cy="20" r="2.5" fill="#7AC143"/>
+                  </svg>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: 18, fontWeight: 800, color: "#2D1768" }}>You caught them all!</div>
+                    <div style={{ fontSize: 12, color: "#7AC143", fontWeight: 600 }}>{gameTimer}s remaining - Nice work!</div>
+                  </div>
                   <button onClick={startGame} style={{ padding: "6px 16px", borderRadius: 8, border: "1px solid #7AC143", background: "#7AC14320", color: "#2a8c3e", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Play Again</button>
                   <button onClick={() => { setGameWon(false); setGameOver(false); }} style={{ padding: "6px 12px", borderRadius: 8, border: "1px solid #d0d0d8", background: "transparent", color: "#6a6a7e", fontSize: 11, cursor: "pointer", fontFamily: "inherit" }}>Dismiss</button>
                 </div>
@@ -823,7 +833,7 @@ export default function App() {
             <div onClick={startGame} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 16px", marginBottom: 12, background: "#fff8e1", border: "1px solid #ffe082", borderRadius: 10, cursor: "pointer" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <span style={{ fontSize: 16 }}>{"🔍"}</span>
-                <span style={{ fontSize: 12, fontWeight: 700, color: "#b8860b" }}>{"Bored? Find 20 hidden creatures in 60 seconds!"}</span>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#b8860b" }}>{"Bored? Find the 20 Pikachu hidden across the playbook! You have 2 minutes..."}</span>
               </div>
               <span style={{ fontSize: 11, fontWeight: 700, color: "#fff", background: "#FFD93D", padding: "4px 12px", borderRadius: 20, border: "1px solid #E8B800" }}>START</span>
             </div>
@@ -837,7 +847,7 @@ export default function App() {
           {/* OVERVIEW */}
           {activeSection === "overview" && (
             <div>
-              <SectionTitle>Global Digital Media Planning Framework 2026 <Pika id="p1" /></SectionTitle>
+              <SectionTitle>Global Digital Media Planning Framework 2026</SectionTitle><Pika id="p1" />
               <SectionDesc>The complete internal reference for digital media planning across global markets - WEST (Americas/Europe), CENTRAL (MENA/Africa), and EAST (APAC/China/India). Contains the full planning toolkit: platform-by-objective framework with benchmarks, verified 2026 platform updates, high-impact format guidance, regional cultural calendar, budget recommendations, and QA checklists.</SectionDesc>
 
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: 12, marginBottom: 24 }}>
@@ -865,7 +875,7 @@ export default function App() {
           {/* PLANNING PROCESS */}
           {activeSection === "planning" && (
             <div>
-              <SectionTitle>Planning Process & Methodology <Pika id="p2" /></SectionTitle>
+              <SectionTitle>Planning Process & Methodology</SectionTitle><Pika id="p2" />
               <SectionDesc>The 9-stage end-to-end planning process from brief intake to post-campaign analysis.</SectionDesc>
               {planningStages.filter(s => !filterText || JSON.stringify(s).toLowerCase().includes(filterText)).map((s, i) => (
                 <Accordion key={i} title={s.stage} subtitle="Expand for details">
@@ -891,7 +901,7 @@ export default function App() {
           {/* PLATFORM SELECTION */}
           {activeSection === "platforms" && (
             <div>
-              <SectionTitle>Platform Evaluation & Selection <Pika id="p3" /></SectionTitle>
+              <SectionTitle>Platform Evaluation & Selection</SectionTitle><Pika id="p3" />
               <SectionDesc>A holistic framework for evaluating each platform. Consider: Does our audience live here? Can the platform deliver on our KPIs? Do we have the right creative, tracking, and budget? What does past performance tell us?</SectionDesc>
 
               <Card style={{ background: "#f0edf5", border: "1px solid #d0d0e0", marginBottom: 20 }}>
@@ -958,7 +968,7 @@ export default function App() {
           {/* MEDIA FRAMEWORK */}
           {activeSection === "framework" && (
             <div>
-              <SectionTitle>Media Planning Framework <Pika id="p4" /></SectionTitle>
+              <SectionTitle>Media Planning Framework</SectionTitle><Pika id="p4" />
               <SectionDesc>Platform × Objective matrix with buying units, KPIs, USD benchmarks, and regional planning notes.</SectionDesc>
               <div style={{ overflowX: "auto" }}>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 11.5 }}>
@@ -990,7 +1000,7 @@ export default function App() {
           {/* HIGH IMPACT FORMATS */}
           {activeSection === "formats" && (
             <div>
-              <SectionTitle>High Impact Ad Formats <Pika id="p5" /></SectionTitle>
+              <SectionTitle>High Impact Ad Formats</SectionTitle><Pika id="p5" />
               <SectionDesc>The highest-impact ad units on each platform - when to use them, costs, specs, and regional considerations. ★ marks new 2025–2026 formats.</SectionDesc>
               {highImpactFormats.filter(f => !filterText || JSON.stringify(f).toLowerCase().includes(filterText)).map((f, i) => (
                 <Accordion key={i} title={f.name} subtitle={`${f.platform} · ${f.type}`} badge={f.isNew ? <span style={{ display: "inline-block", animation: "pulse 2s ease-in-out infinite" }}><Chip color="green">NEW</Chip></span> : null}>
@@ -1010,7 +1020,7 @@ export default function App() {
           {/* PROGRAMMATIC DEEP DIVE */}
           {activeSection === "programmatic" && (
             <div>
-              <SectionTitle>Programmatic Deep Dive <Pika id="p13" /></SectionTitle>
+              <SectionTitle>Programmatic Deep Dive</SectionTitle><Pika id="p12" />
               <SectionDesc>The complete guide to programmatic advertising in the region: how it works, when to use it, the planning approach, what to watch out for, a pre-launch checklist, and the most common pitfalls.</SectionDesc>
 
               <Card style={{ background: "#f0edf5", border: "1px solid #d0d0e0", marginBottom: 24 }}>
@@ -1349,7 +1359,7 @@ export default function App() {
           {/* VENDOR LANDSCAPE */}
           {activeSection === "vendors" && (
             <div>
-              <SectionTitle>Global Vendor Landscape <Pika id="p14" /> - By Channel & Region</SectionTitle>
+              <SectionTitle>Global Vendor Landscape<Pika id="p13" /> - By Channel & Region</SectionTitle>
               <SectionDesc>Platform and vendor ecosystems across key markets. Each region has different dominant platforms, DSPs, and rules of engagement.</SectionDesc>
 
               <div style={{ display: "flex", gap: 6, marginBottom: 24, flexWrap: "wrap" }}>
@@ -1393,7 +1403,7 @@ export default function App() {
           {/* BUDGET */}
           {activeSection === "budget" && (
             <div>
-              <SectionTitle>Budget Guidance & Channel Mix <Pika id="p6" /></SectionTitle>
+              <SectionTitle>Budget Guidance & Channel Mix</SectionTitle><Pika id="p6" />
               <SectionDesc>Spend tier recommendations, channel mix by objective, and seasonal budget weighting for the market.</SectionDesc>
 
               <h3 style={{ fontSize: 15, fontWeight: 700, color: "#2D1768", marginBottom: 12 }}>Spend Tiers</h3>
@@ -1446,7 +1456,7 @@ export default function App() {
           {/* MEASUREMENT */}
           {activeSection === "measurement" && (
             <div>
-              <SectionTitle>Measurement & KPIs <Pika id="p8" /></SectionTitle>
+              <SectionTitle>Measurement & KPIs</SectionTitle><Pika id="p7" />
               <SectionDesc>KPI framework by funnel stage, tracking setup requirements, and attribution caveats every planner must understand.</SectionDesc>
 
               {(() => {
@@ -1618,7 +1628,7 @@ export default function App() {
           {/* CALENDAR */}
           {activeSection === "calendar" && (
             <div>
-              <SectionTitle>Regional Cultural & Seasonal Calendar <Pika id="p7" /></SectionTitle>
+              <SectionTitle>Regional Cultural & Seasonal Calendar</SectionTitle>
               <SectionDesc>19 key moments across 6 categories with timing, audience mindset, platforms, formats, and strategy notes.</SectionDesc>
               {seasonalCalendar.filter(s => !filterText || JSON.stringify(s).toLowerCase().includes(filterText)).map((s, i) => (
                 <Accordion key={i} title={s.period} subtitle={`${s.months} · Budget: ${s.weight}`} badge={<Chip color={s.color}>{s.cpm}</Chip>}>
@@ -1637,7 +1647,7 @@ export default function App() {
           {/* PLATFORM UPDATES */}
           {activeSection === "updates" && (
             <div>
-              <SectionTitle>Latest Platform Updates <Pika id="p9" /> (2025–2026)</SectionTitle>
+              <SectionTitle>Latest Platform Updates<Pika id="p8" /> (2025–2026)</SectionTitle>
               <SectionDesc>Verified updates from official newsrooms and trusted sources. Check before every campaign.</SectionDesc>
               {platformUpdates.filter(u => !filterText || JSON.stringify(u).toLowerCase().includes(filterText)).map((u, i) => (
                 <Card key={i}>
@@ -1657,7 +1667,7 @@ export default function App() {
           {/* CAVEATS */}
           {activeSection === "caveats" && (
             <div>
-              <SectionTitle>Caveats, Disclaimers & Risk Areas <Pika id="p10" /></SectionTitle>
+              <SectionTitle>Caveats, Disclaimers & Risk Areas</SectionTitle><Pika id="p9" />
               <SectionDesc>10 risk areas every planner must understand and communicate to clients.</SectionDesc>
               {caveats.filter(c => !filterText || JSON.stringify(c).toLowerCase().includes(filterText)).map((c, i) => (
                 <Accordion key={i} title={c.area}>
@@ -1676,7 +1686,7 @@ export default function App() {
           {/* CHECKLIST */}
           {activeSection === "checklist" && (
             <div>
-              <SectionTitle>Pre-Launch QA Checklist <Pika id="p11" /></SectionTitle>
+              <SectionTitle>Pre-Launch QA Checklist</SectionTitle><Pika id="p10" />
               <SectionDesc>Complete before every campaign go-live. {checkedCount}/{totalChecks} items checked.</SectionDesc>
 
               <div style={{ display: "flex", gap: 20, alignItems: "flex-start" }}>
@@ -1786,7 +1796,7 @@ export default function App() {
           {/* MISTAKES */}
           {activeSection === "mistakes" && (
             <div>
-              <SectionTitle>Common Planning Mistakes <Pika id="p12" /></SectionTitle>
+              <SectionTitle>Common Planning Mistakes</SectionTitle><Pika id="p11" />
               <SectionDesc>7 recurring errors with root causes, fixes, and prevention rules.</SectionDesc>
               {commonMistakes.filter(m => !filterText || JSON.stringify(m).toLowerCase().includes(filterText)).map((m, i) => (
                 <Accordion key={i} title={m.mistake}>
@@ -1805,7 +1815,7 @@ export default function App() {
           {/* CREATIVE SPECS */}
           {activeSection === "creativespecs" && (
             <div>
-              <SectionTitle>Creative Specs by Platform <Pika id="p15" /></SectionTitle>
+              <SectionTitle>Creative Specs by Platform</SectionTitle><Pika id="p14" />
               <SectionDesc>Complete ad dimensions, formats, file requirements, and placement-specific specs across all platforms. {creativeSpecs.length} formats documented.</SectionDesc>
 
               <div style={{ display: "flex", gap: 6, marginBottom: 20, flexWrap: "wrap" }}>
@@ -2196,7 +2206,7 @@ export default function App() {
           {/* BUDGET CALCULATOR */}
           {activeSection === "budgetcalc" && (
             <div>
-              <SectionTitle>Budget Calculator <Pika id="p16" /> & Reach Estimator</SectionTitle>
+              <SectionTitle>Budget Calculator & Reach Estimator</SectionTitle><Pika id="p15" />
               <SectionDesc>Input your total budget and objective - get an auto-generated platform split with estimated reach and impressions.</SectionDesc>
 
               <Card style={{ marginBottom: 16 }}>
@@ -2269,7 +2279,7 @@ export default function App() {
           {/* CREATIVE REQUIREMENTS GENERATOR */}
           {activeSection === "creativegen" && (
             <div>
-              <SectionTitle>Creative Requirements Generator <Pika id="p17" /></SectionTitle>
+              <SectionTitle>Creative Requirements Generator</SectionTitle><Pika id="p16" />
               <SectionDesc>Select platforms in your media plan - get a complete creative specs checklist for your creative team.</SectionDesc>
 
               <Card style={{ padding: 12, marginBottom: 16 }}>
@@ -2312,7 +2322,7 @@ export default function App() {
           {/* PLATFORM COMPARISON */}
           {activeSection === "comparison" && (
             <div>
-              <SectionTitle>Platform Comparison Tool <Pika id="p18" /></SectionTitle>
+              <SectionTitle>Platform Comparison Tool</SectionTitle><Pika id="p17" />
               <SectionDesc>Select 2–4 platforms to compare side-by-side.</SectionDesc>
 
               <Card style={{ padding: 12, marginBottom: 16 }}>
@@ -2364,7 +2374,7 @@ export default function App() {
           {/* CPM HEATMAP */}
           {activeSection === "heatmap" && (
             <div>
-              <SectionTitle>Seasonal CPM Heatmap (Global)</SectionTitle>
+              <SectionTitle>Seasonal CPM Heatmap (Global)</SectionTitle><Pika id="p18" />
               <SectionDesc>Expected CPM pressure by month across platforms and regions. Green = low/efficient, Yellow = moderate, Red = high/expensive. Note: MENA peaks during Ramadan (Feb-Mar), WEST peaks during Q4 holidays, EAST peaks during Golden Week/Singles Day.</SectionDesc>
 
               {(() => {
@@ -2427,7 +2437,7 @@ export default function App() {
           {/* BENCHMARK TRACKER */}
           {activeSection === "benchmark" && (
             <div>
-              <SectionTitle>Benchmark Tracker <Pika id="p19" /></SectionTitle>
+              <SectionTitle>Benchmark Tracker</SectionTitle><Pika id="p19" />
               <SectionDesc>Input your actual campaign results and compare against the playbook benchmarks. Add rows for each platform.</SectionDesc>
 
               <button onClick={() => setBenchmarkData(prev => [...prev, { platform: "Meta", kpi: "CPM", benchmark: "3–11", actual: "", id: Date.now() }])} style={{ padding: "8px 16px", borderRadius: 8, border: "1px solid #3b82f6", background: "#e8e0f0", color: "#2D1768", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", marginBottom: 16 }}>+ Add Row</button>
@@ -2899,7 +2909,7 @@ export default function App() {
           {/* GLOSSARY */}
           {activeSection === "glossary" && (
             <div>
-              <SectionTitle>KPI & Metric Glossary <Pika id="p20" /></SectionTitle>
+              <SectionTitle>KPI & Metric Glossary</SectionTitle><Pika id="p20" />
               <SectionDesc>Definitions for every metric and acronym used across the framework. {glossary.length} terms.</SectionDesc>
               <div style={{ overflowX: "auto" }}>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
