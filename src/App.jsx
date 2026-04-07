@@ -681,7 +681,7 @@ export default function App() {
                 ))}
               </div>
 
-              <Card style={{ background: "linear-gradient(135deg, #f0ecf5 0%, #e8e4f0 100%)", border: "1px solid #d0d0e0" }}>
+              <Card style={{ background: "#f0edf5", border: "1px solid #d0d0e0" }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>⚡ Key 2026 Changes (Global)</div>
                 <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.8 }}>
                   • <strong style={{ color: "#1a1a2e" }}>Meta Andromeda</strong> - Creative is now the primary targeting signal (8–12 assets per campaign)<br/>
@@ -726,7 +726,7 @@ export default function App() {
               <SectionTitle>Platform Evaluation & Selection</SectionTitle>
               <SectionDesc>A holistic framework for evaluating each platform. Consider: Does our audience live here? Can the platform deliver on our KPIs? Do we have the right creative, tracking, and budget? What does past performance tell us?</SectionDesc>
 
-              <Card style={{ background: "linear-gradient(135deg, #f0ecf5 0%, #e8e4f0 100%)", border: "1px solid #d0d0e0", marginBottom: 20 }}>
+              <Card style={{ background: "#f0edf5", border: "1px solid #d0d0e0", marginBottom: 20 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>🎯 Platform Selection Framework - 5 Questions Before Adding Any Platform</div>
                 <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.9 }}>
                   <strong style={{ color: "#2a8c3e" }}>1. Audience:</strong> Is our target audience actually on this platform in this market? (Don't assume - check platform data)<br/>
@@ -846,7 +846,7 @@ export default function App() {
               <SectionTitle>Programmatic Deep Dive</SectionTitle>
               <SectionDesc>The complete guide to programmatic advertising in the region: how it works, when to use it, the planning approach, what to watch out for, a pre-launch checklist, and the most common pitfalls.</SectionDesc>
 
-              <Card style={{ background: "linear-gradient(135deg, #f0ecf5 0%, #e8e4f0 100%)", border: "1px solid #d0d0e0", marginBottom: 24 }}>
+              <Card style={{ background: "#f0edf5", border: "1px solid #d0d0e0", marginBottom: 24 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#2D1768", marginBottom: 10 }}>🖥️ How Programmatic Works (Simple Version)</div>
                 <div style={{ fontSize: 12, color: "#444455", lineHeight: 2 }}>
                   <strong style={{ color: "#1a1a2e" }}>1. Advertiser</strong> sets campaign goals, budgets, targeting, and creative in a <strong style={{ color: "#2a8c3e" }}>DSP</strong> (Demand-Side Platform)<br/>
@@ -1037,7 +1037,7 @@ export default function App() {
                 ))}
               </div>
 
-              <Card style={{ background: "linear-gradient(135deg, #f0ecf5 0%, #e8e4f0 100%)", border: "1px solid #d0d0e0", marginBottom: 24 }}>
+              <Card style={{ background: "#f0edf5", border: "1px solid #d0d0e0", marginBottom: 24 }}>
                 <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.6 }}>{regionalVendors[vendorRegion].desc}</div>
               </Card>
 
@@ -1493,7 +1493,7 @@ export default function App() {
                 ))}
               </div>
 
-              <Card style={{ background: "linear-gradient(135deg, #f0ecf5 0%, #e8e4f0 100%)", border: "1px solid #d0d0e0", marginBottom: 20 }}>
+              <Card style={{ background: "#f0edf5", border: "1px solid #d0d0e0", marginBottom: 20 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>🎯 Quick Reference - The 3 Must-Have Ratios</div>
                 <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.8 }}>
                   <strong style={{ color: "#2a8c3e" }}>1:1 Square (1080×1080)</strong> - Works across 80% of placements. Safe default for Feed on all platforms.<br/>
@@ -1519,7 +1519,7 @@ export default function App() {
                       <div style={{ width: 14, height: 14, borderRadius: "50%", background: "#e0e0e8" }} />
                       <div style={{ height: 4, flex: 1, background: "#e0e0e8", borderRadius: 2 }} />
                     </div>
-                    <div style={{ width: "100%", paddingBottom: "100%", background: "linear-gradient(135deg, #e0f0e8, #e8e0f0)", borderRadius: 4, position: "relative" }}>
+                    <div style={{ width: "100%", paddingBottom: "100%", background: "#ede8f5", borderRadius: 4, position: "relative" }}>
                       <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#2a8c3e", fontSize: 10, fontWeight: 700 }}>1:1<br/>1080×1080</div>
                     </div>
                     <div style={{ padding: "4px", display: "flex", gap: 3, marginTop: 4 }}>
@@ -1542,7 +1542,7 @@ export default function App() {
                       <div style={{ width: 14, height: 14, borderRadius: "50%", background: "#e0e0e8" }} />
                       <div style={{ height: 4, flex: 1, background: "#e0e0e8", borderRadius: 2 }} />
                     </div>
-                    <div style={{ width: "100%", paddingBottom: "125%", background: "linear-gradient(135deg, #f0e8d8, #e8e0f0)", borderRadius: 4, position: "relative" }}>
+                    <div style={{ width: "100%", paddingBottom: "125%", background: "#ede8f5", borderRadius: 4, position: "relative" }}>
                       <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#b8860b", fontSize: 10, fontWeight: 700 }}>4:5<br/>1080×1350</div>
                     </div>
                     <div style={{ height: 3, background: "#e0e0e8", borderRadius: 2, margin: "4px 20px 2px", width: "60%" }} />
@@ -1554,7 +1554,7 @@ export default function App() {
                 {/* Phone: Stories/Reels 9:16 */}
                 <Card style={{ padding: 16, textAlign: "center" }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color: "#6a1b9a", marginBottom: 8 }}>Stories / Reels - 9:16</div>
-                  <div style={{ width: 120, margin: "0 auto", background: "linear-gradient(180deg, #ece0f5, #f0ecf5)", borderRadius: 16, border: "2px solid #d0d0d8", height: 214, position: "relative", overflow: "hidden" }}>
+                  <div style={{ width: 120, margin: "0 auto", background: "#ede8f5", borderRadius: 16, border: "2px solid #d0d0d8", height: 214, position: "relative", overflow: "hidden" }}>
                     <div style={{ position: "absolute", top: 6, left: 8, right: 8, display: "flex", alignItems: "center", gap: 4, zIndex: 2 }}>
                       <div style={{ width: 16, height: 16, borderRadius: "50%", border: "1.5px solid rgba(0,0,0,.15)" }} />
                       <div style={{ height: 3, flex: 1, background: "rgba(0,0,0,.08)", borderRadius: 2 }} />
@@ -1582,7 +1582,7 @@ export default function App() {
                 {/* Phone: TikTok In-Feed */}
                 <Card style={{ padding: 16, textAlign: "center" }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color: "#6a1b9a", marginBottom: 8 }}>TikTok In-Feed</div>
-                  <div style={{ width: 120, margin: "0 auto", background: "linear-gradient(180deg, #f5f5f7, #ece0f5)", borderRadius: 16, border: "2px solid #d0d0d8", height: 214, position: "relative", overflow: "hidden" }}>
+                  <div style={{ width: 120, margin: "0 auto", background: "#ede8f5", borderRadius: 16, border: "2px solid #d0d0d8", height: 214, position: "relative", overflow: "hidden" }}>
                     <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#6a1b9a", fontSize: 10, fontWeight: 700, flexDirection: "column" }}>
                       <span>9:16</span>
                       <span style={{ fontSize: 8 }}>Full Screen</span>
@@ -1608,7 +1608,7 @@ export default function App() {
                     <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#d0d0d8", margin: "0 auto 6px" }} />
                     <div style={{ display: "flex", gap: 4, overflow: "hidden" }}>
                       {[1,2,3].map(i => (
-                        <div key={i} style={{ minWidth: i === 1 ? "85%" : "15%", paddingBottom: i === 1 ? "85%" : "15%", background: i === 1 ? "linear-gradient(135deg, #e8e0f0, #e0f0e8)" : "#f0f0f5", borderRadius: 4, position: "relative", flexShrink: 0 }}>
+                        <div key={i} style={{ minWidth: i === 1 ? "85%" : "15%", paddingBottom: i === 1 ? "85%" : "15%", background: i === 1 ? "#ede8f5" : "#f0f0f5", borderRadius: 4, position: "relative", flexShrink: 0 }}>
                           {i === 1 && <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#2D1768", fontSize: 9, fontWeight: 700 }}>Card 1<br/>1:1</div>}
                         </div>
                       ))}
@@ -1640,7 +1640,7 @@ export default function App() {
                           <div style={{ height: 3, flex: 1, background: "#e0e0e8", borderRadius: 2 }} />
                           <div style={{ fontSize: 6, color: "#9a9aaa" }}>Sponsored</div>
                         </div>
-                        <div style={{ paddingBottom: "55%", background: "linear-gradient(135deg, #e8e0f0, #e0f0e8)", borderRadius: 4, position: "relative" }}>
+                        <div style={{ paddingBottom: "55%", background: "#ede8f5", borderRadius: 4, position: "relative" }}>
                           <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#2D1768", fontSize: 9, fontWeight: 700 }}>16:9 or 1:1</div>
                         </div>
                         <div style={{ display: "flex", gap: 3, marginTop: 4 }}>
@@ -1648,7 +1648,7 @@ export default function App() {
                         </div>
                       </div>
                       <div style={{ flex: "0 0 20%" }}>
-                        <div style={{ paddingBottom: "180%", background: "linear-gradient(180deg, #e8e0f0, #f0f0f5)", borderRadius: 4, position: "relative" }}>
+                        <div style={{ paddingBottom: "180%", background: "#ede8f5", borderRadius: 4, position: "relative" }}>
                           <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#5a5a6e", fontSize: 7 }}>Right<br/>Column</div>
                         </div>
                       </div>
@@ -1663,8 +1663,8 @@ export default function App() {
                   <div style={{ display: "flex", flexDirection: "column", gap: 6, alignItems: "center" }}>
                     <div style={{ width: "100%", height: 22, background: "#e8e6ee", borderRadius: 3, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 8, color: "#b8860b", fontWeight: 600, border: "1px dashed #c0c0cc" }}>728 × 90 - Leaderboard</div>
                     <div style={{ display: "flex", gap: 6, width: "100%", justifyContent: "center" }}>
-                      <div style={{ width: 70, height: 58, background: "linear-gradient(135deg, #f0e8d8, #e8e0f0)", borderRadius: 3, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 7, color: "#b8860b", fontWeight: 600, border: "1px dashed #c0c0cc" }}>300×250<br/>MPU</div>
-                      <div style={{ width: 28, height: 80, background: "linear-gradient(180deg, #3a2a1a, #e8e0f0)", borderRadius: 3, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 6, color: "#b8860b", fontWeight: 600, border: "1px dashed #c0c0cc", writingMode: "vertical-rl" }}>160×600</div>
+                      <div style={{ width: 70, height: 58, background: "#ede8f5", borderRadius: 3, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 7, color: "#b8860b", fontWeight: 600, border: "1px dashed #c0c0cc" }}>300×250<br/>MPU</div>
+                      <div style={{ width: 28, height: 80, background: "#eae6ee", borderRadius: 3, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 6, color: "#b8860b", fontWeight: 600, border: "1px dashed #c0c0cc", writingMode: "vertical-rl" }}>160×600</div>
                     </div>
                     <div style={{ width: "80%", height: 14, background: "#e8e6ee", borderRadius: 3, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 7, color: "#b8860b", fontWeight: 600, border: "1px dashed #c0c0cc" }}>320 × 50 - Mobile</div>
                   </div>
@@ -1675,7 +1675,7 @@ export default function App() {
                 <Card style={{ padding: 16, textAlign: "center" }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color: "#cc3333", marginBottom: 8 }}>Interstitial / Takeover</div>
                   <div style={{ width: 120, margin: "0 auto", background: "#f5f5f7", borderRadius: 16, border: "2px solid #d0d0d8", height: 200, position: "relative", overflow: "hidden" }}>
-                    <div style={{ position: "absolute", inset: 8, background: "linear-gradient(135deg, #f0e0e0, #e8e0f0)", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", border: "1px dashed #e0c0c0" }}>
+                    <div style={{ position: "absolute", inset: 8, background: "#f5eaea", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", border: "1px dashed #e0c0c0" }}>
                       <div style={{ fontSize: 8, color: "#cc3333", fontWeight: 700 }}>Full Screen</div>
                       <div style={{ fontSize: 7, color: "#444455" }}>Overlay</div>
                       <div style={{ fontSize: 7, color: "#b8860b", marginTop: 4 }}>320×480 or</div>
@@ -1693,7 +1693,7 @@ export default function App() {
                     {[1,2].map(i => <div key={i} style={{ height: 3, background: "#e0e0e8", borderRadius: 2, marginBottom: 3, width: `${95-i*10}%` }} />)}
                     <div style={{ border: "1px dashed #2a5040", borderRadius: 6, padding: 8, margin: "6px 0", background: "#f0faf5" }}>
                       <div style={{ display: "flex", gap: 6 }}>
-                        <div style={{ width: 45, height: 35, background: "linear-gradient(135deg, #e0f0e8, #e8e0f0)", borderRadius: 3, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 6, color: "#2a8c3e" }}>Image</div>
+                        <div style={{ width: 45, height: 35, background: "#ede8f5", borderRadius: 3, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 6, color: "#2a8c3e" }}>Image</div>
                         <div>
                           <div style={{ height: 3, background: "#2a5040", borderRadius: 2, width: 60, marginBottom: 3 }} />
                           <div style={{ height: 2, background: "#e0e0e8", borderRadius: 2, width: 50, marginBottom: 2 }} />
@@ -1711,7 +1711,7 @@ export default function App() {
                 <Card style={{ padding: 16, textAlign: "center" }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color: "#6a1b9a", marginBottom: 8 }}>CTV / OTT - 16:9</div>
                   <div style={{ width: "100%", background: "#f5f5f7", borderRadius: 4, border: "3px solid #d0d0d8", overflow: "hidden", position: "relative" }}>
-                    <div style={{ paddingBottom: "56.25%", background: "linear-gradient(135deg, #ece0f5, #e8e4f0)", position: "relative" }}>
+                    <div style={{ paddingBottom: "56.25%", background: "#ede8f5", position: "relative" }}>
                       <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
                         <div style={{ fontSize: 9, color: "#6a1b9a", fontWeight: 700 }}>16:9</div>
                         <div style={{ fontSize: 8, color: "#444455" }}>1920×1080 HD</div>
@@ -1730,7 +1730,7 @@ export default function App() {
                 <Card style={{ padding: 16, textAlign: "center" }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color: "#b8860b", marginBottom: 8 }}>DOOH - Billboard</div>
                   <div style={{ position: "relative" }}>
-                    <div style={{ width: "100%", background: "linear-gradient(135deg, #f0e8d8, #e8e0f0)", borderRadius: 3, border: "3px solid #504020", overflow: "hidden" }}>
+                    <div style={{ width: "100%", background: "#ede8f5", borderRadius: 3, border: "2px solid #d0d0d8", overflow: "hidden" }}>
                       <div style={{ paddingBottom: "50%", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
                         <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
                           <div style={{ fontSize: 9, color: "#b8860b", fontWeight: 700 }}>Landscape / Portrait</div>
@@ -1754,7 +1754,7 @@ export default function App() {
                       <div style={{ flex: 1, height: 10, background: "#f5f5f7", borderRadius: 4 }} />
                     </div>
                     <div style={{ padding: "0 8px 8px" }}>
-                      <div style={{ paddingBottom: "35%", background: "linear-gradient(90deg, #3a1a1a, #e8e0f0)", borderRadius: 4, position: "relative", marginTop: 8 }}>
+                      <div style={{ paddingBottom: "35%", background: "#f5eaea", borderRadius: 4, position: "relative", marginTop: 8 }}>
                         <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
                           <div style={{ fontSize: 8, color: "#cc3333", fontWeight: 700 }}>MASTHEAD</div>
                           <div style={{ fontSize: 7, color: "#444455" }}>Homepage Takeover</div>
@@ -1785,7 +1785,7 @@ export default function App() {
                             <div style={{ height: 2, background: "#e0e0e8", borderRadius: 2, width: "60%" }} />
                             <div style={{ height: 2, background: "#e0e0e8", borderRadius: 2, width: "90%" }} />
                             <div style={{ height: 2, background: "#e0e0e8", borderRadius: 2, width: "70%" }} />
-                            <div style={{ flex: 1, background: "linear-gradient(135deg, #e8e0f0, #f0f0f5)", borderRadius: 3, marginTop: 3 }} />
+                            <div style={{ flex: 1, background: "#ede8f5", borderRadius: 3, marginTop: 3 }} />
                           </div>}
                         </div>
                       ))}
@@ -1903,7 +1903,7 @@ export default function App() {
                 const tier = budgetTotal < 15000 ? "Starter" : budgetTotal < 50000 ? "Growth" : budgetTotal < 150000 ? "Mid-Market" : budgetTotal < 400000 ? "Premium" : "Enterprise";
 
                 return (<>
-                  <Card style={{ background: "linear-gradient(135deg, #f0ecf5 0%, #e8e4f0 100%)", border: "1px solid #d0d0e0", marginBottom: 16 }}>
+                  <Card style={{ background: "#f0edf5", border: "1px solid #d0d0e0", marginBottom: 16 }}>
                     <div style={{ fontSize: 12, fontWeight: 700, color: "#2D1768", marginBottom: 4 }}>Tier: <span style={{ color: "#1a1a2e" }}>{tier}</span> · Market: <span style={{ color: "#1a1a2e" }}>{budgetMarket}</span> · Objective: <span style={{ color: "#1a1a2e" }}>{budgetObjective}</span></div>
                   </Card>
 
@@ -2492,7 +2492,7 @@ export default function App() {
 
                 return (
                   <div>
-                    <Card style={{ background: "linear-gradient(135deg, #f0ecf5 0%, #e8e4f0 100%)", border: "1px solid #d0d0e0", marginBottom: 16, padding: 20 }}>
+                    <Card style={{ background: "#f0edf5", border: "1px solid #d0d0e0", marginBottom: 16, padding: 20 }}>
                       <div style={{ fontSize: 16, fontWeight: 800, color: "#1a1a2e", marginBottom: 4 }}>Generated Media Plan</div>
                       <div style={{ fontSize: 11, color: "#5a5a6e" }}>{obj} · {planInputs.markets.join(", ")} · ${b.toLocaleString()}/mo × {planInputs.duration} months · {tier} tier · {planInputs.vertical}</div>
                     </Card>
