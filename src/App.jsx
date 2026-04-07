@@ -469,8 +469,8 @@ export default function App() {
   const [loginError, setLoginError] = useState("");
 
   // ── SET YOUR CREDENTIALS HERE ──
-  const VALID_USER = "umdigital";
-  const VALID_PASS = "UM2026!";
+  const VALID_USER = "PHD";
+  const VALID_PASS = "PHD2026!";
   // ────────────────────────────────
 
   const handleLogin = () => {
