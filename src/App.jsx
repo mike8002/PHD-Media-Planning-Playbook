@@ -651,7 +651,7 @@ export default function App() {
       <span onClick={(e) => { e.stopPropagation(); if (!isFound && gameActive) findPika(id); }}
         style={{ display: "inline-block", cursor: gameActive && !isFound ? "pointer" : "default", transition: "all 0.3s", verticalAlign: "middle", marginLeft: 4, position: "relative", ...style }}>
         {!isFound && gameActive && <span style={{ position: "absolute", inset: -4, background: "radial-gradient(circle, rgba(255,217,61,0.3) 0%, transparent 70%)", borderRadius: "50%", animation: "pulse 2s ease-in-out infinite" }} />}
-        <svg width="22" height="22" viewBox="0 0 24 24" style={{ opacity: isFound ? 0.15 : 0.85, transform: isFound ? "scale(0.6) rotate(30deg)" : "scale(1)", transition: "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)", filter: isFound ? "grayscale(1)" : "drop-shadow(0 1px 2px rgba(0,0,0,0.15))" }}>
+        <svg width="15" height="15" viewBox="0 0 24 24" style={{ opacity: isFound ? 0.15 : 0.85, transform: isFound ? "scale(0.6) rotate(30deg)" : "scale(1)", transition: "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)", filter: isFound ? "grayscale(1)" : "drop-shadow(0 1px 2px rgba(0,0,0,0.15))" }}>
           {/* Body */}
           <ellipse cx="12" cy="13" rx="8" ry="7" fill="#FFD93D"/>
           <ellipse cx="12" cy="15" rx="5" ry="3.5" fill="#FFE566" opacity="0.5"/>
@@ -777,7 +777,7 @@ export default function App() {
           ))}
         </div>
         <div style={{ padding: "12px 16px", borderTop: "1px solid #e5e5ea", fontSize: 10, color: "#9a9aaa" }}>
-          All benchmarks in USD<Pika id="p1" /> · Global · Directional only
+          All benchmarks in USD · Global · Directional only
         </div>
       </nav>
 
