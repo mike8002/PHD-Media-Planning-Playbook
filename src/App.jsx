@@ -777,7 +777,7 @@ export default function App() {
           ))}
         </div>
         <div style={{ padding: "12px 16px", borderTop: "1px solid #e5e5ea", fontSize: 10, color: "#9a9aaa" }}>
-          All benchmarks in USD · Global · Directional only
+          All benchmarks in USD<Pika id="p1" /> · Global · Directional only
         </div>
       </nav>
 
@@ -847,7 +847,7 @@ export default function App() {
           {/* OVERVIEW */}
           {activeSection === "overview" && (
             <div>
-              <SectionTitle>Global Digital Media Planning Framework 2026</SectionTitle><Pika id="p1" />
+              <SectionTitle>Global Digital Media Planning Framework 2026</SectionTitle>
               <SectionDesc>The complete internal reference for digital media planning across global markets - WEST (Americas/Europe), CENTRAL (MENA/Africa), and EAST (APAC/China/India). Contains the full planning toolkit: platform-by-objective framework with benchmarks, verified 2026 platform updates, high-impact format guidance, regional cultural calendar, budget recommendations, and QA checklists.</SectionDesc>
 
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: 12, marginBottom: 24 }}>
@@ -901,11 +901,11 @@ export default function App() {
           {/* PLATFORM SELECTION */}
           {activeSection === "platforms" && (
             <div>
-              <SectionTitle>Platform Evaluation & Selection</SectionTitle><Pika id="p3" />
+              <SectionTitle>Platform Evaluation & Selection</SectionTitle>
               <SectionDesc>A holistic framework for evaluating each platform. Consider: Does our audience live here? Can the platform deliver on our KPIs? Do we have the right creative, tracking, and budget? What does past performance tell us?</SectionDesc>
 
               <Card style={{ background: "#f0edf5", border: "1px solid #d0d0e0", marginBottom: 20 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>🎯 Platform Selection Framework - 6 Questions Before Adding Any Platform</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>🎯 Platform Selection Framework - 6 Questions Before Adding Any Platform</div><Pika id="p3" />
                 <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.9 }}>
                   <strong style={{ color: "#2a8c3e" }}>1. Audience:</strong> Is our target audience actually on this platform in this market? (Don't assume - check platform data)<br/>
                   <strong style={{ color: "#b8860b" }}>2. Capability:</strong> Can this platform deliver against our specific KPI? (Awareness ≠ Conversion ≠ Lead Gen)<br/>
@@ -931,7 +931,7 @@ export default function App() {
                     </div>
 
                     <div style={{ marginBottom: 12 }}>
-                      <div style={{ fontWeight: 700, color: "#6a1b9a", fontSize: 11, textTransform: "uppercase", marginBottom: 4 }}>Audience Fit</div>
+                      <div style={{ fontWeight: 700, color: "#6a1b9a", fontSize: 11, textTransform: "uppercase", marginBottom: 4 }}>Audience Fit<Pika id="p4" /></div>
                       <div style={{ fontSize: 12 }}>{p.audienceFit}</div>
                     </div>
 
@@ -968,7 +968,7 @@ export default function App() {
           {/* MEDIA FRAMEWORK */}
           {activeSection === "framework" && (
             <div>
-              <SectionTitle>Media Planning Framework</SectionTitle><Pika id="p4" />
+              <SectionTitle>Media Planning Framework</SectionTitle><Pika id="p5" />
               <SectionDesc>Platform × Objective matrix with buying units, KPIs, USD benchmarks, and regional planning notes.</SectionDesc>
               <div style={{ overflowX: "auto" }}>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 11.5 }}>
@@ -1000,7 +1000,7 @@ export default function App() {
           {/* HIGH IMPACT FORMATS */}
           {activeSection === "formats" && (
             <div>
-              <SectionTitle>High Impact Ad Formats</SectionTitle><Pika id="p5" />
+              <SectionTitle>High Impact Ad Formats</SectionTitle><Pika id="p6" />
               <SectionDesc>The highest-impact ad units on each platform - when to use them, costs, specs, and regional considerations. ★ marks new 2025–2026 formats.</SectionDesc>
               {highImpactFormats.filter(f => !filterText || JSON.stringify(f).toLowerCase().includes(filterText)).map((f, i) => (
                 <Accordion key={i} title={f.name} subtitle={`${f.platform} · ${f.type}`} badge={f.isNew ? <span style={{ display: "inline-block", animation: "pulse 2s ease-in-out infinite" }}><Chip color="green">NEW</Chip></span> : null}>
@@ -1020,7 +1020,7 @@ export default function App() {
           {/* PROGRAMMATIC DEEP DIVE */}
           {activeSection === "programmatic" && (
             <div>
-              <SectionTitle>Programmatic Deep Dive</SectionTitle><Pika id="p12" />
+              <SectionTitle>Programmatic Deep Dive</SectionTitle><Pika id="p13" />
               <SectionDesc>The complete guide to programmatic advertising in the region: how it works, when to use it, the planning approach, what to watch out for, a pre-launch checklist, and the most common pitfalls.</SectionDesc>
 
               <Card style={{ background: "#f0edf5", border: "1px solid #d0d0e0", marginBottom: 24 }}>
@@ -1359,7 +1359,7 @@ export default function App() {
           {/* VENDOR LANDSCAPE */}
           {activeSection === "vendors" && (
             <div>
-              <SectionTitle>Global Vendor Landscape<Pika id="p13" /> - By Channel & Region</SectionTitle>
+              <SectionTitle>Global Vendor Landscape<Pika id="p14" /> - By Channel & Region</SectionTitle>
               <SectionDesc>Platform and vendor ecosystems across key markets. Each region has different dominant platforms, DSPs, and rules of engagement.</SectionDesc>
 
               <div style={{ display: "flex", gap: 6, marginBottom: 24, flexWrap: "wrap" }}>
@@ -1403,7 +1403,7 @@ export default function App() {
           {/* BUDGET */}
           {activeSection === "budget" && (
             <div>
-              <SectionTitle>Budget Guidance & Channel Mix</SectionTitle><Pika id="p6" />
+              <SectionTitle>Budget Guidance & Channel Mix</SectionTitle>
               <SectionDesc>Spend tier recommendations, channel mix by objective, and seasonal budget weighting for the market.</SectionDesc>
 
               <h3 style={{ fontSize: 15, fontWeight: 700, color: "#2D1768", marginBottom: 12 }}>Spend Tiers</h3>
@@ -1441,7 +1441,7 @@ export default function App() {
                 </table>
               </div>
 
-              <h3 style={{ fontSize: 15, fontWeight: 700, color: "#2D1768", marginTop: 28, marginBottom: 12 }}>Seasonal Budget Weighting (by Region)</h3>
+              <h3 style={{ fontSize: 15, fontWeight: 700, color: "#2D1768", marginTop: 28, marginBottom: 12 }}>Seasonal Budget Weighting (by Region)</h3><Pika id="p7" />
               {seasonalCalendar.filter(s => !filterText || JSON.stringify(s).toLowerCase().includes(filterText)).map((s, i) => (
                 <Accordion key={i} title={s.period} subtitle={`${s.months} · ${s.weight} of annual`} badge={<Chip color={s.color}>{s.cpm}</Chip>}>
                   <div style={{ fontSize: 13, color: "#555566", lineHeight: 1.7 }}>
@@ -1456,7 +1456,7 @@ export default function App() {
           {/* MEASUREMENT */}
           {activeSection === "measurement" && (
             <div>
-              <SectionTitle>Measurement & KPIs</SectionTitle><Pika id="p7" />
+              <SectionTitle>Measurement & KPIs</SectionTitle><Pika id="p8" />
               <SectionDesc>KPI framework by funnel stage, tracking setup requirements, and attribution caveats every planner must understand.</SectionDesc>
 
               {(() => {
@@ -1647,7 +1647,7 @@ export default function App() {
           {/* PLATFORM UPDATES */}
           {activeSection === "updates" && (
             <div>
-              <SectionTitle>Latest Platform Updates<Pika id="p8" /> (2025–2026)</SectionTitle>
+              <SectionTitle>Latest Platform Updates<Pika id="p9" /> (2025–2026)</SectionTitle>
               <SectionDesc>Verified updates from official newsrooms and trusted sources. Check before every campaign.</SectionDesc>
               {platformUpdates.filter(u => !filterText || JSON.stringify(u).toLowerCase().includes(filterText)).map((u, i) => (
                 <Card key={i}>
@@ -1667,7 +1667,7 @@ export default function App() {
           {/* CAVEATS */}
           {activeSection === "caveats" && (
             <div>
-              <SectionTitle>Caveats, Disclaimers & Risk Areas</SectionTitle><Pika id="p9" />
+              <SectionTitle>Caveats, Disclaimers & Risk Areas</SectionTitle><Pika id="p10" />
               <SectionDesc>10 risk areas every planner must understand and communicate to clients.</SectionDesc>
               {caveats.filter(c => !filterText || JSON.stringify(c).toLowerCase().includes(filterText)).map((c, i) => (
                 <Accordion key={i} title={c.area}>
@@ -1686,7 +1686,7 @@ export default function App() {
           {/* CHECKLIST */}
           {activeSection === "checklist" && (
             <div>
-              <SectionTitle>Pre-Launch QA Checklist</SectionTitle><Pika id="p10" />
+              <SectionTitle>Pre-Launch QA Checklist</SectionTitle><Pika id="p11" />
               <SectionDesc>Complete before every campaign go-live. {checkedCount}/{totalChecks} items checked.</SectionDesc>
 
               <div style={{ display: "flex", gap: 20, alignItems: "flex-start" }}>
@@ -1796,7 +1796,7 @@ export default function App() {
           {/* MISTAKES */}
           {activeSection === "mistakes" && (
             <div>
-              <SectionTitle>Common Planning Mistakes</SectionTitle><Pika id="p11" />
+              <SectionTitle>Common Planning Mistakes</SectionTitle><Pika id="p12" />
               <SectionDesc>7 recurring errors with root causes, fixes, and prevention rules.</SectionDesc>
               {commonMistakes.filter(m => !filterText || JSON.stringify(m).toLowerCase().includes(filterText)).map((m, i) => (
                 <Accordion key={i} title={m.mistake}>
@@ -1815,7 +1815,7 @@ export default function App() {
           {/* CREATIVE SPECS */}
           {activeSection === "creativespecs" && (
             <div>
-              <SectionTitle>Creative Specs by Platform</SectionTitle><Pika id="p14" />
+              <SectionTitle>Creative Specs by Platform</SectionTitle>
               <SectionDesc>Complete ad dimensions, formats, file requirements, and placement-specific specs across all platforms. {creativeSpecs.length} formats documented.</SectionDesc>
 
               <div style={{ display: "flex", gap: 6, marginBottom: 20, flexWrap: "wrap" }}>
@@ -1833,7 +1833,7 @@ export default function App() {
                 <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.8 }}>
                   <strong style={{ color: "#2a8c3e" }}>1:1 Square (1080×1080)</strong> - Works across 80% of placements. Safe default for Feed on all platforms.<br/>
                   <strong style={{ color: "#b8860b" }}>4:5 Vertical (1080×1350)</strong> - Best for mobile Feed. Takes up more screen. Higher engagement vs square.<br/>
-                  <strong style={{ color: "#6a1b9a" }}>9:16 Full Vertical (1080×1920)</strong> - Mandatory for Reels, Stories, TikTok, Snapchat, Shorts. Non-negotiable in 2026.
+                  <strong style={{ color: "#6a1b9a" }}>9:16 Full Vertical (1080×1920)</strong> - Mandatory for Reels, Stories, TikTok, Snapchat, Shorts. Non-negotiable in 2026.<Pika id="p15" />
                 </div>
               </Card>
 
@@ -2206,7 +2206,7 @@ export default function App() {
           {/* BUDGET CALCULATOR */}
           {activeSection === "budgetcalc" && (
             <div>
-              <SectionTitle>Budget Calculator & Reach Estimator</SectionTitle><Pika id="p15" />
+              <SectionTitle>Budget Calculator & Reach Estimator</SectionTitle><Pika id="p16" />
               <SectionDesc>Input your total budget and objective - get an auto-generated platform split with estimated reach and impressions.</SectionDesc>
 
               <Card style={{ marginBottom: 16 }}>
@@ -2279,11 +2279,11 @@ export default function App() {
           {/* CREATIVE REQUIREMENTS GENERATOR */}
           {activeSection === "creativegen" && (
             <div>
-              <SectionTitle>Creative Requirements Generator</SectionTitle><Pika id="p16" />
+              <SectionTitle>Creative Requirements Generator</SectionTitle>
               <SectionDesc>Select platforms in your media plan - get a complete creative specs checklist for your creative team.</SectionDesc>
 
               <Card style={{ padding: 12, marginBottom: 16 }}>
-                <div style={{ fontSize: 10, fontWeight: 700, color: "#5a5a6e", marginBottom: 6 }}>Select platforms in your plan:</div>
+                <div style={{ fontSize: 10, fontWeight: 700, color: "#5a5a6e", marginBottom: 6 }}>Select platforms in your plan:<Pika id="p17" /></div>
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                   {["Meta", "TikTok", "Snapchat", "YouTube", "LinkedIn", "X (Twitter)", "Pinterest", "Programmatic"].map(p => (
                     <button key={p} onClick={() => setSelectedPlatforms(prev => prev.includes(p) ? prev.filter(x => x !== p) : [...prev, p])} style={{ padding: "6px 14px", borderRadius: 20, border: selectedPlatforms.includes(p) ? "1px solid #3b82f6" : "1px solid #e0e0e8", background: selectedPlatforms.includes(p) ? "#e8e0f0" : "transparent", color: selectedPlatforms.includes(p) ? "#7eb8ff" : "#6a6a7e", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>{p}</button>
@@ -2322,7 +2322,7 @@ export default function App() {
           {/* PLATFORM COMPARISON */}
           {activeSection === "comparison" && (
             <div>
-              <SectionTitle>Platform Comparison Tool</SectionTitle><Pika id="p17" />
+              <SectionTitle>Platform Comparison Tool</SectionTitle>
               <SectionDesc>Select 2–4 platforms to compare side-by-side.</SectionDesc>
 
               <Card style={{ padding: 12, marginBottom: 16 }}>
@@ -2374,7 +2374,7 @@ export default function App() {
           {/* CPM HEATMAP */}
           {activeSection === "heatmap" && (
             <div>
-              <SectionTitle>Seasonal CPM Heatmap (Global)</SectionTitle><Pika id="p18" />
+              <SectionTitle>Seasonal CPM Heatmap (Global)</SectionTitle>
               <SectionDesc>Expected CPM pressure by month across platforms and regions. Green = low/efficient, Yellow = moderate, Red = high/expensive. Note: MENA peaks during Ramadan (Feb-Mar), WEST peaks during Q4 holidays, EAST peaks during Golden Week/Singles Day.</SectionDesc>
 
               {(() => {
@@ -2413,7 +2413,7 @@ export default function App() {
                           </tr>
                         ))}
                         <tr>
-                          <td style={{ padding: 8, fontSize: 9, color: "#5a5a6e", fontWeight: 600 }}>Key Event</td>
+                          <td style={{ padding: 8, fontSize: 9, color: "#5a5a6e", fontWeight: 600 }}>Key Event<Pika id="p18" /></td>
                           {months.map((m, i) => (
                             <td key={i} style={{ padding: 4, textAlign: "center", fontSize: 7, color: "#7a7a8a" }}>{events[i]}</td>
                           ))}
@@ -2437,10 +2437,10 @@ export default function App() {
           {/* BENCHMARK TRACKER */}
           {activeSection === "benchmark" && (
             <div>
-              <SectionTitle>Benchmark Tracker</SectionTitle><Pika id="p19" />
+              <SectionTitle>Benchmark Tracker</SectionTitle>
               <SectionDesc>Input your actual campaign results and compare against the playbook benchmarks. Add rows for each platform.</SectionDesc>
 
-              <button onClick={() => setBenchmarkData(prev => [...prev, { platform: "Meta", kpi: "CPM", benchmark: "3–11", actual: "", id: Date.now() }])} style={{ padding: "8px 16px", borderRadius: 8, border: "1px solid #3b82f6", background: "#e8e0f0", color: "#2D1768", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", marginBottom: 16 }}>+ Add Row</button>
+              <button onClick={() => setBenchmarkData(prev => [...prev, { platform: "Meta", kpi: "CPM", benchmark: "3–11", actual: "", id: Date.now() }])} style={{ padding: "8px 16px", borderRadius: 8, border: "1px solid #3b82f6", background: "#e8e0f0", color: "#2D1768", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", marginBottom: 16 }}>+ Add Row</button><Pika id="p19" />
 
               {benchmarkData.length > 0 && (
                 <div style={{ overflowX: "auto" }}>
