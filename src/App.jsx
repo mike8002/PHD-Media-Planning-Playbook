@@ -531,7 +531,7 @@ export default function App() {
           </div>
           {loginError && <div style={{ fontSize: 11, color: "#cc3333", marginBottom: 12, textAlign: "center" }}>{loginError}</div>}
           <button onClick={handleLogin} style={{ width: "100%", padding: "12px", borderRadius: 8, border: "none", background: "linear-gradient(135deg, #2D1768, #1a0e40)", color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Sign In</button>
-          <div style={{ fontSize: 9, color: "#2D176860", textAlign: "center", marginTop: 16 }}>Contact your team lead for access credentials</div>
+          <div style={{ fontSize: 9, color: "#2D176840", textAlign: "center", marginTop: 16 }}>Contact your team lead for access credentials</div>
         </div>
       </div>
     );
@@ -918,7 +918,7 @@ export default function App() {
               ))}
 
               <h3 style={{ fontSize: 15, fontWeight: 700, color: "#2D1768", marginBottom: 12, marginTop: 28 }}>⚠️ Programmatic Rules of Thumb</h3>
-              <Card style={{ background: "#faf0f0", border: "1px solid #e0d0e8" }}>
+              <Card style={{ background: "#fdf5f0", border: "1px solid #e8dcd0" }}>
                 <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.8 }}>
                   • <strong style={{ color: "#1a1a2e" }}>Always use PMPs</strong> over open exchange for the market campaigns — brand safety is non-negotiable<br/>
                   • <strong style={{ color: "#1a1a2e" }}>Minimum $20K/month</strong> for programmatic to generate meaningful optimisation data<br/>
@@ -1767,7 +1767,7 @@ export default function App() {
               ))}
 
               <h3 style={{ fontSize: 15, fontWeight: 700, color: "#cc3333", marginTop: 28, marginBottom: 12 }}>⚠️ Creative Checklist Reminders</h3>
-              <Card style={{ background: "#faf0f0", border: "1px solid #e0d0e8" }}>
+              <Card style={{ background: "#fdf5f0", border: "1px solid #e8dcd0" }}>
                 <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.8 }}>
                   • <strong style={{ color: "#1a1a2e" }}>9:16 vertical is the 2026 default</strong> — Meta confirmed 90% of inventory will be vertical. Produce 9:16 first, adapt from there.<br/>
                   • <strong style={{ color: "#1a1a2e" }}>Safe zones</strong> — Stories/Reels: keep text 250px from top, 340px from bottom (UI overlays cover these areas).<br/>
@@ -1985,10 +1985,10 @@ export default function App() {
                       <tbody>
                         {Object.entries(heatData).map(([platform, data]) => (
                           <tr key={platform}>
-                            <td style={{ padding: 8, fontSize: 11, fontWeight: 700, color: "#1a1a2e" }}>{platform}</td>
+                            <td style={{ padding: "10px 12px", fontSize: 13, fontWeight: 700, color: "#1a1a2e" }}>{platform}</td>
                             {data.map((level, mi) => (
                               <td key={mi} style={{ padding: 4, textAlign: "center" }}>
-                                <div style={{ background: colors[level], borderRadius: 4, padding: "4px 2px", fontSize: 8, color: textColors[level], fontWeight: 700 }}>{labels[level]}</div>
+                                <div style={{ background: colors[level], borderRadius: 6, padding: "8px 4px", fontSize: 10, color: textColors[level], fontWeight: 700 }}>{labels[level]}</div>
                               </td>
                             ))}
                           </tr>
@@ -2005,7 +2005,7 @@ export default function App() {
                 );
               })()}
 
-              <Card style={{ marginTop: 16, background: "#faf0f0", border: "1px solid #e0d0e8" }}>
+              <Card style={{ marginTop: 16, background: "#fdf5f0", border: "1px solid #e8dcd0" }}>
                 <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.7 }}>
                   <strong style={{ color: "#cc3333" }}>🔴 High CPM months:</strong> Feb–Mar (Ramadan), Nov (White Friday). Budget 2–3x more or accept lower reach.<br/>
                   <strong style={{ color: "#b8860b" }}>🟡 Medium:</strong> Jan (pre-Ramadan), Sep (Saudi National Day), Oct–Dec (Q4). Plan early, book reservations.<br/>
@@ -2359,7 +2359,7 @@ export default function App() {
                     </Card>
 
                     {warnings.length > 0 && (
-                      <Card style={{ background: "#faf0f0", border: "1px solid #e0d0e8", marginBottom: 16 }}>
+                      <Card style={{ background: "#fdf5f0", border: "1px solid #e8dcd0", marginBottom: 16 }}>
                         <div style={{ fontSize: 12, fontWeight: 700, color: "#cc3333", marginBottom: 8 }}>Flags & Warnings</div>
                         {warnings.map((w, i) => <div key={i} style={{ fontSize: 11, color: "#444455", marginBottom: 4 }}>{w}</div>)}
                       </Card>
