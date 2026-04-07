@@ -649,17 +649,31 @@ export default function App() {
     const isFound = foundPikas[id];
     return (
       <span onClick={(e) => { e.stopPropagation(); if (!isFound && gameActive) findPika(id); }}
-        style={{ display: "inline-block", cursor: gameActive && !isFound ? "pointer" : "default", opacity: isFound ? 0.3 : 0.18, transition: "all 0.3s", transform: isFound ? "scale(1.8) rotate(20deg)" : "scale(1)", filter: isFound ? "grayscale(1) brightness(1.5)" : "none", verticalAlign: "middle", ...style }}>
-        <svg width="16" height="16" viewBox="0 0 24 24">
+        style={{ display: "inline-block", cursor: gameActive && !isFound ? "pointer" : "default", transition: "all 0.3s", verticalAlign: "middle", marginLeft: 4, position: "relative", ...style }}>
+        {!isFound && gameActive && <span style={{ position: "absolute", inset: -4, background: "radial-gradient(circle, rgba(255,217,61,0.3) 0%, transparent 70%)", borderRadius: "50%", animation: "pulse 2s ease-in-out infinite" }} />}
+        <svg width="22" height="22" viewBox="0 0 24 24" style={{ opacity: isFound ? 0.15 : 0.85, transform: isFound ? "scale(0.6) rotate(30deg)" : "scale(1)", transition: "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)", filter: isFound ? "grayscale(1)" : "drop-shadow(0 1px 2px rgba(0,0,0,0.15))" }}>
+          {/* Body */}
           <ellipse cx="12" cy="13" rx="8" ry="7" fill="#FFD93D"/>
-          <polygon points="6,8 3,1 8,6" fill="#FFD93D"/><polygon points="18,8 21,1 16,6" fill="#FFD93D"/>
-          <polygon points="3,1 4,3 2,2.5" fill="#333"/><polygon points="21,1 20,3 22,2.5" fill="#333"/>
-          <circle cx="9" cy="11" r="1.5" fill="#333"/><circle cx="15" cy="11" r="1.5" fill="#333"/>
-          <circle cx="9.5" cy="10.5" r="0.5" fill="white"/><circle cx="15.5" cy="10.5" r="0.5" fill="white"/>
-          <circle cx="7" cy="14" r="2" fill="#FF6B6B" opacity="0.3"/>
-          <circle cx="17" cy="14" r="2" fill="#FF6B6B" opacity="0.3"/>
-          <path d="M10 16 Q12 18 14 16" fill="none" stroke="#333" strokeWidth="0.8"/>
+          <ellipse cx="12" cy="15" rx="5" ry="3.5" fill="#FFE566" opacity="0.5"/>
+          {/* Ears */}
+          <polygon points="6,8 2,0 9,6" fill="#FFD93D" stroke="#E8B800" strokeWidth="0.3"/>
+          <polygon points="18,8 22,0 15,6" fill="#FFD93D" stroke="#E8B800" strokeWidth="0.3"/>
+          <polygon points="2.5,0.5 4,3 2,2" fill="#2D1768"/>
+          <polygon points="21.5,0.5 20,3 22,2" fill="#2D1768"/>
+          {/* Eyes */}
+          <circle cx="9" cy="11" r="2" fill="#2D1768"/>
+          <circle cx="15" cy="11" r="2" fill="#2D1768"/>
+          <circle cx="9.7" cy="10.3" r="0.7" fill="white"/>
+          <circle cx="15.7" cy="10.3" r="0.7" fill="white"/>
+          {/* Cheeks */}
+          <circle cx="6" cy="14" r="2.2" fill="#FF6B6B" opacity="0.35"/>
+          <circle cx="18" cy="14" r="2.2" fill="#FF6B6B" opacity="0.35"/>
+          {/* Mouth */}
+          <path d="M10 16 Q12 18.5 14 16" fill="none" stroke="#2D1768" strokeWidth="0.8" strokeLinecap="round"/>
+          {/* Tail */}
+          <path d="M20 10 L22.5 6 L21 5.5 L23.5 2 L20.5 5 L21 6 Z" fill="#E8B800" stroke="#D4A012" strokeWidth="0.3"/>
         </svg>
+        {isFound && <span style={{ position: "absolute", top: -2, right: -2, fontSize: 8, background: "#7AC143", color: "white", borderRadius: "50%", width: 12, height: 12, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800 }}>✓</span>}
       </span>
     );
   };
@@ -771,7 +785,40 @@ export default function App() {
       <main ref={contentRef} style={{ flex: 1, overflowY: "auto", padding: "28px 36px 60px" }}>
         <div style={{ maxWidth: 900 }}>
 
-          {/* GAME BAR */}
+          {/* GAME BAR - FLOATING */}
+          {(gameActive || gameWon || (gameOver && !gameWon)) && (
+            <div style={{ position: "fixed", top: 0, left: 260, right: 0, zIndex: 100, padding: "8px 24px", background: "rgba(245,245,247,0.95)", backdropFilter: "blur(10px)", borderBottom: "1px solid #e0e0e8", boxShadow: "0 2px 12px rgba(0,0,0,.08)" }}>
+              {gameActive && (
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                    <div style={{ width: 36, height: 36, borderRadius: "50%", background: gameTimer <= 10 ? "#ffebee" : "#f0faf5", border: gameTimer <= 10 ? "2px solid #cc3333" : "2px solid #7AC143", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 800, color: gameTimer <= 10 ? "#cc3333" : "#2D1768", fontFamily: "monospace", animation: gameTimer <= 10 ? "pulse 0.5s ease-in-out infinite" : "none" }}>{gameTimer}</div>
+                    <div>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: "#2D1768" }}>Find the creatures! <span style={{ color: "#7AC143" }}>{foundCount}/{TOTAL_PIKAS}</span></div>
+                      <div style={{ height: 4, width: 160, background: "#e0e0e8", borderRadius: 2, marginTop: 3, overflow: "hidden" }}><div style={{ height: "100%", width: `${(foundCount / TOTAL_PIKAS) * 100}%`, background: "#7AC143", borderRadius: 2, transition: "width 0.3s" }} /></div>
+                    </div>
+                  </div>
+                  <span style={{ fontSize: 11, color: "#6a6a7e" }}>They're hiding in section titles - navigate around!</span>
+                </div>
+              )}
+              {gameWon && (
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16 }}>
+                  <span style={{ fontSize: 16, fontWeight: 800, color: "#7AC143" }}>🎉 YOU WIN! All 20 found with {gameTimer}s left!</span>
+                  <button onClick={startGame} style={{ padding: "6px 16px", borderRadius: 8, border: "1px solid #7AC143", background: "#7AC14320", color: "#2a8c3e", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Play Again</button>
+                  <button onClick={() => { setGameWon(false); setGameOver(false); }} style={{ padding: "6px 12px", borderRadius: 8, border: "1px solid #d0d0d8", background: "transparent", color: "#6a6a7e", fontSize: 11, cursor: "pointer", fontFamily: "inherit" }}>Dismiss</button>
+                </div>
+              )}
+              {gameOver && !gameWon && (
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16 }}>
+                  <span style={{ fontSize: 16, fontWeight: 800, color: "#cc3333" }}>⏰ Time's up! Found {foundCount}/20</span>
+                  <button onClick={startGame} style={{ padding: "6px 16px", borderRadius: 8, border: "1px solid #cc3333", background: "#cc333320", color: "#cc3333", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Try Again</button>
+                  <button onClick={() => { setGameOver(false); }} style={{ padding: "6px 12px", borderRadius: 8, border: "1px solid #d0d0d8", background: "transparent", color: "#6a6a7e", fontSize: 11, cursor: "pointer", fontFamily: "inherit" }}>Dismiss</button>
+                </div>
+              )}
+            </div>
+          )}
+          {showConfetti && <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 9999, overflow: "hidden" }}>{Array.from({length: 80}).map((_, i) => <div key={i} style={{ position: "absolute", left: `${Math.random() * 100}%`, top: -20, width: Math.random() * 10 + 5, height: Math.random() * 10 + 5, background: ["#FFD93D","#7AC143","#2D1768","#FF6B6B","#cc3333","#E8B800","#ff69b4","#00bcd4"][i % 8], borderRadius: Math.random() > 0.5 ? "50%" : "2px", animation: `confettiFall ${2 + Math.random() * 3}s ${Math.random() * 0.5}s ease-out forwards`, transform: `rotate(${Math.random() * 360}deg)` }} />)}</div>}
+
+          {/* START GAME CTA - only when no game state */}
           {!gameActive && !gameWon && !gameOver && (
             <div onClick={startGame} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 16px", marginBottom: 12, background: "#fff8e1", border: "1px solid #ffe082", borderRadius: 10, cursor: "pointer" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -781,29 +828,6 @@ export default function App() {
               <span style={{ fontSize: 11, fontWeight: 700, color: "#fff", background: "#FFD93D", padding: "4px 12px", borderRadius: 20, border: "1px solid #E8B800" }}>START</span>
             </div>
           )}
-          {gameActive && (
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", marginBottom: 12, background: gameTimer <= 10 ? "#ffebee" : "#f0faf5", border: gameTimer <= 10 ? "1px solid #ffcdd2" : "1px solid #c0e0d0", borderRadius: 10, animation: gameTimer <= 10 ? "pulse 0.5s ease-in-out infinite" : "none" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <span style={{ fontSize: 20, fontWeight: 800, color: gameTimer <= 10 ? "#cc3333" : "#2D1768", fontFamily: "monospace" }}>{gameTimer}s</span>
-                <div style={{ height: 6, width: 120, background: "#e0e0e8", borderRadius: 3, overflow: "hidden" }}><div style={{ height: "100%", width: `${(foundCount / TOTAL_PIKAS) * 100}%`, background: "#7AC143", borderRadius: 3, transition: "width 0.3s" }} /></div>
-                <span style={{ fontSize: 13, fontWeight: 700, color: "#2D1768" }}>{foundCount}/{TOTAL_PIKAS}</span>
-              </div>
-              <span style={{ fontSize: 11, color: "#6a6a7e" }}>Click hidden creatures in dropdowns!</span>
-            </div>
-          )}
-          {gameWon && (
-            <div style={{ padding: "14px 16px", marginBottom: 12, background: "#f0faf5", border: "2px solid #7AC143", borderRadius: 10, textAlign: "center" }}>
-              <div style={{ fontSize: 16, fontWeight: 800, color: "#7AC143" }}>{"🎉 YOU WIN! All 20 found with " + gameTimer + "s remaining!"}</div>
-              <button onClick={startGame} style={{ marginTop: 8, padding: "6px 16px", borderRadius: 8, border: "1px solid #7AC143", background: "transparent", color: "#2a8c3e", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Play Again</button>
-            </div>
-          )}
-          {gameOver && !gameWon && (
-            <div style={{ padding: "14px 16px", marginBottom: 12, background: "#ffebee", border: "2px solid #cc3333", borderRadius: 10, textAlign: "center" }}>
-              <div style={{ fontSize: 16, fontWeight: 800, color: "#cc3333" }}>{"⏰ Time's up! Found " + foundCount + "/20"}</div>
-              <button onClick={startGame} style={{ marginTop: 8, padding: "6px 16px", borderRadius: 8, border: "1px solid #cc3333", background: "transparent", color: "#cc3333", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Try Again</button>
-            </div>
-          )}
-          {showConfetti && <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 9999, overflow: "hidden" }}>{Array.from({length: 80}).map((_, i) => <div key={i} style={{ position: "absolute", left: `${Math.random() * 100}%`, top: -20, width: Math.random() * 10 + 5, height: Math.random() * 10 + 5, background: ["#FFD93D","#7AC143","#2D1768","#FF6B6B","#cc3333","#E8B800","#ff69b4","#00bcd4"][i % 8], borderRadius: Math.random() > 0.5 ? "50%" : "2px", animation: `confettiFall ${2 + Math.random() * 3}s ${Math.random() * 0.5}s ease-out forwards`, transform: `rotate(${Math.random() * 360}deg)` }} />)}</div>}
 
           <div style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 20 }}>
             <div style={{ flex: 1 }}><SearchBar value={search} onChange={setSearch} /></div>
