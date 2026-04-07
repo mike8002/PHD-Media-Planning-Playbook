@@ -1833,7 +1833,7 @@ export default function App() {
                 <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.8 }}>
                   <strong style={{ color: "#2a8c3e" }}>1:1 Square (1080×1080)</strong> - Works across 80% of placements. Safe default for Feed on all platforms.<br/>
                   <strong style={{ color: "#b8860b" }}>4:5 Vertical (1080×1350)</strong> - Best for mobile Feed. Takes up more screen. Higher engagement vs square.<br/>
-                  <strong style={{ color: "#6a1b9a" }}>9:16 Full Vertical (1080×1920)</strong> - Mandatory for Reels, Stories, TikTok, Snapchat, Shorts. Non-negotiable in 2026.<Pika id="p15" />
+                  <strong style={{ color: "#6a1b9a" }}>9:16 Full Vertical (1080×1920)</strong> - Mandatory for Reels, Stories, TikTok, Snapchat, Shorts. Non-negotiable in 2026.
                 </div>
               </Card>
 
@@ -2200,6 +2200,7 @@ export default function App() {
                   • <strong style={{ color: "#1a1a2e" }}>Test before launch</strong> - Preview in-platform before going live. What looks good in Canva may crop badly in-feed.
                 </div>
               </Card>
+              <div style={{ textAlign: "right", padding: "8px 0" }}><Pika id="p15" /></div>
             </div>
           )}
 
