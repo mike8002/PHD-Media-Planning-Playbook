@@ -165,71 +165,17 @@ const SectionDesc = ({ children }) => (
   <p style={{ fontSize: 13, color: "#5a5a6e", marginBottom: 24, lineHeight: 1.6 }}>{children}</p>
 );
 
-const CheckItem = ({ children, checked, onChange }) => {
-  const [animating, setAnimating] = useState(false);
-  const handleClick = () => {
-    if (!checked && onChange) {
-      setAnimating(true);
-      setTimeout(() => { onChange(true); setAnimating(false); }, 800);
-    } else if (onChange) {
-      onChange(false);
-    }
-  };
-  return (
-    <div
-      onClick={handleClick}
-      style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "8px 12px", borderRadius: 8, cursor: "pointer", background: checked ? "#f0faf5" : "transparent", marginBottom: 4, transition: "background .15s", position: "relative", overflow: "visible" }}
-    >
-      <div style={{ width: 18, height: 18, borderRadius: 4, border: checked ? "none" : "2px solid #d0d0d8", background: checked ? "#7AC143" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1, fontSize: 11, color: "#fff", fontWeight: 800 }}>
-        {checked ? "✓" : ""}
-      </div>
-      <span style={{ fontSize: 13, color: checked ? "#2a8c3e" : "#1a1a2e", textDecoration: checked ? "line-through" : "none", lineHeight: 1.5 }}>{children}</span>
-      {animating && (
-        <div style={{ position: "absolute", left: 0, top: -30, zIndex: 50, pointerEvents: "none" }}>
-          <svg width="50" height="60" viewBox="0 0 50 60" style={{ animation: "creaturePop 0.8s ease-out forwards" }}>
-            {/* Ball bottom half */}
-            <circle cx="25" cy="48" r="10" fill="#e0e0e8" stroke="#d0d0d8" strokeWidth="1.5"/>
-            <rect x="15" y="47" width="20" height="11" fill="#e0e0e8"/>
-            <line x1="15" y1="48" x2="35" y2="48" stroke="#cc3333" strokeWidth="2"/>
-            <circle cx="25" cy="48" r="3" fill="white" stroke="#444" strokeWidth="1"/>
-            {/* Ball top - opens */}
-            <g style={{ animation: "ballOpen 0.4s ease-out forwards", transformOrigin: "25px 48px" }}>
-              <path d="M15 48 A10 10 0 0 1 35 48" fill="#cc3333" stroke="#aa2222" strokeWidth="1"/>
-            </g>
-            {/* Creature - bounces up */}
-            <g style={{ animation: "creatureJump 0.6s 0.2s ease-out forwards", opacity: 0 }}>
-              {/* Body */}
-              <ellipse cx="25" cy="20" rx="12" ry="11" fill="#FFD93D"/>
-              <ellipse cx="25" cy="20" rx="12" ry="11" fill="none" stroke="#E8B800" strokeWidth="0.8"/>
-              {/* Ears */}
-              <polygon points="15,12 11,1 17,8" fill="#FFD93D" stroke="#E8B800" strokeWidth="0.5"/>
-              <polygon points="35,12 39,1 33,8" fill="#FFD93D" stroke="#E8B800" strokeWidth="0.5"/>
-              <polygon points="11,1 12,4 10,3" fill="#333"/>
-              <polygon points="39,1 38,4 40,3" fill="#333"/>
-              {/* Eyes */}
-              <circle cx="20" cy="18" r="2.5" fill="#333"/>
-              <circle cx="30" cy="18" r="2.5" fill="#333"/>
-              <circle cx="21" cy="17" r="0.8" fill="white"/>
-              <circle cx="31" cy="17" r="0.8" fill="white"/>
-              {/* Cheeks */}
-              <circle cx="16" cy="22" r="2.5" fill="#FF6B6B" opacity="0.5"/>
-              <circle cx="34" cy="22" r="2.5" fill="#FF6B6B" opacity="0.5"/>
-              {/* Mouth */}
-              <path d="M22 24 Q25 27 28 24" fill="none" stroke="#333" strokeWidth="0.8" strokeLinecap="round"/>
-            </g>
-            {/* Sparkles */}
-            <g style={{ animation: "sparkle 0.5s 0.3s ease-out forwards", opacity: 0 }}>
-              <text x="8" y="10" fontSize="8" fill="#FFD93D">✦</text>
-              <text x="38" y="8" fontSize="6" fill="#7AC143">✦</text>
-              <text x="5" y="25" fontSize="5" fill="#FFD93D">✦</text>
-              <text x="42" y="22" fontSize="7" fill="#2D1768">✦</text>
-            </g>
-          </svg>
-        </div>
-      )}
+const CheckItem = ({ children, checked, onChange }) => (
+  <div
+    onClick={() => onChange && onChange(!checked)}
+    style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "8px 12px", borderRadius: 8, cursor: "pointer", background: checked ? "#f0faf5" : "transparent", marginBottom: 4, transition: "background .15s" }}
+  >
+    <div style={{ width: 18, height: 18, borderRadius: 4, border: checked ? "none" : "2px solid #d0d0d8", background: checked ? "#7AC143" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1, fontSize: 11, color: "#fff", fontWeight: 800 }}>
+      {checked ? "✓" : ""}
     </div>
-  );
-};
+    <span style={{ fontSize: 13, color: checked ? "#2a8c3e" : "#1a1a2e", textDecoration: checked ? "line-through" : "none", lineHeight: 1.5 }}>{children}</span>
+  </div>
+);
 
 const SearchBar = ({ value, onChange }) => (
   <div style={{ position: "relative", marginBottom: 0 }}>
@@ -725,6 +671,7 @@ export default function App() {
         @keyframes ballOpen { 0% { transform: rotate(0deg); } 100% { transform: rotate(-120deg) translateY(-5px); opacity: 0; } }
         @keyframes creatureJump { 0% { opacity: 0; transform: translateY(20px) scale(0.3); } 50% { opacity: 1; transform: translateY(-8px) scale(1.1); } 70% { transform: translateY(0px) scale(0.95); } 100% { opacity: 1; transform: translateY(-2px) scale(1); } }
         @keyframes sparkle { 0% { opacity: 0; transform: scale(0); } 50% { opacity: 1; transform: scale(1.3); } 100% { opacity: 0; transform: scale(0.5); } }
+        @keyframes ballShake { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }
       `}</style>
 
       {/* Mobile nav toggle */}
@@ -1015,61 +962,177 @@ export default function App() {
               ))}
 
               <h3 style={{ fontSize: 15, fontWeight: 700, color: "#2D1768", marginBottom: 12, marginTop: 28 }}>✅ Programmatic Pre-Launch Checklist</h3>
-              {Object.entries({
-                "DSP & Inventory Setup": [
-                  "DSP selected with documented rationale",
-                  "PMP deals confirmed with deal IDs from publishers",
-                  "Inclusion list of approved domains/apps created",
-                  "Open exchange blocked or limited to verified inventory only",
-                  "CTV inventory secured (Shahid/OSN+ (MENA), Hulu/Peacock (US), regional CTV platforms, StarzPlay PMP deals)",
-                  "DOOH placements booked if applicable (lead time 2–4 weeks)",
-                ],
-                "Audiences & Data": [
-                  "First-party data uploaded (CRM lists, website audiences)",
-                  "Retargeting pixel installed and firing on client website",
-                  "Lookalike/similar audiences built from first-party seeds",
-                  "Third-party data segments selected and costed",
-                  "Audience exclusions configured (existing customers, converters)",
-                ],
-                "Creative & Ad Serving": [
-                  "All creative sizes produced (300×250, 728×90, 160×600, 320×50 minimum)",
-                  "Video creative available in 15s and 30s (horizontal + vertical)",
-                  "Arabic creative versions available for KSA/Kuwait campaigns",
-                  "DCO templates configured if using dynamic creative",
-                  "All creatives trafficked in ad server (CM360 / Flashtalking)",
-                  "Click-through URLs verified and UTM parameters applied",
-                ],
-                "Verification & Brand Safety": [
-                  "DV or IAS tags implemented in ad server",
-                  "Brand safety categories configured per client requirements",
-                  "Custom keyword exclusion list applied",
-                  "Viewability threshold set (70%+ display, 90%+ video)",
-                  "IVT / fraud monitoring enabled (pre-bid filtering on)",
-                  "Geographic targeting verified - correct regional markets selected",
-                ],
-                "Campaign Settings": [
-                  "Frequency caps configured (3–5x/week awareness, 7–10x retargeting)",
-                  "Budget pacing set correctly (daily/weekly/flight)",
-                  "Bid strategy confirmed (CPM, vCPM, CPA target)",
-                  "Dayparting configured if required (e.g. post-Iftar for Ramadan)",
-                  "Campaign naming convention applied consistently",
-                  "Conversion tracking pixels verified if performance campaign",
-                ],
-                "Reporting & Sign-Off": [
-                  "Reporting template set up with agreed KPIs",
-                  "Placement report review scheduled (weekly minimum)",
-                  "Two-person internal QA completed before go-live",
-                  "Client sign-off received on plan and targeting",
-                ],
-              }).map(([category, items]) => (
-                <Card key={category} style={{ marginBottom: 16 }}>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a2e", marginBottom: 12 }}>{category}</div>
-                  {items.map((item, i) => {
-                    const key = `prog_qa_${category}_${i}`;
-                    return <CheckItem key={key} checked={checkedItems[key]} onChange={() => toggleCheck(key)}>{item}</CheckItem>;
-                  })}
-                </Card>
-              ))}
+
+              {(() => {
+                const progCategories = {
+                  "DSP & Inventory Setup": [
+                    "DSP selected with documented rationale",
+                    "PMP deals confirmed with deal IDs from publishers",
+                    "Inclusion list of approved domains/apps created",
+                    "Open exchange blocked or limited to verified inventory only",
+                    "CTV inventory secured (Shahid/OSN+ (MENA), Hulu/Peacock (US), regional CTV platforms, StarzPlay PMP deals)",
+                    "DOOH placements booked if applicable (lead time 2-4 weeks)",
+                  ],
+                  "Audiences & Data": [
+                    "First-party data uploaded (CRM lists, website audiences)",
+                    "Retargeting pixel installed and firing on client website",
+                    "Lookalike/similar audiences built from first-party seeds",
+                    "Third-party data segments selected and costed",
+                    "Audience exclusions configured (existing customers, converters)",
+                  ],
+                  "Creative & Ad Serving": [
+                    "All creative sizes produced (300x250, 728x90, 160x600, 320x50 minimum)",
+                    "Video creative available in 15s and 30s (horizontal + vertical)",
+                    "Local language creative versions available for target markets",
+                    "DCO templates configured if using dynamic creative",
+                    "All creatives trafficked in ad server (CM360 / Flashtalking)",
+                    "Click-through URLs verified and UTM parameters applied",
+                  ],
+                  "Verification & Brand Safety": [
+                    "DV or IAS tags implemented in ad server",
+                    "Brand safety categories configured per client requirements",
+                    "Custom keyword exclusion list applied",
+                    "Viewability threshold set (70%+ display, 90%+ video)",
+                    "IVT / fraud monitoring enabled (pre-bid filtering on)",
+                    "Geographic targeting verified - correct regional markets selected",
+                  ],
+                  "Campaign Settings": [
+                    "Frequency caps configured (3-5x/week awareness, 7-10x retargeting)",
+                    "Budget pacing set correctly (daily/weekly/flight)",
+                    "Bid strategy confirmed (CPM, vCPM, CPA target)",
+                    "Dayparting configured if required",
+                    "Campaign naming convention applied consistently",
+                    "Conversion tracking pixels verified if performance campaign",
+                  ],
+                  "Reporting & Sign-Off": [
+                    "Reporting template set up with agreed KPIs",
+                    "Placement report review scheduled (weekly minimum)",
+                    "Two-person internal QA completed before go-live",
+                    "Client sign-off received on plan and targeting",
+                  ],
+                };
+                const allItems = Object.entries(progCategories).flatMap(([cat, items]) => items.map((item, i) => `prog_qa_${cat}_${i}`));
+                const totalItems = allItems.length;
+                const checkedCount = allItems.filter(k => checkedItems[k]).length;
+                const pct = totalItems > 0 ? checkedCount / totalItems : 0;
+
+                // Creature reveal stages
+                const stage = pct === 0 ? 0 : pct < 0.2 ? 1 : pct < 0.4 ? 2 : pct < 0.6 ? 3 : pct < 0.8 ? 4 : pct < 1 ? 5 : 6;
+                const stageLabels = ["Sealed", "Shaking...", "Cracking!", "Opening!", "Emerging!", "Almost free!", "FREE! ⚡"];
+                const ballShake = stage === 1 ? "ballShake 0.5s ease-in-out infinite" : "none";
+
+                return (
+                  <div style={{ display: "flex", gap: 20 }}>
+                    <div style={{ flex: 1 }}>
+                      {Object.entries(progCategories).map(([category, items]) => (
+                        <Card key={category} style={{ marginBottom: 16 }}>
+                          <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a2e", marginBottom: 12 }}>{category}</div>
+                          {items.map((item, i) => {
+                            const key = `prog_qa_${category}_${i}`;
+                            return <CheckItem key={key} checked={checkedItems[key]} onChange={() => toggleCheck(key)}>{item}</CheckItem>;
+                          })}
+                        </Card>
+                      ))}
+                    </div>
+
+                    {/* STICKY CREATURE TRACKER */}
+                    <div style={{ width: 180, flexShrink: 0, position: "sticky", top: 20, alignSelf: "flex-start" }}>
+                      <div style={{ background: "#ffffff", borderRadius: 16, border: "1px solid #e0e0e8", padding: "20px 16px", textAlign: "center", boxShadow: "0 4px 20px rgba(0,0,0,.06)" }}>
+                        <div style={{ fontSize: 11, fontWeight: 700, color: "#2D1768", marginBottom: 4 }}>Launch Progress</div>
+                        <div style={{ fontSize: 22, fontWeight: 800, color: pct === 1 ? "#7AC143" : "#2D1768" }}>{Math.round(pct * 100)}%</div>
+                        <div style={{ fontSize: 10, color: "#6a6a7e", marginBottom: 16 }}>{checkedCount}/{totalItems} items</div>
+
+                        {/* Creature SVG */}
+                        <svg width="140" height="160" viewBox="0 0 140 160" style={{ margin: "0 auto" }}>
+                          {/* Ball bottom half - always visible */}
+                          <ellipse cx="70" cy="130" rx="35" ry="8" fill="#e0e0e8" opacity="0.5"/>
+                          <circle cx="70" cy="115" r="28" fill="#f0f0f4" stroke="#d0d0d8" strokeWidth="2"/>
+                          <rect x="42" y="114" width="56" height="30" fill="#f0f0f4" stroke="none"/>
+                          <line x1="42" y1="115" x2="98" y2="115" stroke="#cc3333" strokeWidth="3"/>
+                          <circle cx="70" cy="115" r="6" fill="white" stroke="#999" strokeWidth="2"/>
+                          <circle cx="70" cy="115" r="2.5" fill={stage >= 3 ? "#7AC143" : "#ddd"}/>
+
+                          {/* Ball top - opens based on stage */}
+                          {stage < 3 && (
+                            <g style={{ animation: ballShake, transformOrigin: "70px 115px" }}>
+                              <path d="M42 115 A28 28 0 0 1 98 115" fill="#cc3333" stroke="#aa2222" strokeWidth="2"/>
+                              {stage >= 2 && <>
+                                <line x1="62" y1="92" x2="58" y2="88" stroke="#FFD93D" strokeWidth="2" strokeLinecap="round"/>
+                                <line x1="78" y1="92" x2="82" y2="88" stroke="#FFD93D" strokeWidth="2" strokeLinecap="round"/>
+                                <line x1="70" y1="88" x2="70" y2="83" stroke="#FFD93D" strokeWidth="2" strokeLinecap="round"/>
+                              </>}
+                            </g>
+                          )}
+                          {stage >= 3 && stage < 6 && (
+                            <g style={{ transform: `rotate(${-30 - (stage - 3) * 25}deg)`, transformOrigin: "42px 115px", transition: "transform 0.5s ease-out" }}>
+                              <path d="M42 115 A28 28 0 0 1 98 115" fill="#cc3333" stroke="#aa2222" strokeWidth="2"/>
+                            </g>
+                          )}
+
+                          {/* Creature - emerges based on stage */}
+                          {stage >= 3 && (
+                            <g style={{ transform: `translateY(${stage === 3 ? 30 : stage === 4 ? 15 : stage === 5 ? 5 : 0}px)`, transition: "transform 0.6s ease-out", opacity: stage >= 3 ? 1 : 0 }}>
+                              {/* Body */}
+                              <ellipse cx="70" cy="72" rx="26" ry="24" fill="#FFD93D"/>
+                              <ellipse cx="70" cy="72" rx="26" ry="24" fill="none" stroke="#E8B800" strokeWidth="1"/>
+                              {/* Ears */}
+                              <polygon points="52,55 42,30 56,48" fill="#FFD93D" stroke="#E8B800" strokeWidth="0.8"/>
+                              <polygon points="88,55 98,30 84,48" fill="#FFD93D" stroke="#E8B800" strokeWidth="0.8"/>
+                              <polygon points="42,30 45,37 40,35" fill="#333"/>
+                              <polygon points="98,30 95,37 100,35" fill="#333"/>
+                              {/* Eyes */}
+                              <circle cx="60" cy="68" r="4.5" fill="#333"/>
+                              <circle cx="80" cy="68" r="4.5" fill="#333"/>
+                              <circle cx="62" cy="66" r="1.5" fill="white"/>
+                              <circle cx="82" cy="66" r="1.5" fill="white"/>
+                              {/* Cheeks */}
+                              <circle cx="50" cy="76" r="5" fill="#FF6B6B" opacity="0.4"/>
+                              <circle cx="90" cy="76" r="5" fill="#FF6B6B" opacity="0.4"/>
+                              {/* Mouth */}
+                              {stage < 6 ? (
+                                <path d="M64 80 Q70 85 76 80" fill="none" stroke="#333" strokeWidth="1.2" strokeLinecap="round"/>
+                              ) : (
+                                <path d="M62 78 Q70 90 78 78" fill="#333" stroke="none"/>
+                              )}
+                              {/* Tail - only when fully out */}
+                              {stage >= 5 && (
+                                <path d="M96 72 L110 58 L105 55 L115 45 L108 48 L112 38 L96 62" fill="#E8B800" stroke="#CC9900" strokeWidth="0.5"/>
+                              )}
+                            </g>
+                          )}
+
+                          {/* Sparkles when complete */}
+                          {stage === 6 && <>
+                            <text x="20" y="30" fontSize="14" style={{ animation: "sparkle 1.5s ease-in-out infinite" }}>⚡</text>
+                            <text x="110" y="35" fontSize="12" style={{ animation: "sparkle 1.5s 0.3s ease-in-out infinite" }}>✦</text>
+                            <text x="15" y="70" fontSize="10" style={{ animation: "sparkle 1.5s 0.6s ease-in-out infinite" }}>✦</text>
+                            <text x="118" y="75" fontSize="11" style={{ animation: "sparkle 1.5s 0.9s ease-in-out infinite" }}>⚡</text>
+                          </>}
+                        </svg>
+
+                        <div style={{ fontSize: 12, fontWeight: 700, color: stage === 6 ? "#7AC143" : "#2D1768", marginTop: 8, transition: "color 0.3s" }}>
+                          {stageLabels[stage]}
+                        </div>
+                        {stage === 6 && <div style={{ fontSize: 10, color: "#7AC143", marginTop: 4 }}>Ready to launch! 🚀</div>}
+
+                        <div style={{ marginTop: 12 }}>
+                          <ProgressBar value={checkedCount} max={totalItems} color={pct === 1 ? "#7AC143" : "#2D1768"} />
+                        </div>
+
+                        <button onClick={() => {
+                          const reset = {};
+                          allItems.forEach(k => { reset[k] = false; });
+                          setCheckedItems(prev => {
+                            const next = {...prev};
+                            allItems.forEach(k => delete next[k]);
+                            return next;
+                          });
+                        }} style={{ marginTop: 10, padding: "4px 12px", borderRadius: 6, border: "1px solid #d0d0d8", background: "transparent", color: "#6a6a7e", fontSize: 10, cursor: "pointer", fontFamily: "inherit" }}>Reset</button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
 
               <h3 style={{ fontSize: 15, fontWeight: 700, color: "#cc3333", marginBottom: 12, marginTop: 28 }}>🚫 Common Programmatic Pitfalls</h3>
               {[
