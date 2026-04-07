@@ -467,6 +467,34 @@ export default function App() {
   const [loginUser, setLoginUser] = useState("");
   const [loginPass, setLoginPass] = useState("");
   const [loginError, setLoginError] = useState("");
+  const [activeSection, setActiveSection] = useState("overview");
+  const [search, setSearch] = useState("");
+  const [checkedItems, setCheckedItems] = useState({});
+  const [mobileNav, setMobileNav] = useState(false);
+  const [vendorRegion, setVendorRegion] = useState("All Channels");
+  const [creativePlatform, setCreativePlatform] = useState("All");
+  const [funnelJourney, setFunnelJourney] = useState("E-commerce");
+  const [funnelHover, setFunnelHover] = useState(null);
+  const [budgetTotal, setBudgetTotal] = useState(50000);
+  const [budgetObjective, setBudgetObjective] = useState("Full Funnel");
+  const [budgetMarket, setBudgetMarket] = useState("UAE");
+  const [briefData, setBriefData] = useState({ objective: "Awareness", audience: "", markets: [], budget: "", dates: "", creative: "", kpi: "", notes: "" });
+  const [selectedPlatforms, setSelectedPlatforms] = useState(["Meta", "TikTok"]);
+  const [comparePlatforms, setComparePlatforms] = useState(["Meta (Facebook + Instagram)", "TikTok", "Snapchat"]);
+  const [benchmarkData, setBenchmarkData] = useState([]);
+  const [aiPrompt, setAiPrompt] = useState("");
+  const [aiResult, setAiResult] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
+  const [planInputs, setPlanInputs] = useState({ objective: "Conversions / E-commerce", budget: 50000, markets: ["UAE"], duration: 2, audience: "25-44", vertical: "Real Estate", hasCreative: true, hasTracking: true });
+  const [planGenerated, setPlanGenerated] = useState(false);
+  const contentRef = useRef(null);
+
+  const toggleCheck = (key) => setCheckedItems(prev => ({ ...prev, [key]: !prev[key] }));
+
+  const totalChecks = Object.values(qaChecklist).flat().length;
+  const checkedCount = Object.values(checkedItems).filter(Boolean).length;
+
+  useEffect(() => { if (contentRef.current) contentRef.current.scrollTop = 0; }, [activeSection]);
 
   // ── SET YOUR CREDENTIALS HERE ──
   const VALID_USER = "PHD";
@@ -508,34 +536,6 @@ export default function App() {
       </div>
     );
   }
-  const [activeSection, setActiveSection] = useState("overview");
-  const [search, setSearch] = useState("");
-  const [checkedItems, setCheckedItems] = useState({});
-  const [mobileNav, setMobileNav] = useState(false);
-  const [vendorRegion, setVendorRegion] = useState("All Channels");
-  const [creativePlatform, setCreativePlatform] = useState("All");
-  const [funnelJourney, setFunnelJourney] = useState("E-commerce");
-  const [funnelHover, setFunnelHover] = useState(null);
-  const [budgetTotal, setBudgetTotal] = useState(50000);
-  const [budgetObjective, setBudgetObjective] = useState("Full Funnel");
-  const [budgetMarket, setBudgetMarket] = useState("UAE");
-  const [briefData, setBriefData] = useState({ objective: "Awareness", audience: "", markets: [], budget: "", dates: "", creative: "", kpi: "", notes: "" });
-  const [selectedPlatforms, setSelectedPlatforms] = useState(["Meta", "TikTok"]);
-  const [comparePlatforms, setComparePlatforms] = useState(["Meta (Facebook + Instagram)", "TikTok", "Snapchat"]);
-  const [benchmarkData, setBenchmarkData] = useState([]);
-  const [aiPrompt, setAiPrompt] = useState("");
-  const [aiResult, setAiResult] = useState("");
-  const [aiLoading, setAiLoading] = useState(false);
-  const [planInputs, setPlanInputs] = useState({ objective: "Conversions / E-commerce", budget: 50000, markets: ["UAE"], duration: 2, audience: "25-44", vertical: "Real Estate", hasCreative: true, hasTracking: true });
-  const [planGenerated, setPlanGenerated] = useState(false);
-  const contentRef = useRef(null);
-
-  const toggleCheck = (key) => setCheckedItems(prev => ({ ...prev, [key]: !prev[key] }));
-
-  const totalChecks = Object.values(qaChecklist).flat().length;
-  const checkedCount = Object.values(checkedItems).filter(Boolean).length;
-
-  useEffect(() => { if (contentRef.current) contentRef.current.scrollTop = 0; }, [activeSection]);
 
   const filterText = search.toLowerCase();
 
