@@ -90,6 +90,8 @@ const PlatformLogo = ({ platform, size = 18 }) => {
   return logos[platform] || null;
 };
 
+// HiddenPika is rendered inside App - uses gameActive/foundPikas from closure
+
 const Chip = ({ children, color = "blue" }) => {
   const colors = {
     blue: { bg: "#e8e0f0", text: "#2D1768", border: "#d0c0e0" },
@@ -606,6 +608,60 @@ export default function App() {
   const [aiPrompt, setAiPrompt] = useState("");
   const [aiResult, setAiResult] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
+  const [gameActive, setGameActive] = useState(false);
+  const [gameTimer, setGameTimer] = useState(60);
+  const [foundPikas, setFoundPikas] = useState({});
+  const [gameWon, setGameWon] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const TOTAL_PIKAS = 20;
+  const gameTimerRef = useRef(null);
+
+  const startGame = () => {
+    setGameActive(true); setGameTimer(60); setFoundPikas({}); setGameWon(false); setGameOver(false); setShowConfetti(false);
+    if (gameTimerRef.current) clearInterval(gameTimerRef.current);
+    gameTimerRef.current = setInterval(() => {
+      setGameTimer(prev => {
+        if (prev <= 1) { clearInterval(gameTimerRef.current); setGameOver(true); setGameActive(false); return 0; }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  window.__findPika = findPika;
+
+  const Pika = ({ id, style = {} }) => {
+    if (!gameActive && !gameWon) return null;
+    const isFound = foundPikas[id];
+    return (
+      <span onClick={(e) => { e.stopPropagation(); if (!isFound && gameActive) findPika(id); }}
+        style={{ display: "inline-block", cursor: gameActive && !isFound ? "pointer" : "default", opacity: isFound ? 0.3 : 0.18, transition: "all 0.3s", transform: isFound ? "scale(1.8) rotate(20deg)" : "scale(1)", filter: isFound ? "grayscale(1) brightness(1.5)" : "none", verticalAlign: "middle", ...style }}>
+        <svg width="16" height="16" viewBox="0 0 24 24">
+          <ellipse cx="12" cy="13" rx="8" ry="7" fill="#FFD93D"/>
+          <polygon points="6,8 3,1 8,6" fill="#FFD93D"/><polygon points="18,8 21,1 16,6" fill="#FFD93D"/>
+          <polygon points="3,1 4,3 2,2.5" fill="#333"/><polygon points="21,1 20,3 22,2.5" fill="#333"/>
+          <circle cx="9" cy="11" r="1.5" fill="#333"/><circle cx="15" cy="11" r="1.5" fill="#333"/>
+          <circle cx="9.5" cy="10.5" r="0.5" fill="white"/><circle cx="15.5" cy="10.5" r="0.5" fill="white"/>
+          <circle cx="7" cy="14" r="2" fill="#FF6B6B" opacity="0.3"/>
+          <circle cx="17" cy="14" r="2" fill="#FF6B6B" opacity="0.3"/>
+          <path d="M10 16 Q12 18 14 16" fill="none" stroke="#333" strokeWidth="0.8"/>
+        </svg>
+      </span>
+    );
+  };
+  const foundCount = Object.keys(foundPikas).length;
+  useEffect(() => {
+    if (foundCount >= TOTAL_PIKAS && gameActive) {
+      clearInterval(gameTimerRef.current);
+      setGameWon(true); setGameActive(false); setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 5000);
+    }
+  }, [foundCount, gameActive]);
+
+  const findPika = (id) => {
+    if (!gameActive) return;
+    setFoundPikas(prev => ({...prev, [id]: true}));
+  };
   const [audienceData, setAudienceData] = useState([
     { persona: "Primary", description: "", market: "UAE", platform: "Meta", ageRange: "25-44", gender: "All", interests: "", estimatedSize: "", notes: "" },
   ]);
@@ -672,6 +728,7 @@ export default function App() {
         @keyframes creatureJump { 0% { opacity: 0; transform: translateY(20px) scale(0.3); } 50% { opacity: 1; transform: translateY(-8px) scale(1.1); } 70% { transform: translateY(0px) scale(0.95); } 100% { opacity: 1; transform: translateY(-2px) scale(1); } }
         @keyframes sparkle { 0% { opacity: 0; transform: scale(0); } 50% { opacity: 1; transform: scale(1.3); } 100% { opacity: 0; transform: scale(0.5); } }
         @keyframes ballShake { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }
+        @keyframes confettiFall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
         @keyframes pikaJump { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
       `}</style>
 
@@ -712,6 +769,41 @@ export default function App() {
       {/* Main Content */}
       <main ref={contentRef} style={{ flex: 1, overflowY: "auto", padding: "28px 36px 60px" }}>
         <div style={{ maxWidth: 900 }}>
+
+          {/* GAME BAR */}
+          {!gameActive && !gameWon && !gameOver && (
+            <div onClick={startGame} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 16px", marginBottom: 12, background: "#fff8e1", border: "1px solid #ffe082", borderRadius: 10, cursor: "pointer" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 16 }}>{"🔍"}</span>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#b8860b" }}>{"Bored? Find 20 hidden creatures in 60 seconds!"}</span>
+              </div>
+              <span style={{ fontSize: 11, fontWeight: 700, color: "#fff", background: "#FFD93D", padding: "4px 12px", borderRadius: 20, border: "1px solid #E8B800" }}>START</span>
+            </div>
+          )}
+          {gameActive && (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", marginBottom: 12, background: gameTimer <= 10 ? "#ffebee" : "#f0faf5", border: gameTimer <= 10 ? "1px solid #ffcdd2" : "1px solid #c0e0d0", borderRadius: 10, animation: gameTimer <= 10 ? "pulse 0.5s ease-in-out infinite" : "none" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <span style={{ fontSize: 20, fontWeight: 800, color: gameTimer <= 10 ? "#cc3333" : "#2D1768", fontFamily: "monospace" }}>{gameTimer}s</span>
+                <div style={{ height: 6, width: 120, background: "#e0e0e8", borderRadius: 3, overflow: "hidden" }}><div style={{ height: "100%", width: `${(foundCount / TOTAL_PIKAS) * 100}%`, background: "#7AC143", borderRadius: 3, transition: "width 0.3s" }} /></div>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#2D1768" }}>{foundCount}/{TOTAL_PIKAS}</span>
+              </div>
+              <span style={{ fontSize: 11, color: "#6a6a7e" }}>Click hidden creatures in dropdowns!</span>
+            </div>
+          )}
+          {gameWon && (
+            <div style={{ padding: "14px 16px", marginBottom: 12, background: "#f0faf5", border: "2px solid #7AC143", borderRadius: 10, textAlign: "center" }}>
+              <div style={{ fontSize: 16, fontWeight: 800, color: "#7AC143" }}>{"🎉 YOU WIN! All 20 found with " + gameTimer + "s remaining!"}</div>
+              <button onClick={startGame} style={{ marginTop: 8, padding: "6px 16px", borderRadius: 8, border: "1px solid #7AC143", background: "transparent", color: "#2a8c3e", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Play Again</button>
+            </div>
+          )}
+          {gameOver && !gameWon && (
+            <div style={{ padding: "14px 16px", marginBottom: 12, background: "#ffebee", border: "2px solid #cc3333", borderRadius: 10, textAlign: "center" }}>
+              <div style={{ fontSize: 16, fontWeight: 800, color: "#cc3333" }}>{"⏰ Time's up! Found " + foundCount + "/20"}</div>
+              <button onClick={startGame} style={{ marginTop: 8, padding: "6px 16px", borderRadius: 8, border: "1px solid #cc3333", background: "transparent", color: "#cc3333", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Try Again</button>
+            </div>
+          )}
+          {showConfetti && <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 9999, overflow: "hidden" }}>{Array.from({length: 80}).map((_, i) => <div key={i} style={{ position: "absolute", left: `${Math.random() * 100}%`, top: -20, width: Math.random() * 10 + 5, height: Math.random() * 10 + 5, background: ["#FFD93D","#7AC143","#2D1768","#FF6B6B","#cc3333","#E8B800","#ff69b4","#00bcd4"][i % 8], borderRadius: Math.random() > 0.5 ? "50%" : "2px", animation: `confettiFall ${2 + Math.random() * 3}s ${Math.random() * 0.5}s ease-out forwards`, transform: `rotate(${Math.random() * 360}deg)` }} />)}</div>}
+
           <div style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 20 }}>
             <div style={{ flex: 1 }}><SearchBar value={search} onChange={setSearch} /></div>
             <button onClick={() => setActiveSection("aiplanner")} style={{ padding: "10px 18px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #2D1768, #7AC143)", color: "#fff", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap", boxShadow: "0 2px 8px rgba(45,23,104,.25)", flexShrink: 0, marginTop: 0 }}>🤖 AI Plan Generator</button>
@@ -720,7 +812,7 @@ export default function App() {
           {/* OVERVIEW */}
           {activeSection === "overview" && (
             <div>
-              <SectionTitle>Global Digital Media Planning Framework 2026</SectionTitle>
+              <SectionTitle>Global Digital Media Planning Framework 2026 <Pika id="p1" /></SectionTitle>
               <SectionDesc>The complete internal reference for digital media planning across global markets - WEST (Americas/Europe), CENTRAL (MENA/Africa), and EAST (APAC/China/India). Contains the full planning toolkit: platform-by-objective framework with benchmarks, verified 2026 platform updates, high-impact format guidance, regional cultural calendar, budget recommendations, and QA checklists.</SectionDesc>
 
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: 12, marginBottom: 24 }}>
@@ -748,7 +840,7 @@ export default function App() {
           {/* PLANNING PROCESS */}
           {activeSection === "planning" && (
             <div>
-              <SectionTitle>Planning Process & Methodology</SectionTitle>
+              <SectionTitle>Planning Process & Methodology <Pika id="p2" /></SectionTitle>
               <SectionDesc>The 9-stage end-to-end planning process from brief intake to post-campaign analysis.</SectionDesc>
               {planningStages.filter(s => !filterText || JSON.stringify(s).toLowerCase().includes(filterText)).map((s, i) => (
                 <Accordion key={i} title={s.stage} subtitle="Expand for details">
@@ -774,7 +866,7 @@ export default function App() {
           {/* PLATFORM SELECTION */}
           {activeSection === "platforms" && (
             <div>
-              <SectionTitle>Platform Evaluation & Selection</SectionTitle>
+              <SectionTitle>Platform Evaluation & Selection <Pika id="p3" /></SectionTitle>
               <SectionDesc>A holistic framework for evaluating each platform. Consider: Does our audience live here? Can the platform deliver on our KPIs? Do we have the right creative, tracking, and budget? What does past performance tell us?</SectionDesc>
 
               <Card style={{ background: "#f0edf5", border: "1px solid #d0d0e0", marginBottom: 20 }}>
@@ -841,7 +933,7 @@ export default function App() {
           {/* MEDIA FRAMEWORK */}
           {activeSection === "framework" && (
             <div>
-              <SectionTitle>Media Planning Framework</SectionTitle>
+              <SectionTitle>Media Planning Framework <Pika id="p4" /></SectionTitle>
               <SectionDesc>Platform × Objective matrix with buying units, KPIs, USD benchmarks, and regional planning notes.</SectionDesc>
               <div style={{ overflowX: "auto" }}>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 11.5 }}>
@@ -873,7 +965,7 @@ export default function App() {
           {/* HIGH IMPACT FORMATS */}
           {activeSection === "formats" && (
             <div>
-              <SectionTitle>High Impact Ad Formats</SectionTitle>
+              <SectionTitle>High Impact Ad Formats <Pika id="p5" /></SectionTitle>
               <SectionDesc>The highest-impact ad units on each platform - when to use them, costs, specs, and regional considerations. ★ marks new 2025–2026 formats.</SectionDesc>
               {highImpactFormats.filter(f => !filterText || JSON.stringify(f).toLowerCase().includes(filterText)).map((f, i) => (
                 <Accordion key={i} title={f.name} subtitle={`${f.platform} · ${f.type}`} badge={f.isNew ? <span style={{ display: "inline-block", animation: "pulse 2s ease-in-out infinite" }}><Chip color="green">NEW</Chip></span> : null}>
@@ -893,7 +985,7 @@ export default function App() {
           {/* PROGRAMMATIC DEEP DIVE */}
           {activeSection === "programmatic" && (
             <div>
-              <SectionTitle>Programmatic Deep Dive</SectionTitle>
+              <SectionTitle>Programmatic Deep Dive <Pika id="p13" /></SectionTitle>
               <SectionDesc>The complete guide to programmatic advertising in the region: how it works, when to use it, the planning approach, what to watch out for, a pre-launch checklist, and the most common pitfalls.</SectionDesc>
 
               <Card style={{ background: "#f0edf5", border: "1px solid #d0d0e0", marginBottom: 24 }}>
@@ -1232,7 +1324,7 @@ export default function App() {
           {/* VENDOR LANDSCAPE */}
           {activeSection === "vendors" && (
             <div>
-              <SectionTitle>Global Vendor Landscape - By Channel & Region</SectionTitle>
+              <SectionTitle>Global Vendor Landscape <Pika id="p14" /> - By Channel & Region</SectionTitle>
               <SectionDesc>Platform and vendor ecosystems across key markets. Each region has different dominant platforms, DSPs, and rules of engagement.</SectionDesc>
 
               <div style={{ display: "flex", gap: 6, marginBottom: 24, flexWrap: "wrap" }}>
@@ -1276,7 +1368,7 @@ export default function App() {
           {/* BUDGET */}
           {activeSection === "budget" && (
             <div>
-              <SectionTitle>Budget Guidance & Channel Mix</SectionTitle>
+              <SectionTitle>Budget Guidance & Channel Mix <Pika id="p6" /></SectionTitle>
               <SectionDesc>Spend tier recommendations, channel mix by objective, and seasonal budget weighting for the market.</SectionDesc>
 
               <h3 style={{ fontSize: 15, fontWeight: 700, color: "#2D1768", marginBottom: 12 }}>Spend Tiers</h3>
@@ -1329,7 +1421,7 @@ export default function App() {
           {/* MEASUREMENT */}
           {activeSection === "measurement" && (
             <div>
-              <SectionTitle>Measurement & KPIs</SectionTitle>
+              <SectionTitle>Measurement & KPIs <Pika id="p8" /></SectionTitle>
               <SectionDesc>KPI framework by funnel stage, tracking setup requirements, and attribution caveats every planner must understand.</SectionDesc>
 
               {(() => {
@@ -1501,7 +1593,7 @@ export default function App() {
           {/* CALENDAR */}
           {activeSection === "calendar" && (
             <div>
-              <SectionTitle>Regional Cultural & Seasonal Calendar</SectionTitle>
+              <SectionTitle>Regional Cultural & Seasonal Calendar <Pika id="p7" /></SectionTitle>
               <SectionDesc>19 key moments across 6 categories with timing, audience mindset, platforms, formats, and strategy notes.</SectionDesc>
               {seasonalCalendar.filter(s => !filterText || JSON.stringify(s).toLowerCase().includes(filterText)).map((s, i) => (
                 <Accordion key={i} title={s.period} subtitle={`${s.months} · Budget: ${s.weight}`} badge={<Chip color={s.color}>{s.cpm}</Chip>}>
@@ -1520,7 +1612,7 @@ export default function App() {
           {/* PLATFORM UPDATES */}
           {activeSection === "updates" && (
             <div>
-              <SectionTitle>Latest Platform Updates (2025–2026)</SectionTitle>
+              <SectionTitle>Latest Platform Updates <Pika id="p9" /> (2025–2026)</SectionTitle>
               <SectionDesc>Verified updates from official newsrooms and trusted sources. Check before every campaign.</SectionDesc>
               {platformUpdates.filter(u => !filterText || JSON.stringify(u).toLowerCase().includes(filterText)).map((u, i) => (
                 <Card key={i}>
@@ -1540,7 +1632,7 @@ export default function App() {
           {/* CAVEATS */}
           {activeSection === "caveats" && (
             <div>
-              <SectionTitle>Caveats, Disclaimers & Risk Areas</SectionTitle>
+              <SectionTitle>Caveats, Disclaimers & Risk Areas <Pika id="p10" /></SectionTitle>
               <SectionDesc>10 risk areas every planner must understand and communicate to clients.</SectionDesc>
               {caveats.filter(c => !filterText || JSON.stringify(c).toLowerCase().includes(filterText)).map((c, i) => (
                 <Accordion key={i} title={c.area}>
@@ -1559,7 +1651,7 @@ export default function App() {
           {/* CHECKLIST */}
           {activeSection === "checklist" && (
             <div>
-              <SectionTitle>Pre-Launch QA Checklist</SectionTitle>
+              <SectionTitle>Pre-Launch QA Checklist <Pika id="p11" /></SectionTitle>
               <SectionDesc>Complete before every campaign go-live. {checkedCount}/{totalChecks} items checked.</SectionDesc>
 
               <div style={{ display: "flex", gap: 20, alignItems: "flex-start" }}>
@@ -1669,7 +1761,7 @@ export default function App() {
           {/* MISTAKES */}
           {activeSection === "mistakes" && (
             <div>
-              <SectionTitle>Common Planning Mistakes</SectionTitle>
+              <SectionTitle>Common Planning Mistakes <Pika id="p12" /></SectionTitle>
               <SectionDesc>7 recurring errors with root causes, fixes, and prevention rules.</SectionDesc>
               {commonMistakes.filter(m => !filterText || JSON.stringify(m).toLowerCase().includes(filterText)).map((m, i) => (
                 <Accordion key={i} title={m.mistake}>
@@ -1688,7 +1780,7 @@ export default function App() {
           {/* CREATIVE SPECS */}
           {activeSection === "creativespecs" && (
             <div>
-              <SectionTitle>Creative Specs by Platform</SectionTitle>
+              <SectionTitle>Creative Specs by Platform <Pika id="p15" /></SectionTitle>
               <SectionDesc>Complete ad dimensions, formats, file requirements, and placement-specific specs across all platforms. {creativeSpecs.length} formats documented.</SectionDesc>
 
               <div style={{ display: "flex", gap: 6, marginBottom: 20, flexWrap: "wrap" }}>
@@ -2079,7 +2171,7 @@ export default function App() {
           {/* BUDGET CALCULATOR */}
           {activeSection === "budgetcalc" && (
             <div>
-              <SectionTitle>Budget Calculator & Reach Estimator</SectionTitle>
+              <SectionTitle>Budget Calculator <Pika id="p16" /> & Reach Estimator</SectionTitle>
               <SectionDesc>Input your total budget and objective - get an auto-generated platform split with estimated reach and impressions.</SectionDesc>
 
               <Card style={{ marginBottom: 16 }}>
@@ -2152,7 +2244,7 @@ export default function App() {
           {/* CREATIVE REQUIREMENTS GENERATOR */}
           {activeSection === "creativegen" && (
             <div>
-              <SectionTitle>Creative Requirements Generator</SectionTitle>
+              <SectionTitle>Creative Requirements Generator <Pika id="p17" /></SectionTitle>
               <SectionDesc>Select platforms in your media plan - get a complete creative specs checklist for your creative team.</SectionDesc>
 
               <Card style={{ padding: 12, marginBottom: 16 }}>
@@ -2195,7 +2287,7 @@ export default function App() {
           {/* PLATFORM COMPARISON */}
           {activeSection === "comparison" && (
             <div>
-              <SectionTitle>Platform Comparison Tool</SectionTitle>
+              <SectionTitle>Platform Comparison Tool <Pika id="p18" /></SectionTitle>
               <SectionDesc>Select 2–4 platforms to compare side-by-side.</SectionDesc>
 
               <Card style={{ padding: 12, marginBottom: 16 }}>
@@ -2310,7 +2402,7 @@ export default function App() {
           {/* BENCHMARK TRACKER */}
           {activeSection === "benchmark" && (
             <div>
-              <SectionTitle>Benchmark Tracker</SectionTitle>
+              <SectionTitle>Benchmark Tracker <Pika id="p19" /></SectionTitle>
               <SectionDesc>Input your actual campaign results and compare against the playbook benchmarks. Add rows for each platform.</SectionDesc>
 
               <button onClick={() => setBenchmarkData(prev => [...prev, { platform: "Meta", kpi: "CPM", benchmark: "3–11", actual: "", id: Date.now() }])} style={{ padding: "8px 16px", borderRadius: 8, border: "1px solid #3b82f6", background: "#e8e0f0", color: "#2D1768", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", marginBottom: 16 }}>+ Add Row</button>
@@ -2782,7 +2874,7 @@ export default function App() {
           {/* GLOSSARY */}
           {activeSection === "glossary" && (
             <div>
-              <SectionTitle>KPI & Metric Glossary</SectionTitle>
+              <SectionTitle>KPI & Metric Glossary <Pika id="p20" /></SectionTitle>
               <SectionDesc>Definitions for every metric and acronym used across the framework. {glossary.length} terms.</SectionDesc>
               <div style={{ overflowX: "auto" }}>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
