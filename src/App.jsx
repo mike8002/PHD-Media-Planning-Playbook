@@ -628,7 +628,21 @@ export default function App() {
     }, 1000);
   };
 
+  const findPika = (id) => {
+    if (!gameActive) return;
+    setFoundPikas(prev => ({...prev, [id]: true}));
+  };
+
   window.__findPika = findPika;
+  const foundCount = Object.keys(foundPikas).length;
+
+  useEffect(() => {
+    if (foundCount >= TOTAL_PIKAS && gameActive) {
+      clearInterval(gameTimerRef.current);
+      setGameWon(true); setGameActive(false); setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 5000);
+    }
+  }, [foundCount, gameActive]);
 
   const Pika = ({ id, style = {} }) => {
     if (!gameActive && !gameWon) return null;
@@ -648,19 +662,6 @@ export default function App() {
         </svg>
       </span>
     );
-  };
-  const foundCount = Object.keys(foundPikas).length;
-  useEffect(() => {
-    if (foundCount >= TOTAL_PIKAS && gameActive) {
-      clearInterval(gameTimerRef.current);
-      setGameWon(true); setGameActive(false); setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 5000);
-    }
-  }, [foundCount, gameActive]);
-
-  const findPika = (id) => {
-    if (!gameActive) return;
-    setFoundPikas(prev => ({...prev, [id]: true}));
   };
   const [audienceData, setAudienceData] = useState([
     { persona: "Primary", description: "", market: "UAE", platform: "Meta", ageRange: "25-44", gender: "All", interests: "", estimatedSize: "", notes: "" },
