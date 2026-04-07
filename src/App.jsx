@@ -165,17 +165,71 @@ const SectionDesc = ({ children }) => (
   <p style={{ fontSize: 13, color: "#5a5a6e", marginBottom: 24, lineHeight: 1.6 }}>{children}</p>
 );
 
-const CheckItem = ({ children, checked, onChange }) => (
-  <div
-    onClick={() => onChange && onChange(!checked)}
-    style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "8px 12px", borderRadius: 8, cursor: "pointer", background: checked ? "#f0faf5" : "transparent", marginBottom: 4, transition: "background .15s" }}
-  >
-    <div style={{ width: 18, height: 18, borderRadius: 4, border: checked ? "none" : "2px solid #d0d0d8", background: checked ? "#22c55e" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1, fontSize: 11, color: "#fff", fontWeight: 800 }}>
-      {checked ? "✓" : ""}
+const CheckItem = ({ children, checked, onChange }) => {
+  const [animating, setAnimating] = useState(false);
+  const handleClick = () => {
+    if (!checked && onChange) {
+      setAnimating(true);
+      setTimeout(() => { onChange(true); setAnimating(false); }, 800);
+    } else if (onChange) {
+      onChange(false);
+    }
+  };
+  return (
+    <div
+      onClick={handleClick}
+      style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "8px 12px", borderRadius: 8, cursor: "pointer", background: checked ? "#f0faf5" : "transparent", marginBottom: 4, transition: "background .15s", position: "relative", overflow: "visible" }}
+    >
+      <div style={{ width: 18, height: 18, borderRadius: 4, border: checked ? "none" : "2px solid #d0d0d8", background: checked ? "#7AC143" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1, fontSize: 11, color: "#fff", fontWeight: 800 }}>
+        {checked ? "✓" : ""}
+      </div>
+      <span style={{ fontSize: 13, color: checked ? "#2a8c3e" : "#1a1a2e", textDecoration: checked ? "line-through" : "none", lineHeight: 1.5 }}>{children}</span>
+      {animating && (
+        <div style={{ position: "absolute", left: 0, top: -30, zIndex: 50, pointerEvents: "none" }}>
+          <svg width="50" height="60" viewBox="0 0 50 60" style={{ animation: "creaturePop 0.8s ease-out forwards" }}>
+            {/* Ball bottom half */}
+            <circle cx="25" cy="48" r="10" fill="#e0e0e8" stroke="#d0d0d8" strokeWidth="1.5"/>
+            <rect x="15" y="47" width="20" height="11" fill="#e0e0e8"/>
+            <line x1="15" y1="48" x2="35" y2="48" stroke="#cc3333" strokeWidth="2"/>
+            <circle cx="25" cy="48" r="3" fill="white" stroke="#444" strokeWidth="1"/>
+            {/* Ball top - opens */}
+            <g style={{ animation: "ballOpen 0.4s ease-out forwards", transformOrigin: "25px 48px" }}>
+              <path d="M15 48 A10 10 0 0 1 35 48" fill="#cc3333" stroke="#aa2222" strokeWidth="1"/>
+            </g>
+            {/* Creature - bounces up */}
+            <g style={{ animation: "creatureJump 0.6s 0.2s ease-out forwards", opacity: 0 }}>
+              {/* Body */}
+              <ellipse cx="25" cy="20" rx="12" ry="11" fill="#FFD93D"/>
+              <ellipse cx="25" cy="20" rx="12" ry="11" fill="none" stroke="#E8B800" strokeWidth="0.8"/>
+              {/* Ears */}
+              <polygon points="15,12 11,1 17,8" fill="#FFD93D" stroke="#E8B800" strokeWidth="0.5"/>
+              <polygon points="35,12 39,1 33,8" fill="#FFD93D" stroke="#E8B800" strokeWidth="0.5"/>
+              <polygon points="11,1 12,4 10,3" fill="#333"/>
+              <polygon points="39,1 38,4 40,3" fill="#333"/>
+              {/* Eyes */}
+              <circle cx="20" cy="18" r="2.5" fill="#333"/>
+              <circle cx="30" cy="18" r="2.5" fill="#333"/>
+              <circle cx="21" cy="17" r="0.8" fill="white"/>
+              <circle cx="31" cy="17" r="0.8" fill="white"/>
+              {/* Cheeks */}
+              <circle cx="16" cy="22" r="2.5" fill="#FF6B6B" opacity="0.5"/>
+              <circle cx="34" cy="22" r="2.5" fill="#FF6B6B" opacity="0.5"/>
+              {/* Mouth */}
+              <path d="M22 24 Q25 27 28 24" fill="none" stroke="#333" strokeWidth="0.8" strokeLinecap="round"/>
+            </g>
+            {/* Sparkles */}
+            <g style={{ animation: "sparkle 0.5s 0.3s ease-out forwards", opacity: 0 }}>
+              <text x="8" y="10" fontSize="8" fill="#FFD93D">✦</text>
+              <text x="38" y="8" fontSize="6" fill="#7AC143">✦</text>
+              <text x="5" y="25" fontSize="5" fill="#FFD93D">✦</text>
+              <text x="42" y="22" fontSize="7" fill="#2D1768">✦</text>
+            </g>
+          </svg>
+        </div>
+      )}
     </div>
-    <span style={{ fontSize: 13, color: checked ? "#2a8c3e" : "#1a1a2e", textDecoration: checked ? "line-through" : "none", lineHeight: 1.5 }}>{children}</span>
-  </div>
-);
+  );
+};
 
 const SearchBar = ({ value, onChange }) => (
   <div style={{ position: "relative", marginBottom: 0 }}>
@@ -666,7 +720,12 @@ export default function App() {
   return (
     <div style={{ display: "flex", height: "100vh", fontFamily: "'DM Sans', 'Segoe UI', sans-serif", background: "#f5f5f7", color: "#1a1a2e", overflow: "hidden" }}>
       <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-      <style>{`@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.08); } }`}</style>
+      <style>{`@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.08); } }
+        @keyframes creaturePop { 0% { transform: scale(0); opacity: 0; } 30% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes ballOpen { 0% { transform: rotate(0deg); } 100% { transform: rotate(-120deg) translateY(-5px); opacity: 0; } }
+        @keyframes creatureJump { 0% { opacity: 0; transform: translateY(20px) scale(0.3); } 50% { opacity: 1; transform: translateY(-8px) scale(1.1); } 70% { transform: translateY(0px) scale(0.95); } 100% { opacity: 1; transform: translateY(-2px) scale(1); } }
+        @keyframes sparkle { 0% { opacity: 0; transform: scale(0); } 50% { opacity: 1; transform: scale(1.3); } 100% { opacity: 0; transform: scale(0.5); } }
+      `}</style>
 
       {/* Mobile nav toggle */}
       <button onClick={() => setMobileNav(!mobileNav)} style={{ position: "fixed", top: 12, left: 12, zIndex: 1000, display: "none", background: "#ffffff", border: "1px solid #e0e0e8", borderRadius: 8, color: "#1a1a2e", padding: "8px 12px", fontSize: 18, cursor: "pointer", "@media(maxWidth:768px)": { display: "block" } }}>☰</button>
