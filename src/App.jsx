@@ -27,40 +27,40 @@ const SECTIONS = [
 
 
 const PhoneMockup = ({ ratio, label, dims, color: bgColor = "#e8e0f0", children: overlay }) => (
-  <div style={{ width: 80, display: "inline-flex", flexDirection: "column", alignItems: "center" }}>
-    <div style={{ width: 70, background: "#f5f5f7", borderRadius: 12, border: "1.5px solid #d0d0d8", padding: "5px 4px" }}>
+  <div style={{ width: 95, display: "inline-flex", flexDirection: "column", alignItems: "center" }}>
+    <div style={{ width: 82, background: "#f0f0f4", borderRadius: 12, border: "1.5px solid #d0d0d8", padding: "5px 4px" }}>
       <div style={{ width: 4, height: 4, borderRadius: "50%", background: "#d0d0d8", margin: "0 auto 3px" }} />
       <div style={{ display: "flex", alignItems: "center", gap: 2, marginBottom: 3 }}>
         <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#e0e0e8" }} />
         <div style={{ height: 2, flex: 1, background: "#e0e0e8", borderRadius: 1 }} />
       </div>
       <div style={{ width: "100%", paddingBottom: ratio === "9:16" ? "160%" : ratio === "4:5" ? "125%" : "100%", background: `linear-gradient(135deg, ${bgColor}, #f9f9fb)`, borderRadius: 3, position: "relative" }}>
-        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", color: "#555566", fontSize: 7, fontWeight: 700, textAlign: "center", padding: 2 }}>
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", color: "#444455", fontSize: 7, fontWeight: 700, textAlign: "center", padding: 2 }}>
           {overlay || <><span style={{ color: "#2D1768" }}>{ratio}</span><span style={{ fontSize: 6 }}>{dims}</span></>}
         </div>
       </div>
       {ratio !== "9:16" && <div style={{ height: 2, background: "#e0e0e8", borderRadius: 1, margin: "3px 8px 1px", width: "50%" }} />}
       <div style={{ width: 16, height: 2, borderRadius: 8, background: "#d0d0d8", margin: "3px auto 1px" }} />
     </div>
-    <div style={{ fontSize: 8, color: "#777788", marginTop: 4, textAlign: "center", lineHeight: 1.2 }}>{label}</div>
+    <div style={{ fontSize: 9, color: "#444455", marginTop: 5, fontWeight: 600, textAlign: "center", lineHeight: 1.2 }}>{label}</div>
   </div>
 );
 const BannerMockup = ({ w, h, label }) => (
   <div style={{ display: "inline-flex", flexDirection: "column", alignItems: "center" }}>
-    <div style={{ width: Math.min(w/4, 90), height: Math.max(h/4, 14), background: "linear-gradient(90deg, #f0e8d8, #e8e0f0)", borderRadius: 2, border: "1px dashed #c8c0a8", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 7, color: "#b8860b", fontWeight: 600 }}>{w}x{h}</div>
-    <div style={{ fontSize: 7, color: "#777788", marginTop: 2 }}>{label}</div>
+    <div style={{ width: Math.min(w/4, 90), height: Math.max(h/4, 14), background: "#e8e6ee", borderRadius: 2, border: "1px dashed #c0c0cc", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 7, color: "#b8860b", fontWeight: 600 }}>{w}x{h}</div>
+    <div style={{ fontSize: 8, color: "#444455", marginTop: 3, fontWeight: 600 }}>{label}</div>
   </div>
 );
 const ScreenMockup = ({ type, label, children: overlay }) => (
-  <div style={{ width: 90, display: "inline-flex", flexDirection: "column", alignItems: "center" }}>
-    <div style={{ width: "100%", background: "#f5f5f7", borderRadius: type === "tv" ? 4 : 6, border: type === "tv" ? "2.5px solid #d0d0d8" : "1.5px solid #d0d0d8", overflow: "hidden" }}>
+  <div style={{ width: 110, display: "inline-flex", flexDirection: "column", alignItems: "center" }}>
+    <div style={{ width: "100%", background: "#f0f0f4", borderRadius: type === "tv" ? 4 : 6, border: type === "tv" ? "2.5px solid #d0d0d8" : "1.5px solid #d0d0d8", overflow: "hidden" }}>
       {type === "browser" && <div style={{ display: "flex", gap: 2, padding: "2px 4px", background: "#ffffff", borderBottom: "1px solid #e0e0e8" }}>{["#ff5f57","#febc2e","#28c840"].map((c,i) => <div key={i} style={{ width: 3, height: 3, borderRadius: "50%", background: c }} />)}</div>}
-      <div style={{ paddingBottom: type === "tv" ? "56%" : "65%", background: "linear-gradient(135deg, #e8e0f0, #f0ecf5)", position: "relative" }}>
-        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", fontSize: 7, color: "#555566", fontWeight: 600 }}>{overlay}</div>
+      <div style={{ paddingBottom: type === "tv" ? "56%" : "65%", background: "#e8e6ee", position: "relative" }}>
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", fontSize: 7, color: "#444455", fontWeight: 600 }}>{overlay}</div>
       </div>
     </div>
     {type === "tv" && <><div style={{ width: 14, height: 4, background: "#d0d0d8", margin: "0 auto" }} /><div style={{ width: 30, height: 2, background: "#e0e0e8", margin: "0 auto" }} /></>}
-    <div style={{ fontSize: 8, color: "#777788", marginTop: 3, textAlign: "center" }}>{label}</div>
+    <div style={{ fontSize: 9, color: "#444455", marginTop: 4, fontWeight: 600, textAlign: "center" }}>{label}</div>
   </div>
 );
 const platformMockups = {
@@ -126,9 +126,9 @@ const Accordion = ({ title, subtitle, children, defaultOpen, badge }) => {
           <div style={{ fontSize: 15, fontWeight: 700, color: "#1a1a2e", display: "flex", alignItems: "center", gap: 8 }}>
             {title} {badge}
           </div>
-          {subtitle && <div style={{ fontSize: 12, color: "#777788", marginTop: 3 }}>{subtitle}</div>}
+          {subtitle && <div style={{ fontSize: 12, color: "#5a5a6e", marginTop: 3 }}>{subtitle}</div>}
         </div>
-        <div style={{ fontSize: 18, color: "#999", transition: "transform .2s", transform: open ? "rotate(180deg)" : "none" }}>▾</div>
+        <div style={{ fontSize: 18, color: "#7a7a8a", transition: "transform .2s", transform: open ? "rotate(180deg)" : "none" }}>▾</div>
       </div>
       {open && <div onClick={e => e.stopPropagation()} style={{ marginTop: 16, borderTop: "1px solid #e0e0e8", paddingTop: 16, cursor: "default" }}>{children}</div>}
     </Card>
@@ -137,7 +137,7 @@ const Accordion = ({ title, subtitle, children, defaultOpen, badge }) => {
 
 const InfoRow = ({ label, value }) => (
   <div style={{ display: "flex", gap: 8, marginBottom: 8, fontSize: 13 }}>
-    <span style={{ color: "#777788", fontWeight: 600, minWidth: 130, flexShrink: 0 }}>{label}</span>
+    <span style={{ color: "#5a5a6e", fontWeight: 600, minWidth: 130, flexShrink: 0 }}>{label}</span>
     <span style={{ color: "#333344" }}>{value}</span>
   </div>
 );
@@ -147,7 +147,7 @@ const SectionTitle = ({ children }) => (
 );
 
 const SectionDesc = ({ children }) => (
-  <p style={{ fontSize: 13, color: "#777788", marginBottom: 24, lineHeight: 1.6 }}>{children}</p>
+  <p style={{ fontSize: 13, color: "#5a5a6e", marginBottom: 24, lineHeight: 1.6 }}>{children}</p>
 );
 
 const CheckItem = ({ children, checked, onChange }) => (
@@ -519,14 +519,14 @@ export default function App() {
           <div style={{ textAlign: "center", marginBottom: 32 }}>
             <div style={{ marginBottom: 12 }}><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARgAAAB6CAYAAABkxUxpAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAUc0lEQVR42u2de4zdxXXHP2dmfvexXr+xjbHBLm+ckPAmNCrrOGlSEEnEH5e0UlWllZq+o1aKVLVpsixqkrb5M6latapSKVIJXMiTUtIGxJIoDSS8wQn4gSHgF/Yae+3du/f+Zk7/+P12bQxJWXv37t3lfKzrte/ex+93ZuY758zMmQHDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMIyZQbr8fQ4a0ntmaKbyHzrHFzKH9mkqkGbmswYdbBVoAo25KEvt8XZXlvOc2GcGy9mYltYOom6AwTDAQCgaiXU4hjFfKpTrY+OlGmLWAbI5vOnOif/JO+TsfRF47eRfCY7r+UwYZijNsuoLoFXOPs/BckJ3LDR5s1lel0j+Wpud2yav5TQ+NmRsuDSEmofDQN/JZp2le+nQl2ck8l1H2XNgBu5j1sq5jzPWtkN9HXTIulnOBEl5PDjBSzu7ZZ8uCEzDQzMu5fzL12bXPlZjNVEDTiMqcY7K2aMoEAvdUEaidkZx7WdzPby1E1tPHmDnI6P87Pkppx91Q2x2MJzPUhksOif76M+Wu43rNOqsF01RuxQVIUuBlhwZP5D/6Nr9PP104b0NpVMp57Xhyvcul6t/ELQPR5ukNZBOF8pU8S5wRHZ9bcfE13+rQcM3acYeExeAZRdXGk/WdP3ZkQ6ivitfnRACgXG3c+9z7e9tgsOvdWNYIHTLuu0wXq3papbm58dIxzkSylxFIa606+TDrUD8Co1pg4reGGWCJe6i2Nb3Pd5i3zdH0v3/MYS8AKRCaIQZ9mgUqNXT6qVL8osVbSmIzL7AFDcRIAX/av2A1zOJPF2Mn5yiZbWvukTXahaXJaHjlGop5LNODNLnJ9zY2lLwKMY4ekpgEtT6q3H1uuXxEs0Zm/2ehKKqKi55FjnCuMLhCRAFnfXv7prAdECjZkQ6kjgmiQo6R2NNMiXak/aNmjRXISokdcDSuC4gtava7leuWuLP+fSY7nloP880h5L8W/GegQDDcWZ6AAFUlZaqtiQnR7ogMIIS8YBKRzoaVWfA1RDNiSKoCFGggxJnvR0piKMl3nU69JLf8gZaKZfYbstYLdECDdIVbZOWOK1JStW8KzFrtwUmAxwRh5LIgIDQOSkUlDfx2uRNOvs3+51O4/V68jvFgYCbcllzVNExlejSYrexvpiNH1rszv7QqFz0oT3xqVuPMrxVELToBWbCzUyQtRBZLJqQKS9rNuxSdJyF4wxCAERy8hmo7HnpI2r5zXkp6G6aZXT8Ot/6ax0R1/MD1U4rIurLq08ntIGZtouW3YggKggtXFHGXbNRV2MUlYjiytCoc8J9nnzP8ibP/X+/m87rC6Pr64pFy1GJVHpWKiBO0JDShMbUjvV8Y75Gr29sqAw8vMa/73OKVos3Nk4nkNYGd3jgUMX1P+3UAZJm1y6T/osH0VLMZqbO5eRT4pXKz5SpanYq1/5WXwuKQ7TXZ6jrKAlHfpLdZ8MuUjbyCISyzvtuDL3MjcDMX5wIeKEVSMQVncv6N/Ibf32u/8gPgTXQjEXIdPrhhdnaWFAtx0wwnZGbHBjz6JhWo++sZfMVF/tPfH8p6zYXs0sDwexkGCYwpxDeKUk8kSoJL5GUEYlr0rsuWO9vvHcll7y/EJmGN2sZhgnMNIMXQbTwY4o4JiDkvq3jcaleVj8r/Oo9S7lwSxEumcgYRtFKjOn6MuXPhBIRwackqZ8ra2c5d3eWRjYd4K49pXhbzodhHoxxKjIjKBUgIjLqNLXiKt61bIX/wH+BVhrc2dXpQMMwD2bBeTIetI7IBB58TMSV/qp3b/CHvtyMt3yiB5er/7IgEI/zAwyGVxjx6xicljhOvmcb3327hodlh9IQ2C8DbH7dL4+yR/pZ6x7hS/J26tdNYE6ZdILIVMr1PeJd0nyVvOf3Jxj/ZpPmvZM5Or0pkQmnQiIALVrx1UPDDOVAvn36H5dvB1bKVYchJ4qWY1aCLmhRabgGDe7iY1FRnUxPGGb4F72nE11LJBbWMYExfkmHBZQLy5RYrA9WlUV6hi7z67+4N/JQA8abPZnZK2WEHElE8dRYK5v/XJx70eEEkp4opW8WU7/+eSeJpES9XFyGIlJ06ZMCs5BkpuEbNGjysQjN2CxEJdSoresP79zoUt9lNVm+qpJqiivyfSL56ojkuY6el+miSpI8oeoWusiYwMyY0ICQo1R9op2v0Es3rXe/9kfN1PziAANheOazsGcAT5I2aFtCXMGZXPfbpNN03yURkyIEKVbzdimfrysMOuVWFWRSVOpn+utuqrHxI1Xtu6bqauszXdKXyRK8Vov7TsclWKRNlAk01ojq3IL27UxgZh6HI5ecpN4FXZz63Lmfgp/cPsyDrxTpTr00q5QQEqoZSMKrI5HiiZ7LqcVdKp7gi3SLMld7/jckaXCna3JLFIZYziU39LuLfm+RnHP1Yl21ocYSXJJy5w8SSIq0SaV3OyXn6vDURVFfJKYILHCRMYGZUV+myLFKEhw6ni+TC1avdpd9fH+Svx1gwA8z3EMCM5mJVQHNERIO52fGDhEWzNhLw8NdscktcTnnvneZu/q2Ze7sLf1xDWiFpBojbU2oU1SSiFNR59Th1E35b0oqx6U8jg7FMoeFPwZj09QzSERxGhDNSeDqsa5LZePHgdpDPNRjIZIUyYHk5UYlxRLCE3fJOdVHMfw9mUE9H7bIfXOKrVObEXT5Rv/hf9oYbh5ez3Vb+vJ1KSoxajspbQ8ExTnw4lTwyRW7rZwg5SCIpqIDWvB+i3kw3fAQXFKou7POq8RLzm7z022ntlPcXHg25oyCMozka7jiljP8lZ9bLO84P+QVTRyNCv6NWdD6Fmz59lsWZR7MrNVQIaJxUTyTte6C9wM0eIctvJsHRVcmhej6MPCZdeF9dyxPV5zv4pEcOShC1YutnzSB6Q1fQDXTjIquuMVsPT/agyCqaH29u+E/1zJw26K4ISYdTYlaiNRJtLAMEAuResSLiR6tU/WLLyZSafKxFrwNpg7maXEpqoLUNoQP3LNWB7aEvJ5H2gFCuVNPLDsOb0VoHkwPeDAiomgKkq1cmm24pKiUDbN5D4pLg4YTxJ/tPnjPWt2yJcQlHZgIKjlKmhoMf/3Wn4YJzJwqTLFStqKLK/3p4qVmkN5kgAHfpBnXyfVfWCfveX8WF3eEsQxyUI9geasmMD0aJCkxhdRP0nBNUZk3WU3tKRp+mOF8pb/so6vDNZ+qxDPyxFgWpU0kw+EQ81hMYHrYjUGoUNW6eTC92ANwZwL6z+CKr/TlF6ScCZ/IUK0AHpjtQz1NYIxTr73lvjGCdyE3i/SY70LDgejZ4YZ/XcGm5egRBREhlqUWOb6k3zCB6VEPplzfarW0x0KjJs24kgu3rJArftMlHx1j3tnEqgnMvBMXURLRAvkeYpA7Fagud++6dXE8Q9EcZRGJDjZLZAIzj8KkIsOnkyYys0avMBCGkLTcX7R5idvwa6SUIPgobVS8NQsTmPnivzgElUSbjkzsBRjmQTPMXAdH/IkCnCEXNRbF9RpJKDmioUxINA/GBGaeeC+Cl46MEt1rTxTPrrbaO8fF0uSWCCvWBT3rd1RFoDyQ3BZZm8DML5IiXjocOXI0376reK5pNXhu/RcHcI5/90VL9LxMiWqj7yYw81ZhhCBo9ZEWh14aLJb22qKKOQ2PGgDUZdnv1qiokqKt0jWBmachUlCVXI/pS3sBttK0mjzn4VEjASGkNdegTiBaGzCBmY8o4KUlh2XMbf8WQLlRtDGXmo/oomzNxUFqG1Nxzoi1AROYeaowon6U3fv2xkf/p3DDmxYezW2AJADL/aYVVemvKLnpiwnMfMVHpEOLV+4ADg/w2QWxvf58ZoD9AqDtRZf5tBjomMCYwMwnY07uH5/UE9w4e9uH4/P/DMhwz+/F+3ZgMwCZVs/0mgFOTfNNYOYRxd78IiHicEd15+0jbPtpgztt9qiHqLpqBymPzBUrFhOYeUIuipBpphU34nbmI/rE50GlybPWTfYQwQWx6TwTmHnG5DlAGvNwxB3R5/7uAC883+CWeXBUydvMz0zJAqNuibmZYOa0OqgmnIT9uu2Vn8f7hgrvxXzwnvM0U16OvZgfYx5MT3ssik6dXpg0UE9H3M8n9sXH/hAkh1stuaUHOcZEJZWnWqp6M4gJTK+azlPsfpbwZPmRcCgcSD/6+ChP3QPXBwuNeothtiqASv5UlGMINhRjAtPTHkxebAgt/Z1WGMv264//fnf636/BJzIYti0ye5QJ9+LOjh9JEMQ29DaB6VEESOrIOm1/JHuZBx54OX77r4rzp//FxKUnaSYQRvKnnuuk8dcQ5yCZwpjA9IKcCCo5UQACgTwFqTPmj2W748Nf3pPffxMMCgxNbsJr9KDbOUhywGhHj+10KIgNwpvA9IrEaAVPBNq5upo7HHbEl/W7n3xFv/1ngoybuPQ+D3KrA2JbX/3vSELUWXmZwMw9SXIVOnmm/aTgwx7/xPZt6f4P70s/+BIMBkVtxmgeMFyuqD6kL99+1B1ERIIVmwnMTHnI03plsV23JnC516qoq4aDYVtnt37/c9s7/371WNx63wADAYZyE5f5wlAShEM8tW2MHTsEUcsXMIE5rdBmsu0roTwIbUo8yj+U61kAVAVNAXJPNXpqTlwKY+6l9og8/JUX8u9c+VL81t+AvDZ57Oj8ts3rHS89zT8n27wXuZ7rAzBxTF/6SpSOyJTAmBM60yzwlbwKhHIqOSGa5Uobocbx3EOd+il4Jzgn4gTJXUteY5x9O8Zk91f35T+5+xgvPwPQ4E7f5JYEzbgw+peIw6G4KKfZwgQEkk8kIOP4wXO9FCYNJ0B2px/fvjRc9OlVaVM1Iqqo2PpeE5hpVXchlmttBXGd4KiV1T1SHk5fHhIayd1hch0daen4gZYcu2+U7T8YiY9+B2idICxa7Eq/EOgUs2N4ouQ48V5Os3kVm1VERDOE1KvHrqZGcbLjzom087aOv/ALPvZHx5hP5UlWJjMmMG+5wucS9IjfpaO6/auBZS8Xx7hGTSSUpIk2E3rkYOLoYwfi488Ch4F8UqQa3LHAhOV4eCREIGjbHZP9+sy9TsLjDhHQKbcj/YKY+vXPiyRUUb18lXvnjZVYV2FCitCz90KPJs0Eg25nGvrHLNv4x6v0snUkl4Ro00omMNNpRqqeTNocar8U7/1T4Ogv7teO+z3X89lQLC1vpoUlLMcDQvCFJydeczkqr8Znbx3n+R+fzueu5KqrV2YX3igxU2hJEkXU0YMrZhW2OmB0RJ74i8XurLuqaU2udFzRLExmTGDeYkMSLZbG1Vi+4lo+2XqVrW4Vm9Lr4/IHKQ5FayZFGS5mhhay8BaaKg6vIJJR99Wl18TB8Aojfh0rpiWqk+/Z5u9fKhqANhHBKWWo1Is04yCDbqg99PWanPXw+jBwreSuUNxiTA5H56RJAMME5o1dFaC0OBRL4bAd5srAJU2ONagj0i7t09DtfGmaXlvxnjVcE4slQcX4S6+PZAwxhKKIys11XfPdNXL1paqjEZIv5tTC1DyjMX1Mlo23O0kQB7JnT7yvcdA/Mq6uLko9FcO90SxkAmMYp0WE68Mou5/bpw/fdMg/6dQFp/gkbzqjZN6MCYxhTIvhHAbdwbj1gX3pRzcf8Y+NI8FBiEib4syIyVCpYuYygTGM6TKU4MrsYHzmmz/v3HfTfv/EURwereSODo4ABFRaZioTmPmI2uquOefRDgyEw7zywK78O1fvlR8+k5wGkaCKRgeIFZMJzJs03p6/QsF3rEr2SrjU8G0O/mxHvHvzXnfPX46EFzT6ioc8CkQbh+lJgZlc0dmtwtETbrN3Z+Q30VCgmuuxNeU1S3esc0JZSLEF6MwUc5n2KN1uhDNZt5qxqDhycFf+4D+80Lnvmv3yve+13CHvpOZdMQ6TKzEqScuN30+6Aj3pMZdd69ysyuhiqxN1KiqlyHRn4ZIg5CDj5bYLvem4DOESsDjqsfPLpfUy2zk8UuZhiWqZYZ4Ucj39ChVQVBMZwgRK1pV8JJ3swCTOZEtOoNKg4Zo0H92R7/j1Fey6eZk7/w/6/ZoP1vXckKXloBNAJyqiRRqKSCnf8vrOYq5CK4/QBjK0SAHRbqVvdE1glBREVISQAqLdSoRTMhyL8FDv9ZBQCE6oaujKPrECBJQkHiHTqnjq2enb27mgmQQkoTWFTMreU2dZYNRRTWjfTJexNmlGGHTCbWmEJ78xkp78Rp8/6/JVXHfDYr96S0UXba7qKu/J8JrhVEhTHuLcx1KFlFRVqKhIChRp7l0Jx7sgMJsUkJTXXj2a7TuaQt4fk8NJ3hWBSaBe+mjLoW0UeUi9lnmn8FkHQ6Ntf3DrYffsVTHlIrPuwRTkolRQmWB8QmO294QyOyVySWOjsisPsieo+qnMdSHIbJpd0eAl46i8XMZ5zRn+hqFS9Rt+kDt1qCOPv8jdjwOfX8y6C5a7Tdc6V9lcY81aTbV3VunTJGPnCE7m9pC30leV5L3WGXe768Rlq+C1l7rRFqRrdwlaZfW5jrgSsq418JyJFlnbdTrHdgFH6M1dhQTQRaxZnVh0TpHMnXXhazvkuE4FFzv4dpvdz5+mfQSgwhkXeMKSwv7agrYEqtXZtp+n1tdG9rZ54fkulLMbYNA9yK1R3jjYlBV/LbowUKsXzkLWpTL9RSXdISOTRByZ4NUdLMDdtWxuz8pooeIGGAgDDIZB1L1h6MXoXkEAHhq++Dnbj4Yvv9PNkxKX7tlm6uFOeMxGOZef3ehmefeCUMtxO/TKo2fsYxiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGYRiGMW3+DxPH1UarOO5ZAAAAAElFTkSuQmCC" alt="PHd" style={{ width: 160, height: "auto" }} /></div><div style={{ fontSize: 11, fontWeight: 700, color: "#7AC143", letterSpacing: "0.05em" }}>Intelligence. Connected.</div>
             <div style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e", marginTop: 6 }}>Global Media Planning Playbook</div>
-            <div style={{ fontSize: 11, color: "#999", marginTop: 8 }}>Internal access only — enter your credentials</div>
+            <div style={{ fontSize: 11, color: "#7a7a8a", marginTop: 8 }}>Internal access only — enter your credentials</div>
           </div>
           <div style={{ marginBottom: 16 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "#777788", marginBottom: 4 }}>Username</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#5a5a6e", marginBottom: 4 }}>Username</div>
             <input value={loginUser} onChange={e => setLoginUser(e.target.value)} onKeyDown={e => e.key === "Enter" && handleLogin()} placeholder="Enter username" style={{ width: "100%", padding: "10px 14px", background: "#f5f5f7", border: "1px solid #e0e0e8", borderRadius: 8, color: "#1a1a2e", fontSize: 13, fontFamily: "inherit", boxSizing: "border-box", outline: "none" }} />
           </div>
           <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "#777788", marginBottom: 4 }}>Password</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#5a5a6e", marginBottom: 4 }}>Password</div>
             <input type="password" value={loginPass} onChange={e => setLoginPass(e.target.value)} onKeyDown={e => e.key === "Enter" && handleLogin()} placeholder="Enter password" style={{ width: "100%", padding: "10px 14px", background: "#f5f5f7", border: "1px solid #e0e0e8", borderRadius: 8, color: "#1a1a2e", fontSize: 13, fontFamily: "inherit", boxSizing: "border-box", outline: "none" }} />
           </div>
           {loginError && <div style={{ fontSize: 11, color: "#cc3333", marginBottom: 12, textAlign: "center" }}>{loginError}</div>}
@@ -551,11 +551,11 @@ export default function App() {
         <div style={{ padding: "20px 16px 12px", borderBottom: "1px solid #e5e5ea" }}>
           <div style={{ marginBottom: 12 }}><img src="data:image/png;base64,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" alt="PHd" style={{ width: 160, height: "auto" }} /></div><div style={{ fontSize: 11, fontWeight: 700, color: "#7AC143", letterSpacing: "0.05em" }}>Intelligence. Connected.</div>
           <div style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e", marginTop: 2 }}>Planning Playbook</div>
-          <div style={{ fontSize: 10, color: "#999", marginTop: 4 }}>Updated March 2026 · PHD</div>
+          <div style={{ fontSize: 10, color: "#7a7a8a", marginTop: 4 }}>Updated March 2026 · PHD</div>
         </div>
         <div style={{ flex: 1, overflowY: "auto", padding: "8px 8px" }}>
           {SECTIONS.map(s => s.id === "divider" ? (
-            <div key={s.id} style={{ padding: "8px 12px", fontSize: 9, fontWeight: 800, color: "#bbbbcc", letterSpacing: "0.1em", textAlign: "center" }}>{s.label}</div>
+            <div key={s.id} style={{ padding: "8px 12px", fontSize: 9, fontWeight: 800, color: "#9a9aaa", letterSpacing: "0.1em", textAlign: "center" }}>{s.label}</div>
           ) : (
             <button
               key={s.id}
@@ -572,7 +572,7 @@ export default function App() {
             </button>
           ))}
         </div>
-        <div style={{ padding: "12px 16px", borderTop: "1px solid #e5e5ea", fontSize: 10, color: "#bbbbcc" }}>
+        <div style={{ padding: "12px 16px", borderTop: "1px solid #e5e5ea", fontSize: 10, color: "#9a9aaa" }}>
           All benchmarks in USD · Global · Directional only
         </div>
       </nav>
@@ -599,7 +599,7 @@ export default function App() {
 
               <Card style={{ background: "linear-gradient(135deg, #f0ecf5 0%, #e8e4f0 100%)", border: "1px solid #d0d0e0" }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>⚡ Key 2026 Changes (Global)</div>
-                <div style={{ fontSize: 12, color: "#555566", lineHeight: 1.8 }}>
+                <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.8 }}>
                   • <strong style={{ color: "#1a1a2e" }}>Meta Andromeda</strong> — Creative is now the primary targeting signal (8–12 assets per campaign)<br/>
                   • <strong style={{ color: "#1a1a2e" }}>TikTok NewFronts</strong> — Logo Takeover, Prime Time, TopReach, Pulse Mentions all new<br/>
                   • <strong style={{ color: "#1a1a2e" }}>Snapchat</strong> — Total Snap Takeover, Sponsored Snaps, Reminder Ads, AI Lenses<br/>
@@ -644,7 +644,7 @@ export default function App() {
 
               <Card style={{ background: "linear-gradient(135deg, #f0ecf5 0%, #e8e4f0 100%)", border: "1px solid #d0d0e0", marginBottom: 20 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>🎯 Platform Selection Framework — 5 Questions Before Adding Any Platform</div>
-                <div style={{ fontSize: 12, color: "#555566", lineHeight: 1.9 }}>
+                <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.9 }}>
                   <strong style={{ color: "#2a8c3e" }}>1. Audience:</strong> Is our target audience actually on this platform in this market? (Don't assume — check platform data)<br/>
                   <strong style={{ color: "#b8860b" }}>2. Capability:</strong> Can this platform deliver against our specific KPI? (Awareness ≠ Conversion ≠ Lead Gen)<br/>
                   <strong style={{ color: "#6a1b9a" }}>3. Creative:</strong> Do we have the right creative format for this platform? (9:16 for TikTok/Snap, UGC-style, Arabic versions)<br/>
@@ -664,7 +664,7 @@ export default function App() {
 
                     <div style={{ marginBottom: 12 }}>
                       <div style={{ fontWeight: 700, color: "#b8860b", fontSize: 11, textTransform: "uppercase", marginBottom: 6 }}>KPIs & Benchmarks</div>
-                      {p.kpis.map((k, ki) => <div key={ki} style={{ fontSize: 12, marginBottom: 2, fontFamily: "monospace" }}>{k}</div>)}
+                      {p.kpis.map((k, ki) => <div key={ki} style={{ fontSize: 12, marginBottom: 2, fontFamily: "'SF Mono', monospace" }}>{k}</div>)}
                     </div>
 
                     <div style={{ marginBottom: 12 }}>
@@ -692,8 +692,8 @@ export default function App() {
 
                     {platformMockups[p.name] && (
                       <div style={{ marginTop: 16, padding: "16px 0 4px", borderTop: "1px solid #e0e0e8" }}>
-                        <div style={{ fontSize: 11, fontWeight: 700, color: "#777788", textTransform: "uppercase", marginBottom: 10 }}>Ad Format Examples</div>
-                        <div style={{ transform: "scale(1.35)", transformOrigin: "top left", marginBottom: 40 }}>
+                        <div style={{ fontSize: 11, fontWeight: 700, color: "#5a5a6e", textTransform: "uppercase", marginBottom: 10 }}>Ad Format Examples</div>
+                        <div style={{ transform: "scale(1.6)", transformOrigin: "top left", marginBottom: 60 }}>
                           {platformMockups[p.name]()}
                         </div>
                       </div>
@@ -714,7 +714,7 @@ export default function App() {
                   <thead>
                     <tr style={{ borderBottom: "2px solid #d0d0e0" }}>
                       {["Platform", "Objective", "Type", "Buying", "Primary KPI", "Benchmark", "Regional Notes"].map(h => (
-                        <th key={h} style={{ padding: "10px 8px", textAlign: "left", color: "#777788", fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: ".05em" }}>{h}</th>
+                        <th key={h} style={{ padding: "10px 8px", textAlign: "left", color: "#444455", fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: ".05em" }}>{h}</th>
                       ))}
                     </tr>
                   </thead>
@@ -723,11 +723,11 @@ export default function App() {
                       <tr key={i} style={{ borderBottom: "1px solid #f0f0f5", background: i % 2 === 0 ? "#f9f9fb" : "transparent" }}>
                         <td style={{ padding: "8px", fontWeight: 700, color: "#1a1a2e" }}>{r.platform}</td>
                         <td style={{ padding: "8px" }}><Chip color={r.objective.includes("Aware") ? "blue" : r.objective.includes("Video") ? "purple" : r.objective.includes("Traffic") ? "green" : r.objective.includes("Lead") ? "amber" : r.objective.includes("Conv") ? "red" : "teal"}>{r.objective}</Chip></td>
-                        <td style={{ padding: "8px", color: "#555566" }}>{r.type}</td>
-                        <td style={{ padding: "8px", color: "#555566" }}>{r.buying}</td>
+                        <td style={{ padding: "8px", color: "#444455" }}>{r.type}</td>
+                        <td style={{ padding: "8px", color: "#444455" }}>{r.buying}</td>
                         <td style={{ padding: "8px", color: "#333344", fontWeight: 600 }}>{r.kpi}</td>
                         <td style={{ padding: "8px", color: "#2a8c3e", fontWeight: 600 }}>{r.benchmark}</td>
-                        <td style={{ padding: "8px", color: "#777788", maxWidth: 200, fontSize: 11 }}>{r.notes}</td>
+                        <td style={{ padding: "8px", color: "#5a5a6e", maxWidth: 200, fontSize: 11 }}>{r.notes}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -764,7 +764,7 @@ export default function App() {
 
               <Card style={{ background: "linear-gradient(135deg, #f0ecf5 0%, #e8e4f0 100%)", border: "1px solid #d0d0e0", marginBottom: 24 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#2D1768", marginBottom: 10 }}>🖥️ How Programmatic Works (Simple Version)</div>
-                <div style={{ fontSize: 12, color: "#555566", lineHeight: 2 }}>
+                <div style={{ fontSize: 12, color: "#444455", lineHeight: 2 }}>
                   <strong style={{ color: "#1a1a2e" }}>1. Advertiser</strong> sets campaign goals, budgets, targeting, and creative in a <strong style={{ color: "#2a8c3e" }}>DSP</strong> (Demand-Side Platform)<br/>
                   <strong style={{ color: "#1a1a2e" }}>2. Publisher</strong> makes ad inventory available via an <strong style={{ color: "#b8860b" }}>SSP</strong> (Supply-Side Platform)<br/>
                   <strong style={{ color: "#1a1a2e" }}>3. Ad Exchange</strong> connects DSPs and SSPs — runs a real-time auction in milliseconds<br/>
@@ -776,7 +776,7 @@ export default function App() {
 
               <Card style={{ marginBottom: 24 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e", marginBottom: 10 }}>📌 Key Buying Types</div>
-                <div style={{ fontSize: 12, color: "#555566", lineHeight: 1.8 }}>
+                <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.8 }}>
                   <strong style={{ color: "#2a8c3e" }}>Open Exchange (RTB)</strong> — Real-time bidding on open marketplace. Maximum scale, lower quality control. CPMs: $2–$10. Use with verification mandatory.<br/>
                   <strong style={{ color: "#2D1768" }}>Private Marketplace (PMP)</strong> — Invite-only auction with selected premium publishers. Better quality, brand-safe. CPMs: $10–$30. Recommended for the market.<br/>
                   <strong style={{ color: "#b8860b" }}>Programmatic Guaranteed (PG)</strong> — Fixed price, guaranteed inventory, automated delivery. Premium pricing. Best for tentpole moments (Ramadan, National Days).<br/>
@@ -899,7 +899,7 @@ export default function App() {
                 <Accordion key={i} title={m.mistake}>
                   <div style={{ fontSize: 13, color: "#555566", lineHeight: 1.7 }}>
                     <div style={{ marginBottom: 8 }}>
-                      <div style={{ fontWeight: 700, color: "#777788", fontSize: 11, textTransform: "uppercase", marginBottom: 4 }}>Why It Happens</div>
+                      <div style={{ fontWeight: 700, color: "#5a5a6e", fontSize: 11, textTransform: "uppercase", marginBottom: 4 }}>Why It Happens</div>
                       {m.why}
                     </div>
                     <div style={{ marginBottom: 8 }}>
@@ -919,7 +919,7 @@ export default function App() {
 
               <h3 style={{ fontSize: 15, fontWeight: 700, color: "#2D1768", marginBottom: 12, marginTop: 28 }}>⚠️ Programmatic Rules of Thumb</h3>
               <Card style={{ background: "#faf0f0", border: "1px solid #e0d0e8" }}>
-                <div style={{ fontSize: 12, color: "#555566", lineHeight: 1.8 }}>
+                <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.8 }}>
                   • <strong style={{ color: "#1a1a2e" }}>Always use PMPs</strong> over open exchange for the market campaigns — brand safety is non-negotiable<br/>
                   • <strong style={{ color: "#1a1a2e" }}>Minimum $20K/month</strong> for programmatic to generate meaningful optimisation data<br/>
                   • <strong style={{ color: "#1a1a2e" }}>Verification (DV or IAS)</strong> is required on every programmatic buy — no exceptions<br/>
@@ -947,25 +947,25 @@ export default function App() {
                 {Object.keys(regionalVendors).map(region => (
                   <button key={region} onClick={() => setVendorRegion(region)} style={{
                     padding: "8px 16px", borderRadius: 20, border: vendorRegion === region ? "1px solid #7AC143" : "1px solid #e0e0e8",
-                    background: vendorRegion === region ? "#2D176830" : "#f9f9fb", color: vendorRegion === region ? "#7AC143" : "#64748b",
+                    background: vendorRegion === region ? "#2D176830" : "#f9f9fb", color: vendorRegion === region ? "#7AC143" : "#6a6a7e",
                     fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", transition: "all .15s"
                   }}>{region}</button>
                 ))}
               </div>
 
               <Card style={{ background: "linear-gradient(135deg, #f0ecf5 0%, #e8e4f0 100%)", border: "1px solid #d0d0e0", marginBottom: 24 }}>
-                <div style={{ fontSize: 12, color: "#555566", lineHeight: 1.6 }}>{regionalVendors[vendorRegion].desc}</div>
+                <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.6 }}>{regionalVendors[vendorRegion].desc}</div>
               </Card>
 
               {regionalVendors[vendorRegion].data.filter(cat => !filterText || JSON.stringify(cat).toLowerCase().includes(filterText)).map((cat, ci) => (
                 <div key={ci} style={{ marginBottom: 28 }}>
                   <h3 style={{ fontSize: 15, fontWeight: 700, color: "#2D1768", marginBottom: 4 }}>{cat.category}</h3>
-                  <p style={{ fontSize: 12, color: "#777788", marginBottom: 14 }}>{cat.description}</p>
+                  <p style={{ fontSize: 12, color: "#5a5a6e", marginBottom: 14 }}>{cat.description}</p>
                   {cat.vendors.map((v, vi) => (
                     <Accordion key={vi} title={v.name} subtitle={v.type} badge={<Chip color={v.type.includes("DSP") || v.type.includes("Search") ? "blue" : v.type.includes("Safety") || v.type.includes("Verif") ? "red" : v.type.includes("CTV") || v.type.includes("OTT") || v.type.includes("Audio") || v.type.includes("Video") || v.type.includes("Social") ? "purple" : v.type.includes("DOOH") || v.type.includes("Outdoor") || v.type.includes("Commerce") ? "amber" : v.type.includes("Guideline") || v.type.includes("Must-Know") ? "red" : "teal"}>{v.type}</Chip>}>
                       <div style={{ fontSize: 13, color: "#555566", lineHeight: 1.7 }}>
                         <div style={{ marginBottom: 10 }}>
-                          <div style={{ fontWeight: 700, color: "#777788", fontSize: 11, textTransform: "uppercase", marginBottom: 4 }}>What It Does</div>
+                          <div style={{ fontWeight: 700, color: "#5a5a6e", fontSize: 11, textTransform: "uppercase", marginBottom: 4 }}>What It Does</div>
                           {v.what}
                         </div>
                         <div style={{ marginBottom: 10, padding: 10, background: "#ffffff", borderRadius: 8 }}>
@@ -1005,7 +1005,7 @@ export default function App() {
                   <thead>
                     <tr style={{ borderBottom: "2px solid #d0d0e0" }}>
                       {["Objective", "Meta", "TikTok", "Snap", "YouTube", "Google", "LinkedIn", "X", "Prog."].map(h => (
-                        <th key={h} style={{ padding: "8px 6px", textAlign: "center", color: "#777788", fontWeight: 700, fontSize: 10, textTransform: "uppercase" }}>{h}</th>
+                        <th key={h} style={{ padding: "8px 6px", textAlign: "center", color: "#444455", fontWeight: 700, fontSize: 10, textTransform: "uppercase" }}>{h}</th>
                       ))}
                     </tr>
                   </thead>
@@ -1085,7 +1085,7 @@ export default function App() {
                       {Object.keys(journeys).map(j => (
                         <button key={j} onClick={() => { setFunnelJourney(j); setFunnelHover(null); }} style={{
                           padding: "6px 14px", borderRadius: 20, border: funnelJourney === j ? "1px solid #7AC143" : "1px solid #e0e0e8",
-                          background: funnelJourney === j ? "#2D176830" : "#f9f9fb", color: funnelJourney === j ? "#7AC143" : "#64748b",
+                          background: funnelJourney === j ? "#2D176830" : "#f9f9fb", color: funnelJourney === j ? "#7AC143" : "#6a6a7e",
                           fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit"
                         }}>{j}</button>
                       ))}
@@ -1105,13 +1105,13 @@ export default function App() {
                           }}>
                             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
                               <div style={{ fontSize: 14, fontWeight: 800, color: stage.color }}>{stage.name}</div>
-                              <div style={{ fontSize: 9, color: "#777788", fontFamily: "monospace" }}>{stage.kpi.split("·")[0].trim()}</div>
+                              <div style={{ fontSize: 9, color: "#5a5a6e", fontFamily: "'SF Mono', monospace" }}>{stage.kpi.split("·")[0].trim()}</div>
                             </div>
                             <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
                               {(stage.platforms.mobile || []).slice(0, 4).map((p, pi) => (
                                 <span key={pi} style={{ fontSize: 9, padding: "1px 6px", borderRadius: 8, background: `${stage.color}20`, color: stage.color, border: `1px solid ${stage.color}30` }}>{p}</span>
                               ))}
-                              {(stage.platforms.mobile || []).length > 4 && <span style={{ fontSize: 9, color: "#777788" }}>+{stage.platforms.mobile.length - 4}</span>}
+                              {(stage.platforms.mobile || []).length > 4 && <span style={{ fontSize: 9, color: "#5a5a6e" }}>+{stage.platforms.mobile.length - 4}</span>}
                             </div>
                           </div>
                         </div>
@@ -1120,7 +1120,7 @@ export default function App() {
                       {/* Hover popup */}
                       {funnelHover !== null && (
                         <div style={{
-                          position: "absolute", right: 0, top: funnelHover * 72, width: 340, background: "#ffffff",
+                          position: "absolute", right: 0, top: funnelHover * 72, width: 340, background: "#ffffff", boxShadow: "0 8px 32px rgba(0,0,0,.12)",
                           border: `1px solid ${journey.stages[funnelHover].color}40`, borderRadius: 12, padding: 16, zIndex: 10,
                           boxShadow: "0 8px 32px rgba(0,0,0,.5)", pointerEvents: "none"
                         }}>
@@ -1128,31 +1128,31 @@ export default function App() {
                             {journey.stages[funnelHover].name} — {funnelJourney}
                           </div>
 
-                          <div style={{ fontSize: 10, color: "#555566", marginBottom: 10, lineHeight: 1.5 }}>
+                          <div style={{ fontSize: 10, color: "#444455", marginBottom: 10, lineHeight: 1.5 }}>
                             {journey.stages[funnelHover].tip}
                           </div>
 
-                          <div style={{ fontSize: 10, fontWeight: 700, color: "#777788", textTransform: "uppercase", marginBottom: 4 }}>KPIs</div>
-                          <div style={{ fontSize: 11, color: "#1a1a2e", fontFamily: "monospace", marginBottom: 10 }}>
+                          <div style={{ fontSize: 10, fontWeight: 700, color: "#5a5a6e", textTransform: "uppercase", marginBottom: 4 }}>KPIs</div>
+                          <div style={{ fontSize: 11, color: "#1a1a2e", fontFamily: "'SF Mono', monospace", marginBottom: 10 }}>
                             {journey.stages[funnelHover].kpi}
                           </div>
 
                           <div style={{ display: "grid", gridTemplateColumns: journey.stages[funnelHover].platforms.ctv ? "1fr 1fr 1fr" : "1fr 1fr", gap: 8 }}>
                             <div>
-                              <div style={{ fontSize: 9, fontWeight: 700, color: "#777788", marginBottom: 4 }}>📱 MOBILE</div>
+                              <div style={{ fontSize: 9, fontWeight: 700, color: "#5a5a6e", marginBottom: 4 }}>📱 MOBILE</div>
                               {(journey.stages[funnelHover].platforms.mobile || []).map((p, i) => (
                                 <div key={i} style={{ fontSize: 10, color: "#333344", marginBottom: 2 }}>• {p}</div>
                               ))}
                             </div>
                             <div>
-                              <div style={{ fontSize: 9, fontWeight: 700, color: "#777788", marginBottom: 4 }}>🖥️ DESKTOP</div>
+                              <div style={{ fontSize: 9, fontWeight: 700, color: "#5a5a6e", marginBottom: 4 }}>🖥️ DESKTOP</div>
                               {(journey.stages[funnelHover].platforms.desktop || []).map((p, i) => (
                                 <div key={i} style={{ fontSize: 10, color: "#333344", marginBottom: 2 }}>• {p}</div>
                               ))}
                             </div>
                             {journey.stages[funnelHover].platforms.ctv && (
                               <div>
-                                <div style={{ fontSize: 9, fontWeight: 700, color: "#777788", marginBottom: 4 }}>📺 CTV</div>
+                                <div style={{ fontSize: 9, fontWeight: 700, color: "#5a5a6e", marginBottom: 4 }}>📺 CTV</div>
                                 {journey.stages[funnelHover].platforms.ctv.map((p, i) => (
                                   <div key={i} style={{ fontSize: 10, color: "#333344", marginBottom: 2 }}>• {p}</div>
                                 ))}
@@ -1163,7 +1163,7 @@ export default function App() {
                       )}
                     </div>
 
-                    {funnelHover === null && <div style={{ fontSize: 10, color: "#999", marginTop: 8, fontStyle: "italic" }}>Hover over a funnel stage to see platform recommendations, KPIs, and strategy tips split by device.</div>}
+                    {funnelHover === null && <div style={{ fontSize: 10, color: "#7a7a8a", marginTop: 8, fontStyle: "italic" }}>Hover over a funnel stage to see platform recommendations, KPIs, and strategy tips split by device.</div>}
                   </div>
                 );
               })()}
@@ -1179,7 +1179,7 @@ export default function App() {
               ].map((f, i) => (
                 <Card key={i}>
                   <div style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e", marginBottom: 6 }}>{f.stage}</div>
-                  <div style={{ fontSize: 12, color: "#777788", marginBottom: 8 }}>{f.obj}</div>
+                  <div style={{ fontSize: 12, color: "#5a5a6e", marginBottom: 8 }}>{f.obj}</div>
                   <InfoRow label="Primary KPI" value={<span style={{ color: "#2a8c3e", fontWeight: 600 }}>{f.primary}</span>} />
                   <InfoRow label="Secondary" value={f.secondary} />
                 </Card>
@@ -1188,7 +1188,7 @@ export default function App() {
               <h3 style={{ fontSize: 15, fontWeight: 700, color: "#2D1768", marginTop: 28, marginBottom: 12 }}>Tracking Setup (Pre-Launch)</h3>
               {measurementSetup.map((m, i) => (
                 <Accordion key={i} title={m.tracking} subtitle={m.platform}>
-                  <div style={{ fontSize: 12, color: "#555566", marginBottom: 12 }}>{m.what}</div>
+                  <div style={{ fontSize: 12, color: "#444455", marginBottom: 12 }}>{m.what}</div>
                   {m.checks.map((c, j) => (
                     <CheckItem key={j} checked={checkedItems[`track_${i}_${j}`]} onChange={() => toggleCheck(`track_${i}_${j}`)}>{c}</CheckItem>
                   ))}
@@ -1199,7 +1199,7 @@ export default function App() {
               {attributionCaveats.map((a, i) => (
                 <Card key={i}>
                   <div style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e", marginBottom: 4 }}>{a.caveat}</div>
-                  <div style={{ fontSize: 12, color: "#555566", marginBottom: 8 }}>{a.detail}</div>
+                  <div style={{ fontSize: 12, color: "#444455", marginBottom: 8 }}>{a.detail}</div>
                   <div style={{ fontSize: 12, color: "#2a8c3e" }}>✅ {a.handle}</div>
                 </Card>
               ))}
@@ -1235,11 +1235,11 @@ export default function App() {
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
                     <div>
                       <div style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e" }}>{u.update}</div>
-                      <div style={{ fontSize: 11, color: "#777788" }}>{u.platform} · {u.date}</div>
+                      <div style={{ fontSize: 11, color: "#5a5a6e" }}>{u.platform} · {u.date}</div>
                     </div>
                     <span style={{ fontSize: 18 }}>{u.impact}</span>
                   </div>
-                  <div style={{ fontSize: 12, color: "#555566", lineHeight: 1.6 }}>{u.detail}</div>
+                  <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.6 }}>{u.detail}</div>
                 </Card>
               ))}
             </div>
@@ -1280,7 +1280,7 @@ export default function App() {
                     <Card key={category} style={{ marginBottom: 16, border: catDone ? "1px solid #22c55e30" : "1px solid #e0e0e8" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
                         <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a2e" }}>{category}</div>
-                        <div style={{ fontSize: 11, color: catDone ? "#22c55e" : "#64748b", fontWeight: 600 }}>
+                        <div style={{ fontSize: 11, color: catDone ? "#22c55e" : "#6a6a7e", fontWeight: 600 }}>
                           {catDone ? "✅ Complete" : `${catChecked}/${items.length}`}
                         </div>
                       </div>
@@ -1314,18 +1314,18 @@ export default function App() {
                       <div style={{ background: `linear-gradient(180deg, ${stage.bg} 0%, #f9f9fb 100%)`, border: "1px solid #e0e0e8", borderRadius: 12, padding: 20, textAlign: "center" }}>
                         <div style={{ fontSize: 48, marginBottom: 6, filter: pct === 100 ? "drop-shadow(0 0 12px #22c55e)" : "none", transition: "all .5s" }}>{stage.icon}</div>
                         <div style={{ fontSize: 14, fontWeight: 800, color: "#1a1a2e", marginBottom: 2 }}>{stage.name}</div>
-                        <div style={{ fontSize: 10, color: "#555566", marginBottom: 12 }}>{stage.msg}</div>
+                        <div style={{ fontSize: 10, color: "#444455", marginBottom: 12 }}>{stage.msg}</div>
 
                         <div style={{ marginBottom: 4 }}>
                           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                            <span style={{ fontSize: 10, color: "#777788" }}>{pct}%</span>
-                            <span style={{ fontSize: 10, color: "#777788" }}>{checkedCount}/{totalChecks}</span>
+                            <span style={{ fontSize: 10, color: "#5a5a6e" }}>{pct}%</span>
+                            <span style={{ fontSize: 10, color: "#5a5a6e" }}>{checkedCount}/{totalChecks}</span>
                           </div>
                           <ProgressBar value={checkedCount} max={totalChecks} color={pct === 100 ? "#22c55e" : pct >= 80 ? "#7eb8ff" : pct >= 50 ? "#3b82f6" : "#d0d0d8"} />
                         </div>
 
                         {nextStage && pct < 100 && (
-                          <div style={{ marginTop: 10, fontSize: 9, color: "#999", lineHeight: 1.4 }}>
+                          <div style={{ marginTop: 10, fontSize: 9, color: "#7a7a8a", lineHeight: 1.4 }}>
                             Next: {nextStage.icon} {nextStage.name}<br/>at {nextStage.min}%
                           </div>
                         )}
@@ -1357,12 +1357,12 @@ export default function App() {
                           onClick={() => { if (window.confirm("Reset all checked items? This will clear your progress.")) setCheckedItems({}); }}
                           style={{
                             marginTop: 16, width: "100%", padding: "8px 0", borderRadius: 8,
-                            background: "transparent", border: "1px solid #d0d0d8", color: "#777788",
+                            background: "transparent", border: "1px solid #d0d0d8", color: "#5a5a6e",
                             fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
                             transition: "all .15s"
                           }}
                           onMouseEnter={e => { e.target.style.borderColor = "#ff7e7e"; e.target.style.color = "#ff7e7e"; }}
-                          onMouseLeave={e => { e.target.style.borderColor = "#d0d0d8"; e.target.style.color = "#64748b"; }}
+                          onMouseLeave={e => { e.target.style.borderColor = "#d0d0d8"; e.target.style.color = "#6a6a7e"; }}
                         >
                           ↺ Reset Checklist
                         </button>
@@ -1403,7 +1403,7 @@ export default function App() {
                 {["All"].concat(Array.from(new Set(creativeSpecs.map(s => s.platform)))).map(p => (
                   <button key={p} onClick={() => setCreativePlatform(p)} style={{
                     padding: "6px 14px", borderRadius: 20, border: creativePlatform === p ? "1px solid #7AC143" : "1px solid #e0e0e8",
-                    background: creativePlatform === p ? "#2D176830" : "#f9f9fb", color: creativePlatform === p ? "#7AC143" : "#64748b",
+                    background: creativePlatform === p ? "#2D176830" : "#f9f9fb", color: creativePlatform === p ? "#7AC143" : "#6a6a7e",
                     fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", transition: "all .15s"
                   }}>{p}</button>
                 ))}
@@ -1411,7 +1411,7 @@ export default function App() {
 
               <Card style={{ background: "linear-gradient(135deg, #f0ecf5 0%, #e8e4f0 100%)", border: "1px solid #d0d0e0", marginBottom: 20 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>🎯 Quick Reference — The 3 Must-Have Ratios</div>
-                <div style={{ fontSize: 12, color: "#555566", lineHeight: 1.8 }}>
+                <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.8 }}>
                   <strong style={{ color: "#2a8c3e" }}>1:1 Square (1080×1080)</strong> — Works across 80% of placements. Safe default for Feed on all platforms.<br/>
                   <strong style={{ color: "#b8860b" }}>4:5 Vertical (1080×1350)</strong> — Best for mobile Feed. Takes up more screen. Higher engagement vs square.<br/>
                   <strong style={{ color: "#6a1b9a" }}>9:16 Full Vertical (1080×1920)</strong> — Mandatory for Reels, Stories, TikTok, Snapchat, Shorts. Non-negotiable in 2026.
@@ -1419,7 +1419,7 @@ export default function App() {
               </Card>
 
               {(() => { const filtered = creativeSpecs.filter(s => creativePlatform === "All" || s.platform === creativePlatform).filter(s => !filterText || JSON.stringify(s).toLowerCase().includes(filterText)); return (
-                <div style={{ fontSize: 12, color: "#777788", marginBottom: 16 }}>Showing <strong style={{ color: "#2D1768" }}>{filtered.length}</strong> of {creativeSpecs.length} formats {creativePlatform !== "All" ? `for ${creativePlatform}` : ""}</div>
+                <div style={{ fontSize: 12, color: "#5a5a6e", marginBottom: 16 }}>Showing <strong style={{ color: "#2D1768" }}>{filtered.length}</strong> of {creativeSpecs.length} formats {creativePlatform !== "All" ? `for ${creativePlatform}` : ""}</div>
               ); })()}
 
               <h3 style={{ fontSize: 15, fontWeight: 700, color: "#2D1768", marginBottom: 14 }}>📱 Visual Format Examples</h3>
@@ -1445,7 +1445,7 @@ export default function App() {
                     <div style={{ height: 3, background: "#e0e0e8", borderRadius: 2, margin: "2px 20px", width: "80%" }} />
                     <div style={{ width: 30, height: 3, borderRadius: 10, background: "#d0d0d8", margin: "8px auto 2px" }} />
                   </div>
-                  <div style={{ fontSize: 9, color: "#777788", marginTop: 6 }}>Meta · LinkedIn · X · Pinterest</div>
+                  <div style={{ fontSize: 9, color: "#5a5a6e", marginTop: 6 }}>Meta · LinkedIn · X · Pinterest</div>
                 </Card>)}
 
                 {/* Phone: Feed 4:5 */}
@@ -1464,7 +1464,7 @@ export default function App() {
                     <div style={{ height: 3, background: "#e0e0e8", borderRadius: 2, margin: "4px 20px 2px", width: "60%" }} />
                     <div style={{ width: 30, height: 3, borderRadius: 10, background: "#d0d0d8", margin: "6px auto 2px" }} />
                   </div>
-                  <div style={{ fontSize: 9, color: "#777788", marginTop: 6 }}>Meta Feed · Best for mobile</div>
+                  <div style={{ fontSize: 9, color: "#5a5a6e", marginTop: 6 }}>Meta Feed · Best for mobile</div>
                 </Card>)}
 
                 {/* Phone: Stories/Reels 9:16 */}
@@ -1492,7 +1492,7 @@ export default function App() {
                       <div style={{ fontSize: 7, color: "#cc3333", textAlign: "center", marginTop: 2 }}>⬇ 340px safe zone</div>
                     </div>
                   </div>
-                  <div style={{ fontSize: 9, color: "#777788", marginTop: 6 }}>Meta · TikTok · Snap · Shorts</div>
+                  <div style={{ fontSize: 9, color: "#5a5a6e", marginTop: 6 }}>Meta · TikTok · Snap · Shorts</div>
                 </Card>
 
                 {/* Phone: TikTok In-Feed */}
@@ -1502,7 +1502,7 @@ export default function App() {
                     <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#6a1b9a", fontSize: 10, fontWeight: 700, flexDirection: "column" }}>
                       <span>9:16</span>
                       <span style={{ fontSize: 8 }}>Full Screen</span>
-                      <span style={{ fontSize: 7, color: "#555566", marginTop: 4 }}>Sound ON</span>
+                      <span style={{ fontSize: 7, color: "#444455", marginTop: 4 }}>Sound ON</span>
                       <span style={{ fontSize: 7, color: "#b8860b" }}>Hook in 2s</span>
                     </div>
                     <div style={{ position: "absolute", right: 6, bottom: 40, display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
@@ -1514,7 +1514,7 @@ export default function App() {
                       <div style={{ height: 2, background: "rgba(0,0,0,.05)", borderRadius: 2, marginTop: 3, width: "40%" }} />
                     </div>
                   </div>
-                  <div style={{ fontSize: 9, color: "#777788", marginTop: 6 }}>TikTok · Spark Ads · Prime Time</div>
+                  <div style={{ fontSize: 9, color: "#5a5a6e", marginTop: 6 }}>TikTok · Spark Ads · Prime Time</div>
                 </Card>
 
                 {/* Carousel */}
@@ -1535,7 +1535,7 @@ export default function App() {
                     <div style={{ height: 3, background: "#e0e0e8", borderRadius: 2, margin: "4px 10px 2px", width: "70%" }} />
                     <div style={{ width: 30, height: 3, borderRadius: 10, background: "#d0d0d8", margin: "6px auto 2px" }} />
                   </div>
-                  <div style={{ fontSize: 9, color: "#777788", marginTop: 6 }}>Meta · LinkedIn · Pinterest</div>
+                  <div style={{ fontSize: 9, color: "#5a5a6e", marginTop: 6 }}>Meta · LinkedIn · Pinterest</div>
                 </Card>
 
                 {/* Desktop: Browser Feed */}
@@ -1554,7 +1554,7 @@ export default function App() {
                         <div style={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 4 }}>
                           <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#e0e0e8" }} />
                           <div style={{ height: 3, flex: 1, background: "#e0e0e8", borderRadius: 2 }} />
-                          <div style={{ fontSize: 6, color: "#bbbbcc" }}>Sponsored</div>
+                          <div style={{ fontSize: 6, color: "#9a9aaa" }}>Sponsored</div>
                         </div>
                         <div style={{ paddingBottom: "55%", background: "linear-gradient(135deg, #e8e0f0, #e0f0e8)", borderRadius: 4, position: "relative" }}>
                           <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#2D1768", fontSize: 9, fontWeight: 700 }}>16:9 or 1:1</div>
@@ -1565,26 +1565,26 @@ export default function App() {
                       </div>
                       <div style={{ flex: "0 0 20%" }}>
                         <div style={{ paddingBottom: "180%", background: "linear-gradient(180deg, #e8e0f0, #f0f0f5)", borderRadius: 4, position: "relative" }}>
-                          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#777788", fontSize: 7 }}>Right<br/>Column</div>
+                          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#5a5a6e", fontSize: 7 }}>Right<br/>Column</div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div style={{ fontSize: 9, color: "#777788", marginTop: 6 }}>Meta · LinkedIn · X (Desktop)</div>
+                  <div style={{ fontSize: 9, color: "#5a5a6e", marginTop: 6 }}>Meta · LinkedIn · X (Desktop)</div>
                 </Card>
 
                 {/* Display Banners */}
                 <Card style={{ padding: 16, textAlign: "center" }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color: "#b8860b", marginBottom: 8 }}>Display Banners</div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 6, alignItems: "center" }}>
-                    <div style={{ width: "100%", height: 22, background: "linear-gradient(90deg, #f0e8d8, #e8e0f0)", borderRadius: 3, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 8, color: "#b8860b", fontWeight: 600, border: "1px dashed #c8c0a8" }}>728 × 90 — Leaderboard</div>
+                    <div style={{ width: "100%", height: 22, background: "#e8e6ee", borderRadius: 3, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 8, color: "#b8860b", fontWeight: 600, border: "1px dashed #c0c0cc" }}>728 × 90 — Leaderboard</div>
                     <div style={{ display: "flex", gap: 6, width: "100%", justifyContent: "center" }}>
-                      <div style={{ width: 70, height: 58, background: "linear-gradient(135deg, #f0e8d8, #e8e0f0)", borderRadius: 3, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 7, color: "#b8860b", fontWeight: 600, border: "1px dashed #c8c0a8" }}>300×250<br/>MPU</div>
-                      <div style={{ width: 28, height: 80, background: "linear-gradient(180deg, #3a2a1a, #e8e0f0)", borderRadius: 3, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 6, color: "#b8860b", fontWeight: 600, border: "1px dashed #c8c0a8", writingMode: "vertical-rl" }}>160×600</div>
+                      <div style={{ width: 70, height: 58, background: "linear-gradient(135deg, #f0e8d8, #e8e0f0)", borderRadius: 3, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 7, color: "#b8860b", fontWeight: 600, border: "1px dashed #c0c0cc" }}>300×250<br/>MPU</div>
+                      <div style={{ width: 28, height: 80, background: "linear-gradient(180deg, #3a2a1a, #e8e0f0)", borderRadius: 3, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 6, color: "#b8860b", fontWeight: 600, border: "1px dashed #c0c0cc", writingMode: "vertical-rl" }}>160×600</div>
                     </div>
-                    <div style={{ width: "80%", height: 14, background: "linear-gradient(90deg, #f0e8d8, #e8e0f0)", borderRadius: 3, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 7, color: "#b8860b", fontWeight: 600, border: "1px dashed #c8c0a8" }}>320 × 50 — Mobile</div>
+                    <div style={{ width: "80%", height: 14, background: "#e8e6ee", borderRadius: 3, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 7, color: "#b8860b", fontWeight: 600, border: "1px dashed #c0c0cc" }}>320 × 50 — Mobile</div>
                   </div>
-                  <div style={{ fontSize: 9, color: "#777788", marginTop: 6 }}>Programmatic · GDN · Display</div>
+                  <div style={{ fontSize: 9, color: "#5a5a6e", marginTop: 6 }}>Programmatic · GDN · Display</div>
                 </Card>
 
                 {/* Interstitial */}
@@ -1593,13 +1593,13 @@ export default function App() {
                   <div style={{ width: 120, margin: "0 auto", background: "#f5f5f7", borderRadius: 16, border: "2px solid #d0d0d8", height: 200, position: "relative", overflow: "hidden" }}>
                     <div style={{ position: "absolute", inset: 8, background: "linear-gradient(135deg, #f0e0e0, #e8e0f0)", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", border: "1px dashed #e0c0c0" }}>
                       <div style={{ fontSize: 8, color: "#cc3333", fontWeight: 700 }}>Full Screen</div>
-                      <div style={{ fontSize: 7, color: "#555566" }}>Overlay</div>
+                      <div style={{ fontSize: 7, color: "#444455" }}>Overlay</div>
                       <div style={{ fontSize: 7, color: "#b8860b", marginTop: 4 }}>320×480 or</div>
                       <div style={{ fontSize: 7, color: "#b8860b" }}>1080×1920</div>
                     </div>
-                    <div style={{ position: "absolute", top: 12, right: 12, width: 14, height: 14, borderRadius: "50%", background: "rgba(0,0,0,.06)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 8, color: "#555566" }}>✕</div>
+                    <div style={{ position: "absolute", top: 12, right: 12, width: 14, height: 14, borderRadius: "50%", background: "rgba(0,0,0,.06)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 8, color: "#444455" }}>✕</div>
                   </div>
-                  <div style={{ fontSize: 9, color: "#777788", marginTop: 6 }}>Programmatic · In-App · Rich Media</div>
+                  <div style={{ fontSize: 9, color: "#5a5a6e", marginTop: 6 }}>Programmatic · In-App · Rich Media</div>
                 </Card>
 
                 {/* Native Ad */}
@@ -1620,7 +1620,7 @@ export default function App() {
                     </div>
                     {[1,2,3].map(i => <div key={i} style={{ height: 3, background: "#e0e0e8", borderRadius: 2, marginBottom: 3, width: `${100-i*8}%` }} />)}
                   </div>
-                  <div style={{ fontSize: 9, color: "#777788", marginTop: 6 }}>Taboola · Outbrain · Programmatic</div>
+                  <div style={{ fontSize: 9, color: "#5a5a6e", marginTop: 6 }}>Taboola · Outbrain · Programmatic</div>
                 </Card>
 
                 {/* CTV */}
@@ -1630,16 +1630,16 @@ export default function App() {
                     <div style={{ paddingBottom: "56.25%", background: "linear-gradient(135deg, #ece0f5, #e8e4f0)", position: "relative" }}>
                       <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
                         <div style={{ fontSize: 9, color: "#6a1b9a", fontWeight: 700 }}>16:9</div>
-                        <div style={{ fontSize: 8, color: "#555566" }}>1920×1080 HD</div>
+                        <div style={{ fontSize: 8, color: "#444455" }}>1920×1080 HD</div>
                         <div style={{ fontSize: 7, color: "#b8860b", marginTop: 4 }}>15s or 30s</div>
                         <div style={{ fontSize: 7, color: "#2a8c3e" }}>Non-skippable</div>
-                        <div style={{ fontSize: 7, color: "#777788" }}>Sound ON</div>
+                        <div style={{ fontSize: 7, color: "#5a5a6e" }}>Sound ON</div>
                       </div>
                     </div>
                   </div>
                   <div style={{ width: 30, height: 8, background: "#d0d0d8", margin: "0 auto", borderRadius: "0 0 4px 4px" }} />
                   <div style={{ width: 60, height: 3, background: "#e0e0e8", margin: "0 auto", borderRadius: "0 0 2px 2px" }} />
-                  <div style={{ fontSize: 9, color: "#777788", marginTop: 6 }}>Shahid · OSN+ · YouTube CTV</div>
+                  <div style={{ fontSize: 9, color: "#5a5a6e", marginTop: 6 }}>Shahid · OSN+ · YouTube CTV</div>
                 </Card>
 
                 {/* DOOH */}
@@ -1650,15 +1650,15 @@ export default function App() {
                       <div style={{ paddingBottom: "50%", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
                         <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
                           <div style={{ fontSize: 9, color: "#b8860b", fontWeight: 700 }}>Landscape / Portrait</div>
-                          <div style={{ fontSize: 8, color: "#555566" }}>Varies by screen</div>
-                          <div style={{ fontSize: 7, color: "#777788", marginTop: 2 }}>10–15s loops</div>
+                          <div style={{ fontSize: 8, color: "#444455" }}>Varies by screen</div>
+                          <div style={{ fontSize: 8, color: "#444455", marginTop: 3, fontWeight: 600 }}>10–15s loops</div>
                           <div style={{ fontSize: 7, color: "#cc3333" }}>No audio</div>
                         </div>
                       </div>
                     </div>
                     <div style={{ width: 6, height: 20, background: "#504020", margin: "0 auto" }} />
                   </div>
-                  <div style={{ fontSize: 9, color: "#777788", marginTop: 4 }}>Dubai Mall · SZR · Riyadh</div>
+                  <div style={{ fontSize: 9, color: "#5a5a6e", marginTop: 4 }}>Dubai Mall · SZR · Riyadh</div>
                 </Card>
 
                 {/* YouTube Masthead */}
@@ -1673,7 +1673,7 @@ export default function App() {
                       <div style={{ paddingBottom: "35%", background: "linear-gradient(90deg, #3a1a1a, #e8e0f0)", borderRadius: 4, position: "relative", marginTop: 8 }}>
                         <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
                           <div style={{ fontSize: 8, color: "#cc3333", fontWeight: 700 }}>MASTHEAD</div>
-                          <div style={{ fontSize: 7, color: "#555566" }}>Homepage Takeover</div>
+                          <div style={{ fontSize: 7, color: "#444455" }}>Homepage Takeover</div>
                           <div style={{ fontSize: 6, color: "#b8860b" }}>$50K–$200K/day</div>
                         </div>
                       </div>
@@ -1682,7 +1682,7 @@ export default function App() {
                       </div>
                     </div>
                   </div>
-                  <div style={{ fontSize: 9, color: "#777788", marginTop: 6 }}>YouTube · Book 6–8 weeks ahead</div>
+                  <div style={{ fontSize: 9, color: "#5a5a6e", marginTop: 6 }}>YouTube · Book 6–8 weeks ahead</div>
                 </Card>
 
                 {/* LinkedIn Document Ad */}
@@ -1708,7 +1708,7 @@ export default function App() {
                     </div>
                     <div style={{ fontSize: 7, color: "#2D1768", textAlign: "center", marginTop: 4 }}>← Swipe through pages →</div>
                   </div>
-                  <div style={{ fontSize: 9, color: "#777788", marginTop: 6 }}>LinkedIn · PDF/PPT · B2B</div>
+                  <div style={{ fontSize: 9, color: "#5a5a6e", marginTop: 6 }}>LinkedIn · PDF/PPT · B2B</div>
                 </Card>
               </div>
 
@@ -1717,7 +1717,7 @@ export default function App() {
                   <thead>
                     <tr style={{ borderBottom: "2px solid #d0d0e0" }}>
                       {["Platform", "Placement", "Device", "Format", "Ratio", "Dimensions", "Duration", "File", "Notes"].map(h => (
-                        <th key={h} style={{ padding: "8px 6px", textAlign: "left", color: "#777788", fontWeight: 700, fontSize: 9, textTransform: "uppercase", letterSpacing: ".04em", whiteSpace: "nowrap" }}>{h}</th>
+                        <th key={h} style={{ padding: "8px 6px", textAlign: "left", color: "#555566", fontWeight: 700, fontSize: 9, textTransform: "uppercase", letterSpacing: ".04em", whiteSpace: "nowrap" }}>{h}</th>
                       ))}
                     </tr>
                   </thead>
@@ -1729,13 +1729,13 @@ export default function App() {
                       <tr key={i} style={{ borderBottom: "1px solid #f0f0f5", background: i % 2 === 0 ? "#f9f9fb" : "transparent" }}>
                         <td style={{ padding: "7px 6px", fontWeight: 700, color: "#1a1a2e", whiteSpace: "nowrap" }}>{s.platform}</td>
                         <td style={{ padding: "7px 6px", color: "#333344", fontSize: 11 }}>{s.placement}</td>
-                        <td style={{ padding: "7px 6px", color: "#777788", fontSize: 10 }}>{s.device}</td>
+                        <td style={{ padding: "7px 6px", color: "#5a5a6e", fontSize: 10 }}>{s.device}</td>
                         <td style={{ padding: "7px 6px" }}><Chip color={s.format.includes("Video") ? "purple" : s.format.includes("Image") ? "blue" : s.format.includes("Audio") ? "teal" : "amber"}>{s.format}</Chip></td>
-                        <td style={{ padding: "7px 6px", color: "#2a8c3e", fontWeight: 700, fontFamily: "monospace", fontSize: 11 }}>{s.ratio}</td>
-                        <td style={{ padding: "7px 6px", color: "#b8860b", fontFamily: "monospace", fontSize: 10, whiteSpace: "nowrap" }}>{s.dimensions}</td>
-                        <td style={{ padding: "7px 6px", color: "#555566", fontSize: 10 }}>{s.duration}</td>
-                        <td style={{ padding: "7px 6px", color: "#777788", fontSize: 10 }}>{s.fileType}</td>
-                        <td style={{ padding: "7px 6px", color: "#777788", fontSize: 10, maxWidth: 200 }}>{s.notes}</td>
+                        <td style={{ padding: "7px 6px", color: "#2a8c3e", fontWeight: 700, fontFamily: "'SF Mono', monospace", fontSize: 11 }}>{s.ratio}</td>
+                        <td style={{ padding: "7px 6px", color: "#b8860b", fontFamily: "'SF Mono', monospace", fontSize: 10, whiteSpace: "nowrap" }}>{s.dimensions}</td>
+                        <td style={{ padding: "7px 6px", color: "#444455", fontSize: 10 }}>{s.duration}</td>
+                        <td style={{ padding: "7px 6px", color: "#5a5a6e", fontSize: 10 }}>{s.fileType}</td>
+                        <td style={{ padding: "7px 6px", color: "#5a5a6e", fontSize: 10, maxWidth: 200 }}>{s.notes}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -1749,7 +1749,7 @@ export default function App() {
                   {creativeSpecs.filter(s => s.platform === platform).filter(s => !filterText || JSON.stringify(s).toLowerCase().includes(filterText)).map((s, i) => (
                     <Accordion key={i} title={s.placement} subtitle={`${s.format} · ${s.device}`} badge={<Chip color={s.format.includes("Video") ? "purple" : s.format.includes("Image") ? "blue" : "amber"}>{s.ratio}</Chip>}>
                       <div style={{ fontSize: 13, color: "#555566", lineHeight: 1.7 }}>
-                        <InfoRow label="Dimensions" value={<span style={{ color: "#b8860b", fontWeight: 600, fontFamily: "monospace" }}>{s.dimensions}</span>} />
+                        <InfoRow label="Dimensions" value={<span style={{ color: "#b8860b", fontWeight: 600, fontFamily: "'SF Mono', monospace" }}>{s.dimensions}</span>} />
                         <InfoRow label="Aspect Ratio" value={<span style={{ color: "#2a8c3e", fontWeight: 600 }}>{s.ratio}</span>} />
                         {s.alt && <InfoRow label="Alternative" value={s.alt} />}
                         <InfoRow label="Format" value={s.format} />
@@ -1768,12 +1768,12 @@ export default function App() {
 
               <h3 style={{ fontSize: 15, fontWeight: 700, color: "#cc3333", marginTop: 28, marginBottom: 12 }}>⚠️ Creative Checklist Reminders</h3>
               <Card style={{ background: "#faf0f0", border: "1px solid #e0d0e8" }}>
-                <div style={{ fontSize: 12, color: "#555566", lineHeight: 1.8 }}>
+                <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.8 }}>
                   • <strong style={{ color: "#1a1a2e" }}>9:16 vertical is the 2026 default</strong> — Meta confirmed 90% of inventory will be vertical. Produce 9:16 first, adapt from there.<br/>
                   • <strong style={{ color: "#1a1a2e" }}>Safe zones</strong> — Stories/Reels: keep text 250px from top, 340px from bottom (UI overlays cover these areas).<br/>
                   • <strong style={{ color: "#1a1a2e" }}>Hook in first 2 seconds</strong> — TikTok, Reels, and Snap users decide instantly whether to watch or swipe.<br/>
                   • <strong style={{ color: "#1a1a2e" }}>Captions always</strong> — 80%+ of feed video is watched muted. Captions boost watch time by 12%.<br/>
-                  • <strong style={{ color: "#1a1a2e" }}>Arabic versions</strong> — Mandatory for KSA and Kuwait campaigns. Use DCO for AR+EN versioning on programmatic.<br/>
+                  • <strong style={{ color: "#1a1a2e" }}>Local language versions</strong> — Mandatory per market. Use DCO for multi-language versioning on programmatic.<br/>
                   • <strong style={{ color: "#1a1a2e" }}>Minimum 3 creative variants</strong> — Algorithms need variety. Andromeda (Meta) uses creative as targeting signal.<br/>
                   • <strong style={{ color: "#1a1a2e" }}>Platform-native &gt; polished</strong> — UGC-style creative outperforms TV-style on TikTok and Reels.<br/>
                   • <strong style={{ color: "#1a1a2e" }}>Programmatic display: 5 core sizes</strong> — 300×250, 728×90, 160×600, 320×50, 300×600 covers 90%+ of inventory.<br/>
@@ -1793,20 +1793,20 @@ export default function App() {
               <Card style={{ marginBottom: 16 }}>
                 <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 16 }}>
                   <div style={{ flex: 1, minWidth: 200 }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: "#777788", marginBottom: 6 }}>Monthly Budget (USD)</div>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: "#5a5a6e", marginBottom: 6 }}>Monthly Budget (USD)</div>
                     <input type="range" min={5000} max={500000} step={5000} value={budgetTotal} onChange={e => setBudgetTotal(Number(e.target.value))} style={{ width: "100%", accentColor: "#2D1768" }} />
-                    <div style={{ fontSize: 24, fontWeight: 800, color: "#2D1768", marginTop: 4 }}>${budgetTotal.toLocaleString()}<span style={{ fontSize: 12, color: "#777788" }}>/month</span></div>
+                    <div style={{ fontSize: 24, fontWeight: 800, color: "#2D1768", marginTop: 4 }}>${budgetTotal.toLocaleString()}<span style={{ fontSize: 12, color: "#5a5a6e" }}>/month</span></div>
                   </div>
                   <div style={{ minWidth: 150 }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: "#777788", marginBottom: 6 }}>Objective</div>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: "#5a5a6e", marginBottom: 6 }}>Objective</div>
                     {["Brand Awareness", "Video Views", "Traffic", "Lead Gen", "E-commerce", "App Installs", "B2B", "Full Funnel"].map(o => (
-                      <button key={o} onClick={() => setBudgetObjective(o)} style={{ display: "block", width: "100%", padding: "4px 8px", margin: "2px 0", border: budgetObjective === o ? "1px solid #7AC143" : "1px solid transparent", borderRadius: 6, background: budgetObjective === o ? "#2D176830" : "transparent", color: budgetObjective === o ? "#7AC143" : "#64748b", fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>{o}</button>
+                      <button key={o} onClick={() => setBudgetObjective(o)} style={{ display: "block", width: "100%", padding: "4px 8px", margin: "2px 0", border: budgetObjective === o ? "1px solid #7AC143" : "1px solid transparent", borderRadius: 6, background: budgetObjective === o ? "#2D176830" : "transparent", color: budgetObjective === o ? "#7AC143" : "#6a6a7e", fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>{o}</button>
                     ))}
                   </div>
                   <div style={{ minWidth: 100 }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: "#777788", marginBottom: 6 }}>Market</div>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: "#5a5a6e", marginBottom: 6 }}>Market</div>
                     {["US/Canada", "UK/Europe", "UAE/MENA", "KSA", "India", "China", "SEA", "Multi-Market"].map(m => (
-                      <button key={m} onClick={() => setBudgetMarket(m)} style={{ display: "block", width: "100%", padding: "4px 8px", margin: "2px 0", border: budgetMarket === m ? "1px solid #7AC143" : "1px solid transparent", borderRadius: 6, background: budgetMarket === m ? "#2D176830" : "transparent", color: budgetMarket === m ? "#7AC143" : "#64748b", fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>{m}</button>
+                      <button key={m} onClick={() => setBudgetMarket(m)} style={{ display: "block", width: "100%", padding: "4px 8px", margin: "2px 0", border: budgetMarket === m ? "1px solid #7AC143" : "1px solid transparent", borderRadius: 6, background: budgetMarket === m ? "#2D176830" : "transparent", color: budgetMarket === m ? "#7AC143" : "#6a6a7e", fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>{m}</button>
                     ))}
                   </div>
                 </div>
@@ -1833,8 +1833,8 @@ export default function App() {
                         <Card key={platform} style={{ padding: 14 }}>
                           <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a2e", marginBottom: 6 }}>{platform}</div>
                           <div style={{ fontSize: 20, fontWeight: 800, color: "#2a8c3e" }}>${spend.toLocaleString()}</div>
-                          <div style={{ fontSize: 10, color: "#777788" }}>{pct}% of budget</div>
-                          <div style={{ marginTop: 8, fontSize: 10, color: "#555566" }}>
+                          <div style={{ fontSize: 10, color: "#5a5a6e" }}>{pct}% of budget</div>
+                          <div style={{ marginTop: 8, fontSize: 10, color: "#444455" }}>
                             Est. CPM: ${cpm}<br/>
                             Impressions: {(impressions/1000).toFixed(0)}K<br/>
                             Est. Reach: {(reach/1000).toFixed(0)}K
@@ -1847,7 +1847,7 @@ export default function App() {
 
                   <Card style={{ marginTop: 16 }}>
                     <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a2e", marginBottom: 8 }}>Total Estimated Reach</div>
-                    <div style={{ fontSize: 10, color: "#555566" }}>
+                    <div style={{ fontSize: 10, color: "#444455" }}>
                       Total Impressions: <strong style={{ color: "#2a8c3e" }}>{(Object.entries(mix).reduce((a, [p, pct]) => a + ((budgetTotal * pct / 100) / (cpms[p]?.[budgetMarket] || 10)) * 1000, 0) / 1000000).toFixed(1)}M</strong> · 
                       Note: Estimates based on directional regional CPM benchmarks. Actual results will vary by creative quality, audience, season, and competition.
                     </div>
@@ -1864,10 +1864,10 @@ export default function App() {
               <SectionDesc>Select platforms in your media plan — get a complete creative specs checklist for your creative team.</SectionDesc>
 
               <Card style={{ padding: 12, marginBottom: 16 }}>
-                <div style={{ fontSize: 10, fontWeight: 700, color: "#777788", marginBottom: 6 }}>Select platforms in your plan:</div>
+                <div style={{ fontSize: 10, fontWeight: 700, color: "#5a5a6e", marginBottom: 6 }}>Select platforms in your plan:</div>
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                   {["Meta", "TikTok", "Snapchat", "YouTube", "LinkedIn", "X (Twitter)", "Pinterest", "Programmatic"].map(p => (
-                    <button key={p} onClick={() => setSelectedPlatforms(prev => prev.includes(p) ? prev.filter(x => x !== p) : [...prev, p])} style={{ padding: "6px 14px", borderRadius: 20, border: selectedPlatforms.includes(p) ? "1px solid #3b82f6" : "1px solid #e0e0e8", background: selectedPlatforms.includes(p) ? "#e8e0f0" : "transparent", color: selectedPlatforms.includes(p) ? "#7eb8ff" : "#64748b", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>{p}</button>
+                    <button key={p} onClick={() => setSelectedPlatforms(prev => prev.includes(p) ? prev.filter(x => x !== p) : [...prev, p])} style={{ padding: "6px 14px", borderRadius: 20, border: selectedPlatforms.includes(p) ? "1px solid #3b82f6" : "1px solid #e0e0e8", background: selectedPlatforms.includes(p) ? "#e8e0f0" : "transparent", color: selectedPlatforms.includes(p) ? "#7eb8ff" : "#6a6a7e", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>{p}</button>
                   ))}
                 </div>
               </Card>
@@ -1889,9 +1889,9 @@ export default function App() {
                     {reqs[p].map((r, i) => (
                       <div key={i} style={{ display: "flex", gap: 12, padding: "8px 0", borderBottom: i < reqs[p].length - 1 ? "1px solid #e0e0e8" : "none", fontSize: 12 }}>
                         <div style={{ minWidth: 120, fontWeight: 600, color: "#333344" }}>{r.format}</div>
-                        <div style={{ minWidth: 160, color: "#2a8c3e", fontFamily: "monospace", fontSize: 11 }}>{r.size}</div>
+                        <div style={{ minWidth: 160, color: "#2a8c3e", fontFamily: "'SF Mono', monospace", fontSize: 11 }}>{r.size}</div>
                         <Chip color={r.type.includes("Video") ? "purple" : r.type.includes("Image") ? "blue" : "amber"}>{r.type}</Chip>
-                        <div style={{ color: "#777788", flex: 1 }}>{r.notes}</div>
+                        <div style={{ color: "#5a5a6e", flex: 1 }}>{r.notes}</div>
                       </div>
                     ))}
                   </Card>
@@ -1909,7 +1909,7 @@ export default function App() {
               <Card style={{ padding: 12, marginBottom: 16 }}>
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                   {platforms.map(p => (
-                    <button key={p.name} onClick={() => setComparePlatforms(prev => prev.includes(p.name) ? prev.filter(x => x !== p.name) : prev.length < 4 ? [...prev, p.name] : prev)} style={{ padding: "6px 12px", borderRadius: 20, border: comparePlatforms.includes(p.name) ? "1px solid #3b82f6" : "1px solid #e0e0e8", background: comparePlatforms.includes(p.name) ? "#e8e0f0" : "transparent", color: comparePlatforms.includes(p.name) ? "#7eb8ff" : "#64748b", fontSize: 10, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>{p.name.split("(")[0].trim()}</button>
+                    <button key={p.name} onClick={() => setComparePlatforms(prev => prev.includes(p.name) ? prev.filter(x => x !== p.name) : prev.length < 4 ? [...prev, p.name] : prev)} style={{ padding: "6px 12px", borderRadius: 20, border: comparePlatforms.includes(p.name) ? "1px solid #3b82f6" : "1px solid #e0e0e8", background: comparePlatforms.includes(p.name) ? "#e8e0f0" : "transparent", color: comparePlatforms.includes(p.name) ? "#7eb8ff" : "#6a6a7e", fontSize: 10, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>{p.name.split("(")[0].trim()}</button>
                   ))}
                 </div>
               </Card>
@@ -1918,7 +1918,7 @@ export default function App() {
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 11 }}>
                   <thead>
                     <tr style={{ borderBottom: "2px solid #d0d0e0" }}>
-                      <th style={{ padding: 8, textAlign: "left", color: "#777788", fontSize: 9, fontWeight: 700 }}>CRITERIA</th>
+                      <th style={{ padding: 8, textAlign: "left", color: "#555566", fontSize: 9, fontWeight: 700 }}>CRITERIA</th>
                       {comparePlatforms.map(name => <th key={name} style={{ padding: 8, textAlign: "left", color: "#2D1768", fontSize: 10, fontWeight: 700 }}>{name.split("(")[0].trim()}</th>)}
                     </tr>
                   </thead>
@@ -1928,7 +1928,7 @@ export default function App() {
                         <td style={{ padding: 8, color: "#b8860b", fontWeight: 600, fontSize: 10, textTransform: "uppercase" }}>{field === "minBudget" ? "Min Budget" : field === "audienceFit" ? "Audience" : "Capabilities"}</td>
                         {comparePlatforms.map(name => {
                           const p = platforms.find(pl => pl.name === name);
-                          return <td key={name} style={{ padding: 8, color: "#555566", fontSize: 11, maxWidth: 200 }}>{p ? (field === "minBudget" ? <span style={{ color: "#2a8c3e", fontWeight: 700 }}>{p[field]}</span> : p[field]) : "N/A"}</td>;
+                          return <td key={name} style={{ padding: 8, color: "#444455", fontSize: 11, maxWidth: 200 }}>{p ? (field === "minBudget" ? <span style={{ color: "#2a8c3e", fontWeight: 700 }}>{p[field]}</span> : p[field]) : "N/A"}</td>;
                         })}
                       </tr>
                     ))}
@@ -1936,14 +1936,14 @@ export default function App() {
                       <td style={{ padding: 8, color: "#b8860b", fontWeight: 600, fontSize: 10 }}>TOP KPIS</td>
                       {comparePlatforms.map(name => {
                         const p = platforms.find(pl => pl.name === name);
-                        return <td key={name} style={{ padding: 8, color: "#555566", fontSize: 10, fontFamily: "monospace" }}>{p?.kpis?.slice(0,3).map((k,i) => <div key={i}>{k}</div>)}</td>;
+                        return <td key={name} style={{ padding: 8, color: "#444455", fontSize: 10, fontFamily: "'SF Mono', monospace" }}>{p?.kpis?.slice(0,3).map((k,i) => <div key={i}>{k}</div>)}</td>;
                       })}
                     </tr>
                     <tr>
                       <td style={{ padding: 8, color: "#b8860b", fontWeight: 600, fontSize: 10 }}>REGIONAL NOTES</td>
                       {comparePlatforms.map(name => {
                         const p = platforms.find(pl => pl.name === name);
-                        return <td key={name} style={{ padding: 8, color: "#777788", fontSize: 10 }}>{p?.gcc || "N/A"}</td>;
+                        return <td key={name} style={{ padding: 8, color: "#5a5a6e", fontSize: 10 }}>{p?.gcc || "N/A"}</td>;
                       })}
                     </tr>
                   </tbody>
@@ -1978,8 +1978,8 @@ export default function App() {
                     <table style={{ width: "100%", borderCollapse: "collapse" }}>
                       <thead>
                         <tr>
-                          <th style={{ padding: 8, fontSize: 9, color: "#777788", textAlign: "left" }}>Platform</th>
-                          {months.map(m => <th key={m} style={{ padding: "8px 4px", fontSize: 9, color: "#777788", textAlign: "center", minWidth: 45 }}>{m}</th>)}
+                          <th style={{ padding: 8, fontSize: 9, color: "#5a5a6e", textAlign: "left" }}>Platform</th>
+                          {months.map(m => <th key={m} style={{ padding: "8px 4px", fontSize: 9, color: "#5a5a6e", textAlign: "center", minWidth: 45 }}>{m}</th>)}
                         </tr>
                       </thead>
                       <tbody>
@@ -1994,9 +1994,9 @@ export default function App() {
                           </tr>
                         ))}
                         <tr>
-                          <td style={{ padding: 8, fontSize: 9, color: "#777788", fontWeight: 600 }}>Key Event</td>
+                          <td style={{ padding: 8, fontSize: 9, color: "#5a5a6e", fontWeight: 600 }}>Key Event</td>
                           {months.map((m, i) => (
-                            <td key={i} style={{ padding: 4, textAlign: "center", fontSize: 7, color: "#999" }}>{events[i]}</td>
+                            <td key={i} style={{ padding: 4, textAlign: "center", fontSize: 7, color: "#7a7a8a" }}>{events[i]}</td>
                           ))}
                         </tr>
                       </tbody>
@@ -2006,7 +2006,7 @@ export default function App() {
               })()}
 
               <Card style={{ marginTop: 16, background: "#faf0f0", border: "1px solid #e0d0e8" }}>
-                <div style={{ fontSize: 12, color: "#555566", lineHeight: 1.7 }}>
+                <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.7 }}>
                   <strong style={{ color: "#cc3333" }}>🔴 High CPM months:</strong> Feb–Mar (Ramadan), Nov (White Friday). Budget 2–3x more or accept lower reach.<br/>
                   <strong style={{ color: "#b8860b" }}>🟡 Medium:</strong> Jan (pre-Ramadan), Sep (Saudi National Day), Oct–Dec (Q4). Plan early, book reservations.<br/>
                   <strong style={{ color: "#2a8c3e" }}>🟢 Low CPM months:</strong> Apr–Aug. Best time for reach-building, testing, and efficiency campaigns.
@@ -2029,7 +2029,7 @@ export default function App() {
                     <thead>
                       <tr style={{ borderBottom: "2px solid #d0d0e0" }}>
                         {["Platform", "KPI", "Benchmark Range", "Your Actual", "Status", ""].map(h => (
-                          <th key={h} style={{ padding: 8, textAlign: "left", color: "#777788", fontSize: 9, fontWeight: 700 }}>{h}</th>
+                          <th key={h} style={{ padding: 8, textAlign: "left", color: "#555566", fontSize: 9, fontWeight: 700 }}>{h}</th>
                         ))}
                       </tr>
                     </thead>
@@ -2050,7 +2050,7 @@ export default function App() {
                                 {["CPM","CPC","CPL","ROAS","CPV","CTR"].map(k => <option key={k}>{k}</option>)}
                               </select>
                             </td>
-                            <td style={{ padding: 6, color: "#2a8c3e", fontFamily: "monospace" }}>${row.benchmark}</td>
+                            <td style={{ padding: 6, color: "#2a8c3e", fontFamily: "'SF Mono', monospace" }}>${row.benchmark}</td>
                             <td style={{ padding: 6 }}>
                               <input value={row.actual} onChange={e => setBenchmarkData(prev => prev.map((r,ri) => ri === i ? {...r, actual: e.target.value} : r))} placeholder="e.g. 8.50" style={{ width: 80, background: "#f5f5f7", border: "1px solid #e0e0e8", borderRadius: 4, color: "#1a1a2e", padding: "4px 6px", fontSize: 11, fontFamily: "inherit" }} />
                             </td>
@@ -2066,7 +2066,7 @@ export default function App() {
                 </div>
               )}
 
-              {benchmarkData.length === 0 && <Card><div style={{ fontSize: 12, color: "#777788", textAlign: "center", padding: 20 }}>Click "+ Add Row" to start comparing your campaign metrics against benchmarks.</div></Card>}
+              {benchmarkData.length === 0 && <Card><div style={{ fontSize: 12, color: "#5a5a6e", textAlign: "center", padding: 20 }}>Click "+ Add Row" to start comparing your campaign metrics against benchmarks.</div></Card>}
             </div>
           )}
 
@@ -2078,13 +2078,13 @@ export default function App() {
               <SectionDesc>Describe your campaign brief — get an AI-generated media plan you can download as a formatted Excel file.</SectionDesc>
 
               <Card style={{ marginBottom: 12, padding: 12, background: "#f9f9fb", border: "1px solid #e0e0e8" }}>
-                <div style={{ fontSize: 10, fontWeight: 700, color: "#777788", marginBottom: 4 }}>🔑 Anthropic API Key <span style={{ color: "#999", fontWeight: 400 }}>(get one at console.anthropic.com)</span></div>
-                <input type="password" id="apiKeyInput" placeholder="sk-ant-..." style={{ width: "100%", padding: "8px 10px", background: "#f5f5f7", border: "1px solid #e0e0e8", borderRadius: 6, color: "#1a1a2e", fontSize: 12, fontFamily: "monospace", boxSizing: "border-box" }} />
-                <div style={{ fontSize: 9, color: "#bbbbcc", marginTop: 4 }}>Never stored — session only.</div>
+                <div style={{ fontSize: 10, fontWeight: 700, color: "#5a5a6e", marginBottom: 4 }}>🔑 Anthropic API Key <span style={{ color: "#7a7a8a", fontWeight: 400 }}>(get one at console.anthropic.com)</span></div>
+                <input type="password" id="apiKeyInput" placeholder="sk-ant-..." style={{ width: "100%", padding: "8px 10px", background: "#f5f5f7", border: "1px solid #e0e0e8", borderRadius: 6, color: "#1a1a2e", fontSize: 12, fontFamily: "'SF Mono', monospace", boxSizing: "border-box" }} />
+                <div style={{ fontSize: 9, color: "#9a9aaa", marginTop: 4 }}>Never stored — session only.</div>
               </Card>
 
               <Card style={{ marginBottom: 16 }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: "#777788", marginBottom: 6 }}>Describe your campaign:</div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "#5a5a6e", marginBottom: 6 }}>Describe your campaign:</div>
                 <textarea value={aiPrompt} onChange={e => setAiPrompt(e.target.value)} placeholder={"Example: Luxury real estate in Dubai, targeting Chinese and Russian UHNWI investors. Budget $80K/month, 3 months. Video creative in English and Mandarin. Goal: qualified leads via WhatsApp and phone calls. Markets: UAE, UK, China."} style={{ width: "100%", minHeight: 100, padding: "10px 12px", background: "#f5f5f7", border: "1px solid #e0e0e8", borderRadius: 8, color: "#1a1a2e", fontSize: 12, fontFamily: "inherit", resize: "vertical", boxSizing: "border-box", lineHeight: 1.6 }} />
                 <button onClick={async () => {
                   const apiKey = document.getElementById("apiKeyInput")?.value;
@@ -2172,13 +2172,13 @@ export default function App() {
                   return (<>
                     <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
                       <button onClick={downloadExcel} style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid #7AC143", background: "#eef8ee", color: "#7AC143", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>📥 Download as Excel (.xls)</button>
-                      <button onClick={() => { navigator.clipboard.writeText(aiResult); }} style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid #d0d0d8", background: "transparent", color: "#777788", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>📋 Copy JSON</button>
+                      <button onClick={() => { navigator.clipboard.writeText(aiResult); }} style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid #d0d0d8", background: "transparent", color: "#5a5a6e", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>📋 Copy JSON</button>
                     </div>
 
                     <Card style={{ background: "#f0faf5", border: "1px solid #c0e0d0", marginBottom: 16 }}>
                       <div style={{ fontSize: 14, fontWeight: 800, color: "#2a8c3e", marginBottom: 12 }}>📋 Campaign Summary</div>
                       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4, fontSize: 12 }}>
-                        {Object.entries(c).map(([k,v]) => <div key={k}><span style={{ color: "#777788" }}>{k.replace(/_/g," ")}: </span><strong style={{ color: "#1a1a2e" }}>{typeof v === "number" ? `$${v.toLocaleString()}` : v}</strong></div>)}
+                        {Object.entries(c).map(([k,v]) => <div key={k}><span style={{ color: "#5a5a6e" }}>{k.replace(/_/g," ")}: </span><strong style={{ color: "#1a1a2e" }}>{typeof v === "number" ? `$${v.toLocaleString()}` : v}</strong></div>)}
                       </div>
                     </Card>
 
@@ -2188,22 +2188,22 @@ export default function App() {
                         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 10 }}>
                           <thead>
                             <tr style={{ borderBottom: "2px solid #d0d0e0" }}>
-                              {["Platform","Placement","Media Type","Buying","Unit Cost","Impressions","Clicks","CTR","Media Cost","Total"].map(h => <th key={h} style={{ padding: "6px 4px", textAlign: "left", color: "#777788", fontSize: 9, fontWeight: 700 }}>{h}</th>)}
+                              {["Platform","Placement","Media Type","Buying","Unit Cost","Impressions","Clicks","CTR","Media Cost","Total"].map(h => <th key={h} style={{ padding: "6px 4px", textAlign: "left", color: "#555566", fontSize: 9, fontWeight: 700 }}>{h}</th>)}
                             </tr>
                           </thead>
                           <tbody>
                             {items.map((r,i) => (
                               <tr key={i} style={{ borderBottom: "1px solid #f0f0f5" }}>
                                 <td style={{ padding: "6px 4px", color: "#1a1a2e", fontWeight: 700 }}>{r.platform}</td>
-                                <td style={{ padding: "6px 4px", color: "#555566" }}>{r.placement}</td>
-                                <td style={{ padding: "6px 4px", color: "#555566" }}>{r.media_type}</td>
+                                <td style={{ padding: "6px 4px", color: "#444455" }}>{r.placement}</td>
+                                <td style={{ padding: "6px 4px", color: "#444455" }}>{r.media_type}</td>
                                 <td style={{ padding: "6px 4px" }}><Chip color="blue">{r.buying_unit}</Chip></td>
-                                <td style={{ padding: "6px 4px", color: "#b8860b", fontFamily: "monospace" }}>${r.unit_cost}</td>
-                                <td style={{ padding: "6px 4px", color: "#555566", fontFamily: "monospace" }}>{(r.estimated_impressions||0).toLocaleString()}</td>
-                                <td style={{ padding: "6px 4px", color: "#555566", fontFamily: "monospace" }}>{(r.estimated_clicks||0).toLocaleString()}</td>
-                                <td style={{ padding: "6px 4px", color: "#555566" }}>{r.ctr_percent}%</td>
-                                <td style={{ padding: "6px 4px", color: "#2a8c3e", fontWeight: 700, fontFamily: "monospace" }}>${(r.media_cost_usd||0).toLocaleString()}</td>
-                                <td style={{ padding: "6px 4px", color: "#2a8c3e", fontWeight: 700, fontFamily: "monospace" }}>${(r.total_cost_usd||0).toLocaleString()}</td>
+                                <td style={{ padding: "6px 4px", color: "#b8860b", fontFamily: "'SF Mono', monospace" }}>${r.unit_cost}</td>
+                                <td style={{ padding: "6px 4px", color: "#444455", fontFamily: "'SF Mono', monospace" }}>{(r.estimated_impressions||0).toLocaleString()}</td>
+                                <td style={{ padding: "6px 4px", color: "#444455", fontFamily: "'SF Mono', monospace" }}>{(r.estimated_clicks||0).toLocaleString()}</td>
+                                <td style={{ padding: "6px 4px", color: "#444455" }}>{r.ctr_percent}%</td>
+                                <td style={{ padding: "6px 4px", color: "#2a8c3e", fontWeight: 700, fontFamily: "'SF Mono', monospace" }}>${(r.media_cost_usd||0).toLocaleString()}</td>
+                                <td style={{ padding: "6px 4px", color: "#2a8c3e", fontWeight: 700, fontFamily: "'SF Mono', monospace" }}>${(r.total_cost_usd||0).toLocaleString()}</td>
                               </tr>
                             ))}
                           </tbody>
@@ -2213,15 +2213,15 @@ export default function App() {
 
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 16 }}>
                       <Card style={{ textAlign: "center", padding: 14 }}>
-                        <div style={{ fontSize: 10, color: "#777788" }}>Total Media</div>
+                        <div style={{ fontSize: 10, color: "#5a5a6e" }}>Total Media</div>
                         <div style={{ fontSize: 18, fontWeight: 800, color: "#2a8c3e" }}>${(s.total_media_usd||0).toLocaleString()}</div>
                       </Card>
                       <Card style={{ textAlign: "center", padding: 14 }}>
-                        <div style={{ fontSize: 10, color: "#777788" }}>Agency Fees</div>
+                        <div style={{ fontSize: 10, color: "#5a5a6e" }}>Agency Fees</div>
                         <div style={{ fontSize: 18, fontWeight: 800, color: "#b8860b" }}>${(s.total_fees_usd||0).toLocaleString()}</div>
                       </Card>
                       <Card style={{ textAlign: "center", padding: 14 }}>
-                        <div style={{ fontSize: 10, color: "#777788" }}>Total Investment</div>
+                        <div style={{ fontSize: 10, color: "#5a5a6e" }}>Total Investment</div>
                         <div style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e" }}>${(s.total_investment_usd||0).toLocaleString()}</div>
                       </Card>
                     </div>
@@ -2229,7 +2229,7 @@ export default function App() {
                     {notes.length > 0 && (
                       <Card>
                         <div style={{ fontSize: 13, fontWeight: 700, color: "#b8860b", marginBottom: 8 }}>📝 Notes & regional Considerations</div>
-                        {notes.map((n,i) => <div key={i} style={{ fontSize: 12, color: "#555566", marginBottom: 4, lineHeight: 1.6 }}>• {n}</div>)}
+                        {notes.map((n,i) => <div key={i} style={{ fontSize: 12, color: "#444455", marginBottom: 4, lineHeight: 1.6 }}>• {n}</div>)}
                       </Card>
                     )}
                   </>);
@@ -2245,7 +2245,7 @@ export default function App() {
 
               {!aiResult && !aiLoading && (
                 <Card>
-                  <div style={{ fontSize: 12, color: "#777788", textAlign: "center", padding: 20 }}>
+                  <div style={{ fontSize: 12, color: "#5a5a6e", textAlign: "center", padding: 20 }}>
                     Enter your API key, describe your campaign, and click "Generate Media Plan".<br/>
                     The AI will generate a structured plan with line items you can <strong style={{ color: "#2a8c3e" }}>download as Excel</strong>.<br/><br/>
                     <span style={{ fontSize: 10 }}>Get an API key at <strong style={{ color: "#2D1768" }}>console.anthropic.com</strong></span>
@@ -2263,30 +2263,30 @@ export default function App() {
 
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
                 <Card style={{ padding: 14 }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: "#777788", marginBottom: 6 }}>Objective</div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#5a5a6e", marginBottom: 6 }}>Objective</div>
                   {["Brand Awareness", "Video Views", "Traffic", "Lead Generation", "Conversions / E-commerce", "App Installs", "B2B / Thought Leadership"].map(o => (
-                    <button key={o} onClick={() => setPlanInputs(p => ({...p, objective: o}))} style={{ display: "block", width: "100%", padding: "5px 8px", margin: "2px 0", border: planInputs.objective === o ? "1px solid #3b82f6" : "1px solid transparent", borderRadius: 6, background: planInputs.objective === o ? "#e8e0f0" : "transparent", color: planInputs.objective === o ? "#7eb8ff" : "#64748b", fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>{o}</button>
+                    <button key={o} onClick={() => setPlanInputs(p => ({...p, objective: o}))} style={{ display: "block", width: "100%", padding: "5px 8px", margin: "2px 0", border: planInputs.objective === o ? "1px solid #3b82f6" : "1px solid transparent", borderRadius: 6, background: planInputs.objective === o ? "#e8e0f0" : "transparent", color: planInputs.objective === o ? "#7eb8ff" : "#6a6a7e", fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", textAlign: "left" }}>{o}</button>
                   ))}
                 </Card>
                 <div>
                   <Card style={{ padding: 14, marginBottom: 12 }}>
-                    <div style={{ fontSize: 10, fontWeight: 700, color: "#777788", marginBottom: 6 }}>Monthly Budget (USD)</div>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: "#5a5a6e", marginBottom: 6 }}>Monthly Budget (USD)</div>
                     <input type="range" min={5000} max={500000} step={5000} value={planInputs.budget} onChange={e => setPlanInputs(p => ({...p, budget: Number(e.target.value)}))} style={{ width: "100%", accentColor: "#2D1768" }} />
-                    <div style={{ fontSize: 20, fontWeight: 800, color: "#2D1768" }}>${planInputs.budget.toLocaleString()}<span style={{ fontSize: 11, color: "#777788" }}>/mo × {planInputs.duration} months = ${(planInputs.budget * planInputs.duration).toLocaleString()}</span></div>
+                    <div style={{ fontSize: 20, fontWeight: 800, color: "#2D1768" }}>${planInputs.budget.toLocaleString()}<span style={{ fontSize: 11, color: "#5a5a6e" }}>/mo × {planInputs.duration} months = ${(planInputs.budget * planInputs.duration).toLocaleString()}</span></div>
                   </Card>
                   <Card style={{ padding: 14, marginBottom: 12 }}>
-                    <div style={{ fontSize: 10, fontWeight: 700, color: "#777788", marginBottom: 6 }}>Duration (months)</div>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: "#5a5a6e", marginBottom: 6 }}>Duration (months)</div>
                     <div style={{ display: "flex", gap: 6 }}>
                       {[1,2,3,4,6,12].map(d => (
-                        <button key={d} onClick={() => setPlanInputs(p => ({...p, duration: d}))} style={{ flex: 1, padding: "6px 0", borderRadius: 6, border: planInputs.duration === d ? "1px solid #3b82f6" : "1px solid #e0e0e8", background: planInputs.duration === d ? "#e8e0f0" : "transparent", color: planInputs.duration === d ? "#7eb8ff" : "#64748b", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>{d}</button>
+                        <button key={d} onClick={() => setPlanInputs(p => ({...p, duration: d}))} style={{ flex: 1, padding: "6px 0", borderRadius: 6, border: planInputs.duration === d ? "1px solid #3b82f6" : "1px solid #e0e0e8", background: planInputs.duration === d ? "#e8e0f0" : "transparent", color: planInputs.duration === d ? "#7eb8ff" : "#6a6a7e", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>{d}</button>
                       ))}
                     </div>
                   </Card>
                   <Card style={{ padding: 14 }}>
-                    <div style={{ fontSize: 10, fontWeight: 700, color: "#777788", marginBottom: 6 }}>Markets</div>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: "#5a5a6e", marginBottom: 6 }}>Markets</div>
                     <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
                       {["UAE", "KSA", "Kuwait", "Qatar", "Multi-Market"].map(m => (
-                        <button key={m} onClick={() => setPlanInputs(p => ({...p, markets: p.markets.includes(m) ? p.markets.filter(x => x !== m) : [...p.markets, m]}))} style={{ padding: "4px 10px", borderRadius: 14, border: planInputs.markets.includes(m) ? "1px solid #3b82f6" : "1px solid #e0e0e8", background: planInputs.markets.includes(m) ? "#e8e0f0" : "transparent", color: planInputs.markets.includes(m) ? "#7eb8ff" : "#64748b", fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{m}</button>
+                        <button key={m} onClick={() => setPlanInputs(p => ({...p, markets: p.markets.includes(m) ? p.markets.filter(x => x !== m) : [...p.markets, m]}))} style={{ padding: "4px 10px", borderRadius: 14, border: planInputs.markets.includes(m) ? "1px solid #3b82f6" : "1px solid #e0e0e8", background: planInputs.markets.includes(m) ? "#e8e0f0" : "transparent", color: planInputs.markets.includes(m) ? "#7eb8ff" : "#6a6a7e", fontSize: 10, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{m}</button>
                       ))}
                     </div>
                   </Card>
@@ -2295,24 +2295,24 @@ export default function App() {
 
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 16 }}>
                 <Card style={{ padding: 14 }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: "#777788", marginBottom: 6 }}>Vertical / Industry</div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#5a5a6e", marginBottom: 6 }}>Vertical / Industry</div>
                   <select value={planInputs.vertical} onChange={e => setPlanInputs(p => ({...p, vertical: e.target.value}))} style={{ width: "100%", padding: "6px 8px", background: "#f5f5f7", border: "1px solid #e0e0e8", borderRadius: 6, color: "#1a1a2e", fontSize: 11, fontFamily: "inherit" }}>
                     {["Real Estate", "Fashion / Retail", "FMCG", "Auto", "Travel / Hospitality", "F&B", "Finance / BFSI", "Tech / SaaS", "Education", "Gaming", "Healthcare", "Government", "Luxury", "Entertainment"].map(v => <option key={v}>{v}</option>)}
                   </select>
                 </Card>
                 <Card style={{ padding: 14 }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: "#777788", marginBottom: 6 }}>Creative Ready?</div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#5a5a6e", marginBottom: 6 }}>Creative Ready?</div>
                   <div style={{ display: "flex", gap: 6 }}>
                     {[true, false].map(v => (
-                      <button key={String(v)} onClick={() => setPlanInputs(p => ({...p, hasCreative: v}))} style={{ flex: 1, padding: "6px 0", borderRadius: 6, border: planInputs.hasCreative === v ? "1px solid #3b82f6" : "1px solid #e0e0e8", background: planInputs.hasCreative === v ? "#e8e0f0" : "transparent", color: planInputs.hasCreative === v ? "#7eb8ff" : "#64748b", fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{v ? "Yes" : "No"}</button>
+                      <button key={String(v)} onClick={() => setPlanInputs(p => ({...p, hasCreative: v}))} style={{ flex: 1, padding: "6px 0", borderRadius: 6, border: planInputs.hasCreative === v ? "1px solid #3b82f6" : "1px solid #e0e0e8", background: planInputs.hasCreative === v ? "#e8e0f0" : "transparent", color: planInputs.hasCreative === v ? "#7eb8ff" : "#6a6a7e", fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{v ? "Yes" : "No"}</button>
                     ))}
                   </div>
                 </Card>
                 <Card style={{ padding: 14 }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: "#777788", marginBottom: 6 }}>Tracking in Place?</div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#5a5a6e", marginBottom: 6 }}>Tracking in Place?</div>
                   <div style={{ display: "flex", gap: 6 }}>
                     {[true, false].map(v => (
-                      <button key={String(v)} onClick={() => setPlanInputs(p => ({...p, hasTracking: v}))} style={{ flex: 1, padding: "6px 0", borderRadius: 6, border: planInputs.hasTracking === v ? "1px solid #3b82f6" : "1px solid #e0e0e8", background: planInputs.hasTracking === v ? "#e8e0f0" : "transparent", color: planInputs.hasTracking === v ? "#7eb8ff" : "#64748b", fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{v ? "Yes" : "No"}</button>
+                      <button key={String(v)} onClick={() => setPlanInputs(p => ({...p, hasTracking: v}))} style={{ flex: 1, padding: "6px 0", borderRadius: 6, border: planInputs.hasTracking === v ? "1px solid #3b82f6" : "1px solid #e0e0e8", background: planInputs.hasTracking === v ? "#e8e0f0" : "transparent", color: planInputs.hasTracking === v ? "#7eb8ff" : "#6a6a7e", fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{v ? "Yes" : "No"}</button>
                     ))}
                   </div>
                 </Card>
@@ -2355,13 +2355,13 @@ export default function App() {
                   <div>
                     <Card style={{ background: "linear-gradient(135deg, #f0ecf5 0%, #e8e4f0 100%)", border: "1px solid #d0d0e0", marginBottom: 16, padding: 20 }}>
                       <div style={{ fontSize: 16, fontWeight: 800, color: "#1a1a2e", marginBottom: 4 }}>Generated Media Plan</div>
-                      <div style={{ fontSize: 11, color: "#777788" }}>{obj} · {planInputs.markets.join(", ")} · ${b.toLocaleString()}/mo × {planInputs.duration} months · {tier} tier · {planInputs.vertical}</div>
+                      <div style={{ fontSize: 11, color: "#5a5a6e" }}>{obj} · {planInputs.markets.join(", ")} · ${b.toLocaleString()}/mo × {planInputs.duration} months · {tier} tier · {planInputs.vertical}</div>
                     </Card>
 
                     {warnings.length > 0 && (
                       <Card style={{ background: "#faf0f0", border: "1px solid #e0d0e8", marginBottom: 16 }}>
                         <div style={{ fontSize: 12, fontWeight: 700, color: "#cc3333", marginBottom: 8 }}>Flags & Warnings</div>
-                        {warnings.map((w, i) => <div key={i} style={{ fontSize: 11, color: "#555566", marginBottom: 4 }}>{w}</div>)}
+                        {warnings.map((w, i) => <div key={i} style={{ fontSize: 11, color: "#444455", marginBottom: 4 }}>{w}</div>)}
                       </Card>
                     )}
 
@@ -2375,8 +2375,8 @@ export default function App() {
                           <Card key={platform} style={{ padding: 14 }}>
                             <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a2e" }}>{platform}</div>
                             <div style={{ fontSize: 20, fontWeight: 800, color: "#2a8c3e" }}>${spend.toLocaleString()}</div>
-                            <div style={{ fontSize: 10, color: "#777788", marginBottom: 6 }}>{Math.round(pct / totalPct * 100)}% · {(impressions/1000).toFixed(0)}K impr.</div>
-                            <div style={{ fontSize: 10, color: "#b8860b", fontFamily: "monospace" }}>{kpiMap[platform]}</div>
+                            <div style={{ fontSize: 10, color: "#5a5a6e", marginBottom: 6 }}>{Math.round(pct / totalPct * 100)}% · {(impressions/1000).toFixed(0)}K impr.</div>
+                            <div style={{ fontSize: 10, color: "#b8860b", fontFamily: "'SF Mono', monospace" }}>{kpiMap[platform]}</div>
                             <div style={{ marginTop: 6 }}><ProgressBar value={pct} max={50} color="#3b82f6" /></div>
                           </Card>
                         );
@@ -2385,7 +2385,7 @@ export default function App() {
 
                     <h3 style={{ fontSize: 14, fontWeight: 700, color: "#2D1768", marginBottom: 12 }}>Creative Requirements</h3>
                     <Card style={{ marginBottom: 20 }}>
-                      <div style={{ fontSize: 12, color: "#555566", lineHeight: 1.8 }}>
+                      <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.8 }}>
                         {mix.Meta && <>• <strong style={{ color: "#1a1a2e" }}>Meta:</strong> Feed image/video 1080×1350 (4:5) + Stories/Reels 1080×1920 (9:16) + Carousel 1080×1080 (1:1){hasKSA || hasKuwait ? " · Arabic versions required" : ""}<br/></>}
                         {mix.TikTok && <>• <strong style={{ color: "#1a1a2e" }}>TikTok:</strong> In-Feed 1080×1920 (9:16), native/UGC style, hook in 2s, sound-on. Consider Spark Ads with creators.<br/></>}
                         {mix.Snapchat && <>• <strong style={{ color: "#1a1a2e" }}>Snapchat:</strong> Single video 1080×1920 (9:16), 6–15s recommended. AR Lens if budget allows.<br/></>}
@@ -2399,7 +2399,7 @@ export default function App() {
 
                     <h3 style={{ fontSize: 14, fontWeight: 700, color: "#2D1768", marginBottom: 12 }}>Measurement Setup Required</h3>
                     <Card style={{ marginBottom: 20 }}>
-                      <div style={{ fontSize: 12, color: "#555566", lineHeight: 1.8 }}>
+                      <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.8 }}>
                         {mix.Meta && <>• Meta Pixel + CAPI (server-side) — required for any conversion/lead campaign<br/></>}
                         {mix.TikTok && <>• TikTok Pixel + Events API — required for conversion optimisation<br/></>}
                         {mix.Snapchat && <>• Snap Pixel — required for conversion tracking and Dynamic Ads<br/></>}
@@ -2413,7 +2413,7 @@ export default function App() {
 
                     <h3 style={{ fontSize: 14, fontWeight: 700, color: "#b8860b", marginBottom: 12 }}>Regional Recommendations</h3>
                     <Card style={{ background: "#ffffff" }}>
-                      <div style={{ fontSize: 12, color: "#555566", lineHeight: 1.8 }}>
+                      <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.8 }}>
                         {hasKSA && <>• <strong style={{ color: "#1a1a2e" }}>KSA:</strong> Snapchat and TikTok are dominant for under-35. Arabic creative is mandatory. Snap penetration 60–70%.<br/></>}
                         {hasKuwait && <>• <strong style={{ color: "#1a1a2e" }}>Kuwait:</strong> Snapchat is the #1 platform — do not exclude. Arabic creative required.<br/></>}
                         {planInputs.markets.includes("UAE") && <>• <strong style={{ color: "#1a1a2e" }}>UAE:</strong> Most diverse audience (expat-heavy). Dual-language AR+EN recommended. WhatsApp penetration ~95%+.<br/></>}
@@ -2442,16 +2442,16 @@ export default function App() {
                   <thead>
                     <tr style={{ borderBottom: "2px solid #d0d0e0" }}>
                       {["Term", "Full Name", "Definition", "Use Case"].map(h => (
-                        <th key={h} style={{ padding: "10px 8px", textAlign: "left", color: "#777788", fontWeight: 700, fontSize: 10, textTransform: "uppercase" }}>{h}</th>
+                        <th key={h} style={{ padding: "10px 8px", textAlign: "left", color: "#444455", fontWeight: 700, fontSize: 10, textTransform: "uppercase" }}>{h}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
                     {glossary.filter(g => !filterText || JSON.stringify(g).toLowerCase().includes(filterText)).map((g, i) => (
                       <tr key={i} style={{ borderBottom: "1px solid #f0f0f5", background: i % 2 === 0 ? "#f9f9fb" : "transparent" }}>
-                        <td style={{ padding: "8px", fontWeight: 800, color: "#2D1768", fontFamily: "monospace" }}>{g.term}</td>
+                        <td style={{ padding: "8px", fontWeight: 800, color: "#2D1768", fontFamily: "'SF Mono', monospace" }}>{g.term}</td>
                         <td style={{ padding: "8px", color: "#1a1a2e" }}>{g.full}</td>
-                        <td style={{ padding: "8px", color: "#555566" }}>{g.def}</td>
+                        <td style={{ padding: "8px", color: "#444455" }}>{g.def}</td>
                         <td style={{ padding: "8px" }}><Chip color="blue">{g.use}</Chip></td>
                       </tr>
                     ))}
