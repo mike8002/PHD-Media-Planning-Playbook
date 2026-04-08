@@ -1,27 +1,27 @@
 import { useState, useEffect, useRef } from "react";
 
 const SECTIONS = [
-  { id: "overview", label: "Overview", icon: "📋" },
-  { id: "planning", label: "Planning Process", icon: "🗺️" },
-  { id: "platforms", label: "Platform Selection", icon: "📱" },
-  { id: "framework", label: "Media Framework", icon: "📊" },
-  { id: "formats", label: "High Impact Formats", icon: "⚡" },
-  { id: "budget", label: "Budget & Channel Mix", icon: "💰" },
-  { id: "measurement", label: "Measurement & KPIs" },
-  { id: "updates", label: "Platform Updates", icon: "🔄" },
-  { id: "caveats", label: "Caveats & Risks", icon: "⚠️" },
-  { id: "checklist", label: "Pre-Launch QA", icon: "✅" },
-  { id: "mistakes", label: "Common Mistakes", icon: "🚫" },
-  { id: "programmatic", label: "Programmatic Deep Dive", icon: "🖥️" },
-  { id: "vendors", label: "Vendor Landscape", icon: "🏢" },
-  { id: "creativespecs", label: "Creative Specs", icon: "🎨" },
-  { id: "divider", label: "─── TOOLS ───", icon: "" },
-  { id: "budgetcalc", label: "Budget Calculator", icon: "🧮" },
-  { id: "creativegen", label: "Creative Generator", icon: "🖼️" },
-  { id: "comparison", label: "Platform Compare", icon: "⚖️" },
-  { id: "heatmap", label: "CPM Heatmap", icon: "🗓️" },
-  { id: "benchmark", label: "Benchmark Tracker", icon: "📈" },
-  { id: "glossary", label: "KPI Glossary", icon: "📖" },
+  { id: "overview", label: "Overview", num: "01" },
+  { id: "planning", label: "Planning Process", num: "02" },
+  { id: "platforms", label: "Platform Selection", num: "03" },
+  { id: "framework", label: "Media Framework", num: "04" },
+  { id: "formats", label: "High Impact Formats", num: "05" },
+  { id: "budget", label: "Budget & Channel Mix", num: "06" },
+  { id: "measurement", label: "Measurement & KPIs", num: "07" },
+  { id: "updates", label: "Platform Updates", num: "08" },
+  { id: "caveats", label: "Caveats & Risks", num: "09" },
+  { id: "checklist", label: "Pre-Launch QA", num: "10" },
+  { id: "mistakes", label: "Common Mistakes", num: "11" },
+  { id: "programmatic", label: "Programmatic Deep Dive", num: "12" },
+  { id: "vendors", label: "Vendor Landscape", num: "13" },
+  { id: "creativespecs", label: "Creative Specs", num: "14" },
+  { id: "divider", label: "TOOLS", num: "" },
+  { id: "budgetcalc", label: "Budget Calculator", num: "15" },
+  { id: "creativegen", label: "Creative Generator", num: "16" },
+  { id: "comparison", label: "Platform Compare", num: "17" },
+  { id: "heatmap", label: "CPM Heatmap", num: "18" },
+  { id: "benchmark", label: "Benchmark Tracker", num: "19" },
+  { id: "glossary", label: "KPI Glossary", num: "20" },
 ];
 
 
@@ -759,7 +759,7 @@ export default function App() {
         </div>
         <div style={{ flex: 1, overflowY: "auto", padding: "8px 8px" }}>
           {SECTIONS.map(s => s.id === "divider" ? (
-            <div key={s.id} style={{ padding: "8px 12px", fontSize: 9, fontWeight: 800, color: "#9a9aaa", letterSpacing: "0.1em", textAlign: "center" }}>{s.label}</div>
+            <div key={s.id} style={{ padding: "10px 12px", fontSize: 9, fontWeight: 800, color: "#2D1768", letterSpacing: "0.1em", textAlign: "center", borderTop: "1px solid #e0e0e8", borderBottom: "1px solid #e0e0e8", marginTop: 6, marginBottom: 6 }}>{s.label}</div>
           ) : (
             <button
               key={s.id}
@@ -768,11 +768,11 @@ export default function App() {
                 display: "flex", alignItems: "center", gap: 8, width: "100%", padding: "9px 12px", border: "none",
                 borderRadius: 8, cursor: "pointer", fontSize: 12.5, fontWeight: 600, fontFamily: "inherit", textAlign: "left",
                 background: activeSection === s.id ? "#2D176812" : "transparent",
-                color: activeSection === s.id ? "#2D1768" : "#888899",
+                color: activeSection === s.id ? "#2D1768" : "#1a1a2e",
                 transition: "all .15s",
               }}
             >
-              <span style={{ fontSize: 14 }}>{s.icon}</span> {s.label}
+              <span style={{ fontSize: 10, fontWeight: 700, color: activeSection === s.id ? "#2D1768" : "#9a9aaa", minWidth: 18 }}>{s.num}</span> {s.label}
             </button>
           ))}
         </div>
@@ -841,7 +841,7 @@ export default function App() {
 
           <div style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 20 }}>
             <div style={{ flex: 1 }}><SearchBar value={search} onChange={setSearch} /></div>
-            <button onClick={() => setActiveSection("aiplanner")} style={{ padding: "10px 18px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #2D1768, #7AC143)", color: "#fff", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap", boxShadow: "0 2px 8px rgba(45,23,104,.25)", flexShrink: 0, marginTop: 0 }}>🤖 AI Plan Generator</button>
+            <button onClick={() => setActiveSection("aiplanner")} style={{ padding: "10px 18px", borderRadius: 10, border: "none", background: "#2D1768", color: "#fff", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap", boxShadow: "0 2px 8px rgba(45,23,104,.25)", flexShrink: 0, marginTop: 0 }}>AI Plan Generator</button>
           </div>
 
           {/* OVERVIEW */}
@@ -853,7 +853,7 @@ export default function App() {
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: 12, marginBottom: 24 }}>
                 {SECTIONS.filter(s => s.id !== "overview").map(s => (
                   <Card key={s.id} hoverable onClick={() => setActiveSection(s.id)} style={{ cursor: "pointer" }}>
-                    <div style={{ fontSize: 22, marginBottom: 6 }}>{s.icon}</div>
+                    <div style={{ fontSize: 12, fontWeight: 800, color: "#2D1768", marginBottom: 6, opacity: 0.4 }}>{s.num}</div>
                     <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a2e" }}>{s.label}</div>
                   </Card>
                 ))}
