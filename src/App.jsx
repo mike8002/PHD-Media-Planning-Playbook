@@ -24,7 +24,7 @@ const SECTIONS = [
   { id: "ratecard", label: "Rate Card Database", num: "20" },
   { id: "pacing", label: "Pacing Tracker", num: "21" },
   { id: "marketmatrix", label: "Market Planning Matrix", num: "22" },
-  { id: "qbr", label: "QBR Generator", num: "23" },
+  { id: "qbr", label: "Campaign Report Maker", num: "23" },
   { id: "glossary", label: "KPI Glossary", num: "24" },
 ];
 
@@ -615,7 +615,7 @@ export default function App() {
   const [rateCardFilter, setRateCardFilter] = useState({ platform: "All", market: "All", objective: "All" });
   const [pacingRows, setPacingRows] = useState([{ campaign: "Campaign 1", budget: 50000, spent: 0, daysElapsed: 1, totalDays: 30 }]);
   const [marketMatrix, setMarketMatrix] = useState({});
-  const [qbrData, setQbrData] = useState({ client: "", period: "", platforms: [] });
+  const [qbrData, setQbrData] = useState({ client: "", period: "", objective: "", csvData: null, csvRaw: "", aiInsights: "", aiLoading: false });
   const [gameActive, setGameActive] = useState(false);
   const [gameTimer, setGameTimer] = useState(120);
   const [foundPikas, setFoundPikas] = useState({});
@@ -3152,129 +3152,6 @@ export default function App() {
                   )}
                 </>);
               })()}
-            </div>
-          )}
-
-          {/* QBR GENERATOR */}
-          {activeSection === "qbr" && (
-            <div>
-              <SectionTitle>QBR / Report Template Generator</SectionTitle>
-              <SectionDesc>Input campaign results to generate a structured Quarterly Business Review with performance analysis, benchmarks, insights, and recommendations.</SectionDesc>
-
-              <Card style={{ marginBottom: 16, padding: 16 }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 14 }}>
-                  <div>
-                    <div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 3 }}>Client Name</div>
-                    <input value={qbrData.client} onChange={e => setQbrData(p => ({...p, client: e.target.value}))} placeholder="e.g. OMNIYAT" style={{ width: "100%", padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, fontSize: 12, fontFamily: "inherit", color: "#1a1a2e", boxSizing: "border-box" }} />
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 3 }}>Reporting Period</div>
-                    <input value={qbrData.period} onChange={e => setQbrData(p => ({...p, period: e.target.value}))} placeholder="e.g. Q1 2026 (Jan-Mar)" style={{ width: "100%", padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, fontSize: 12, fontFamily: "inherit", color: "#1a1a2e", boxSizing: "border-box" }} />
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 3 }}>Total Spend (USD)</div>
-                    <input value={qbrData.totalSpend || ""} onChange={e => setQbrData(p => ({...p, totalSpend: e.target.value}))} placeholder="e.g. 250,000" style={{ width: "100%", padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, fontSize: 12, fontFamily: "inherit", color: "#1a1a2e", boxSizing: "border-box" }} />
-                  </div>
-                </div>
-
-                <div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 6 }}>Platform Results</div>
-                <button onClick={() => setQbrData(p => ({...p, platforms: [...(p.platforms || []), { platform: "Meta", spend: "", impressions: "", clicks: "", conversions: "", revenue: "" }]}))} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid #2D1768", background: "#2D176810", color: "#2D1768", fontSize: 10, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", marginBottom: 10 }}>+ Add Platform</button>
-
-                {(qbrData.platforms || []).map((plat, i) => (
-                  <div key={i} style={{ display: "grid", gridTemplateColumns: "100px 1fr 1fr 1fr 1fr 1fr 30px", gap: 6, marginBottom: 6, alignItems: "center" }}>
-                    <select value={plat.platform} onChange={e => setQbrData(p => ({...p, platforms: p.platforms.map((pl,pi) => pi === i ? {...pl, platform: e.target.value} : pl)}))} style={{ padding: "5px 4px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 4, fontSize: 10, fontFamily: "inherit", color: "#1a1a2e" }}>
-                      {["Meta", "TikTok", "Snapchat", "YouTube", "Google Search", "Google PMax", "LinkedIn", "X (Twitter)", "Programmatic", "Pinterest"].map(p => <option key={p}>{p}</option>)}
-                    </select>
-                    {["spend", "impressions", "clicks", "conversions", "revenue"].map(f => (
-                      <input key={f} value={plat[f]} onChange={e => setQbrData(p => ({...p, platforms: p.platforms.map((pl,pi) => pi === i ? {...pl, [f]: e.target.value} : pl)}))} placeholder={f.charAt(0).toUpperCase() + f.slice(1)} style={{ padding: "5px 6px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 4, fontSize: 10, fontFamily: "monospace", color: "#1a1a2e" }} />
-                    ))}
-                    <button onClick={() => setQbrData(p => ({...p, platforms: p.platforms.filter((_,pi) => pi !== i)}))} style={{ background: "transparent", border: "none", color: "#cc3333", cursor: "pointer", fontSize: 12 }}>x</button>
-                  </div>
-                ))}
-              </Card>
-
-              {(qbrData.platforms || []).length > 0 && qbrData.client && (
-                <div>
-                  <Card style={{ background: "#f0edf5", border: "1px solid #d0c0e0", marginBottom: 16, padding: 20 }}>
-                    <div style={{ fontSize: 18, fontWeight: 800, color: "#2D1768", marginBottom: 4 }}>{qbrData.client} - Quarterly Business Review</div>
-                    <div style={{ fontSize: 12, color: "#555566" }}>{qbrData.period} | Total Spend: ${qbrData.totalSpend || "N/A"}</div>
-                  </Card>
-
-                  <Card style={{ marginBottom: 16 }}>
-                    <div style={{ fontSize: 14, fontWeight: 700, color: "#2D1768", marginBottom: 12 }}>Performance Summary by Platform</div>
-                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 11 }}>
-                      <thead>
-                        <tr style={{ borderBottom: "2px solid #d0d0e0" }}>
-                          {["Platform", "Spend", "Impressions", "Clicks", "CTR", "Conversions", "CPA", "Revenue", "ROAS"].map(h => (
-                            <th key={h} style={{ padding: "6px 4px", textAlign: "left", color: "#555566", fontSize: 9, fontWeight: 700 }}>{h}</th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {(qbrData.platforms || []).map((plat, i) => {
-                          const spend = parseFloat(plat.spend) || 0;
-                          const imps = parseFloat(plat.impressions) || 0;
-                          const clicks = parseFloat(plat.clicks) || 0;
-                          const convs = parseFloat(plat.conversions) || 0;
-                          const rev = parseFloat(plat.revenue) || 0;
-                          const ctr = imps > 0 ? (clicks / imps * 100) : 0;
-                          const cpa = convs > 0 ? spend / convs : 0;
-                          const roas = spend > 0 ? rev / spend : 0;
-                          return (
-                            <tr key={i} style={{ borderBottom: "1px solid #f0f0f5" }}>
-                              <td style={{ padding: "6px 4px", fontWeight: 600, color: "#1a1a2e" }}>{plat.platform}</td>
-                              <td style={{ padding: "6px 4px", fontFamily: "monospace" }}>${spend.toLocaleString()}</td>
-                              <td style={{ padding: "6px 4px", fontFamily: "monospace" }}>{imps.toLocaleString()}</td>
-                              <td style={{ padding: "6px 4px", fontFamily: "monospace" }}>{clicks.toLocaleString()}</td>
-                              <td style={{ padding: "6px 4px", fontFamily: "monospace", color: ctr >= 1 ? "#2a8c3e" : "#b8860b" }}>{ctr.toFixed(2)}%</td>
-                              <td style={{ padding: "6px 4px", fontFamily: "monospace" }}>{convs.toLocaleString()}</td>
-                              <td style={{ padding: "6px 4px", fontFamily: "monospace", fontWeight: 600, color: "#2D1768" }}>{cpa > 0 ? `$${cpa.toFixed(2)}` : "-"}</td>
-                              <td style={{ padding: "6px 4px", fontFamily: "monospace" }}>{rev > 0 ? `$${rev.toLocaleString()}` : "-"}</td>
-                              <td style={{ padding: "6px 4px", fontFamily: "monospace", fontWeight: 700, color: roas >= 3 ? "#2a8c3e" : roas >= 1 ? "#b8860b" : "#cc3333" }}>{roas > 0 ? `${roas.toFixed(2)}x` : "-"}</td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </Card>
-
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
-                    <Card style={{ padding: 16 }}>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>Key Insights</div>
-                      <div style={{ fontSize: 12, color: "#555566", lineHeight: 1.8 }}>
-                        {(() => {
-                          const ps = qbrData.platforms || [];
-                          const topSpend = [...ps].sort((a,b) => (parseFloat(b.spend)||0) - (parseFloat(a.spend)||0))[0];
-                          const topConv = [...ps].sort((a,b) => (parseFloat(b.conversions)||0) - (parseFloat(a.conversions)||0))[0];
-                          const bestCTR = [...ps].filter(p => parseFloat(p.impressions) > 0).sort((a,b) => ((parseFloat(b.clicks)||0)/(parseFloat(b.impressions)||1)) - ((parseFloat(a.clicks)||0)/(parseFloat(a.impressions)||1)))[0];
-                          return (<>
-                            {topSpend && <div>- Highest investment: <strong>{topSpend.platform}</strong> at ${parseFloat(topSpend.spend).toLocaleString()}</div>}
-                            {topConv && <div>- Top converter: <strong>{topConv.platform}</strong> with {parseFloat(topConv.conversions).toLocaleString()} conversions</div>}
-                            {bestCTR && <div>- Best engagement: <strong>{bestCTR.platform}</strong> with highest CTR</div>}
-                            <div>- Total platforms: <strong>{ps.length}</strong></div>
-                          </>);
-                        })()}
-                      </div>
-                    </Card>
-                    <Card style={{ padding: 16 }}>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>Recommendations</div>
-                      <div style={{ fontSize: 12, color: "#555566", lineHeight: 1.8 }}>
-                        {(() => {
-                          const ps = qbrData.platforms || [];
-                          const lowCTR = ps.filter(p => parseFloat(p.impressions) > 0 && (parseFloat(p.clicks)||0)/(parseFloat(p.impressions)||1) < 0.005);
-                          const highCPA = ps.filter(p => parseFloat(p.conversions) > 0 && (parseFloat(p.spend)||0)/(parseFloat(p.conversions)||1) > 100);
-                          return (<>
-                            {lowCTR.length > 0 && <div>- Review creative on <strong>{lowCTR.map(p => p.platform).join(", ")}</strong> - CTR below 0.5% suggests creative fatigue or poor targeting.</div>}
-                            {highCPA.length > 0 && <div>- Optimise <strong>{highCPA.map(p => p.platform).join(", ")}</strong> - CPA above $100, consider audience refinement or bid strategy change.</div>}
-                            <div>- Refresh creative assets quarterly - algorithmic platforms reward new creative.</div>
-                            <div>- Ensure all conversion tracking is verified before next quarter.</div>
-                          </>);
-                        })()}
-                      </div>
-                    </Card>
-                  </div>
-                </div>
-              )}
             </div>
           )}
 
