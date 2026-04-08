@@ -21,7 +21,11 @@ const SECTIONS = [
   { id: "comparison", label: "Platform Compare", num: "17" },
   { id: "heatmap", label: "CPM Heatmap", num: "18" },
   { id: "benchmark", label: "Benchmark Tracker", num: "19" },
-  { id: "glossary", label: "KPI Glossary", num: "20" },
+  { id: "ratecard", label: "Rate Card Database", num: "20" },
+  { id: "pacing", label: "Pacing Tracker", num: "21" },
+  { id: "marketmatrix", label: "Market Planning Matrix", num: "22" },
+  { id: "qbr", label: "QBR Generator", num: "23" },
+  { id: "glossary", label: "KPI Glossary", num: "24" },
 ];
 
 
@@ -608,6 +612,10 @@ export default function App() {
   const [aiPrompt, setAiPrompt] = useState("");
   const [aiResult, setAiResult] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
+  const [rateCardFilter, setRateCardFilter] = useState({ platform: "All", market: "All", objective: "All" });
+  const [pacingRows, setPacingRows] = useState([{ campaign: "Campaign 1", budget: 50000, spent: 0, daysElapsed: 1, totalDays: 30 }]);
+  const [marketMatrix, setMarketMatrix] = useState({});
+  const [qbrData, setQbrData] = useState({ client: "", period: "", platforms: [] });
   const [gameActive, setGameActive] = useState(false);
   const [gameTimer, setGameTimer] = useState(120);
   const [foundPikas, setFoundPikas] = useState({});
@@ -2904,6 +2912,369 @@ export default function App() {
                   </div>
                 );
               })()}
+            </div>
+          )}
+
+          {/* RATE CARD DATABASE */}
+          {activeSection === "ratecard" && (
+            <div>
+              <SectionTitle>Rate Card / CPM Database</SectionTitle>
+              <SectionDesc>Searchable benchmark database by platform, market, objective, and format. Use as directional guidance for planning - always validate with platform reps for current rates.</SectionDesc>
+
+              <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
+                {[
+                  { key: "platform", label: "Platform", options: ["All", "Meta", "TikTok", "Snapchat", "YouTube", "Google Search", "LinkedIn", "X (Twitter)", "Programmatic", "Pinterest"] },
+                  { key: "market", label: "Market", options: ["All", "US/Canada", "UK/Europe", "UAE", "KSA", "India", "China", "SEA", "Australia"] },
+                  { key: "objective", label: "Objective", options: ["All", "Awareness", "Video Views", "Traffic", "Lead Gen", "Conversions", "App Install", "Engagement"] },
+                ].map(f => (
+                  <div key={f.key}>
+                    <div style={{ fontSize: 9, fontWeight: 700, color: "#6a6a7e", marginBottom: 3 }}>{f.label}</div>
+                    <select value={rateCardFilter[f.key]} onChange={e => setRateCardFilter(p => ({...p, [f.key]: e.target.value}))} style={{ padding: "6px 10px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, color: "#1a1a2e", fontSize: 11, fontFamily: "inherit" }}>
+                      {f.options.map(o => <option key={o}>{o}</option>)}
+                    </select>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ overflowX: "auto" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 11 }}>
+                  <thead>
+                    <tr style={{ borderBottom: "2px solid #d0d0e0" }}>
+                      {["Platform", "Market", "Objective", "Format", "Buying Model", "Low", "Mid", "High", "Currency", "Notes"].map(h => (
+                        <th key={h} style={{ padding: "8px 6px", textAlign: "left", color: "#555566", fontSize: 9, fontWeight: 700, textTransform: "uppercase" }}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { platform: "Meta", market: "US/Canada", objective: "Awareness", format: "Feed Image/Video", buying: "CPM", low: 8, mid: 14, high: 22, notes: "Q4 peaks $18-25. Ramadan N/A." },
+                      { platform: "Meta", market: "UK/Europe", objective: "Awareness", format: "Feed Image/Video", buying: "CPM", low: 6, mid: 11, high: 18, notes: "GDPR consent impacts reach." },
+                      { platform: "Meta", market: "UAE", objective: "Awareness", format: "Feed Image/Video", buying: "CPM", low: 4, mid: 7, high: 15, notes: "Ramadan Feb-Mar: 2-3x spike." },
+                      { platform: "Meta", market: "KSA", objective: "Awareness", format: "Feed Image/Video", buying: "CPM", low: 5, mid: 9, high: 18, notes: "Arabic creative essential." },
+                      { platform: "Meta", market: "India", objective: "Awareness", format: "Feed Image/Video", buying: "CPM", low: 1.5, mid: 3, high: 6, notes: "Massive reach, low CPMs." },
+                      { platform: "Meta", market: "SEA", objective: "Awareness", format: "Feed Image/Video", buying: "CPM", low: 2, mid: 4, high: 8, notes: "Varies by country within SEA." },
+                      { platform: "Meta", market: "US/Canada", objective: "Traffic", format: "Feed/Stories", buying: "CPC", low: 0.50, mid: 1.20, high: 2.50, notes: "LPV optimisation recommended." },
+                      { platform: "Meta", market: "UAE", objective: "Traffic", format: "Feed/Stories", buying: "CPC", low: 0.20, mid: 0.50, high: 1.20, notes: "Optimise for LPV not clicks." },
+                      { platform: "Meta", market: "UAE", objective: "Lead Gen", format: "Lead Forms", buying: "CPL", low: 5, mid: 15, high: 35, notes: "In-platform forms convert 2-3x better." },
+                      { platform: "Meta", market: "US/Canada", objective: "Lead Gen", format: "Lead Forms", buying: "CPL", low: 15, mid: 35, high: 80, notes: "Varies hugely by vertical." },
+                      { platform: "Meta", market: "UAE", objective: "Conversions", format: "Advantage+ Sales", buying: "CPA", low: 10, mid: 30, high: 80, notes: "CAPI required. 8-12 creatives." },
+                      { platform: "TikTok", market: "US/Canada", objective: "Awareness", format: "In-Feed Video", buying: "CPM", low: 6, mid: 12, high: 20, notes: "TopView reservation: $50K+/day." },
+                      { platform: "TikTok", market: "UAE", objective: "Awareness", format: "In-Feed Video", buying: "CPM", low: 5, mid: 10, high: 18, notes: "Arabic content critical." },
+                      { platform: "TikTok", market: "KSA", objective: "Awareness", format: "In-Feed Video", buying: "CPM", low: 6, mid: 12, high: 22, notes: "Highest TikTok usage regionally." },
+                      { platform: "TikTok", market: "SEA", objective: "Awareness", format: "In-Feed Video", buying: "CPM", low: 2, mid: 5, high: 10, notes: "TikTok Shop live in SEA." },
+                      { platform: "TikTok", market: "UAE", objective: "Video Views", format: "In-Feed Video", buying: "CPV", low: 0.01, mid: 0.03, high: 0.08, notes: "Spark Ads 70% better CTR." },
+                      { platform: "Snapchat", market: "KSA", objective: "Awareness", format: "Snap Ad/Story", buying: "CPM", low: 3, mid: 5, high: 12, notes: "60-70% penetration. Non-negotiable." },
+                      { platform: "Snapchat", market: "UAE", objective: "Awareness", format: "Snap Ad/Story", buying: "CPM", low: 4, mid: 6, high: 14, notes: "Strong youth audience." },
+                      { platform: "Snapchat", market: "US/Canada", objective: "Awareness", format: "Snap Ad/Story", buying: "CPM", low: 5, mid: 8, high: 16, notes: "AR Lens: $15K-$50K reservation." },
+                      { platform: "YouTube", market: "US/Canada", objective: "Video Views", format: "TrueView", buying: "CPV", low: 0.02, mid: 0.06, high: 0.12, notes: "Skip after 5s. 15-30s ideal." },
+                      { platform: "YouTube", market: "UAE", objective: "Video Views", format: "TrueView", buying: "CPV", low: 0.01, mid: 0.03, high: 0.08, notes: "Arabic content high consumption." },
+                      { platform: "YouTube", market: "UAE", objective: "Awareness", format: "Bumper/Non-Skip", buying: "CPM", low: 5, mid: 10, high: 20, notes: "Masthead: book 4-8 weeks ahead." },
+                      { platform: "Google Search", market: "US/Canada", objective: "Traffic", format: "Text Ads", buying: "CPC", low: 1.50, mid: 4.00, high: 12.00, notes: "Varies hugely by vertical." },
+                      { platform: "Google Search", market: "UAE", objective: "Traffic", format: "Text Ads", buying: "CPC", low: 0.80, mid: 2.50, high: 8.00, notes: "Brand terms much cheaper." },
+                      { platform: "Google Search", market: "UAE", objective: "Lead Gen", format: "Search + PMax", buying: "CPL", low: 20, mid: 60, high: 200, notes: "Real estate/luxury CPL $100+." },
+                      { platform: "LinkedIn", market: "US/Canada", objective: "Awareness", format: "Sponsored Content", buying: "CPM", low: 30, mid: 55, high: 90, notes: "Premium B2B audience." },
+                      { platform: "LinkedIn", market: "UAE", objective: "Awareness", format: "Sponsored Content", buying: "CPM", low: 20, mid: 35, high: 65, notes: "Growing enterprise sector." },
+                      { platform: "LinkedIn", market: "UAE", objective: "Lead Gen", format: "Lead Gen Forms", buying: "CPL", low: 30, mid: 80, high: 200, notes: "Pre-filled forms convert best." },
+                      { platform: "X (Twitter)", market: "UAE", objective: "Awareness", format: "Promoted Ads", buying: "CPM", low: 6, mid: 12, high: 22, notes: "Best for live events/moments." },
+                      { platform: "Programmatic", market: "UAE", objective: "Awareness", format: "Display Banner", buying: "CPM", low: 2, mid: 8, high: 18, notes: "PMPs: $8-15. Open: $2-5." },
+                      { platform: "Programmatic", market: "UAE", objective: "Awareness", format: "CTV (Shahid/OSN+)", buying: "CPM", low: 15, mid: 30, high: 50, notes: "PMP only. Near 100% viewability." },
+                      { platform: "Programmatic", market: "US/Canada", objective: "Awareness", format: "CTV (Hulu/Peacock)", buying: "CPM", low: 20, mid: 35, high: 55, notes: "Premium inventory. Non-skip." },
+                      { platform: "Programmatic", market: "UAE", objective: "Awareness", format: "DOOH", buying: "CPM", low: 8, mid: 20, high: 45, notes: "Premium locations: Dubai Mall, SZR." },
+                    ].filter(r => (rateCardFilter.platform === "All" || r.platform === rateCardFilter.platform) && (rateCardFilter.market === "All" || r.market === rateCardFilter.market) && (rateCardFilter.objective === "All" || r.objective === rateCardFilter.objective)).map((r, i) => (
+                      <tr key={i} style={{ borderBottom: "1px solid #f0f0f5", background: i % 2 === 0 ? "#f9f9fb" : "transparent" }}>
+                        <td style={{ padding: "6px", fontWeight: 600, color: "#1a1a2e" }}>{r.platform}</td>
+                        <td style={{ padding: "6px", color: "#555566" }}>{r.market}</td>
+                        <td style={{ padding: "6px", color: "#555566" }}>{r.objective}</td>
+                        <td style={{ padding: "6px", color: "#555566" }}>{r.format}</td>
+                        <td style={{ padding: "6px" }}><Chip color="blue">{r.buying}</Chip></td>
+                        <td style={{ padding: "6px", color: "#2a8c3e", fontFamily: "monospace", fontWeight: 600 }}>${r.low}</td>
+                        <td style={{ padding: "6px", color: "#b8860b", fontFamily: "monospace", fontWeight: 600 }}>${r.mid}</td>
+                        <td style={{ padding: "6px", color: "#cc3333", fontFamily: "monospace", fontWeight: 600 }}>${r.high}</td>
+                        <td style={{ padding: "6px", color: "#6a6a7e", fontSize: 10 }}>USD</td>
+                        <td style={{ padding: "6px", color: "#6a6a7e", fontSize: 10, maxWidth: 180 }}>{r.notes}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <Card style={{ marginTop: 16, background: "#f0edf5", border: "1px solid #d0c0e0" }}>
+                <div style={{ fontSize: 11, color: "#555566" }}><strong style={{ color: "#2D1768" }}>Note:</strong> All rates are directional benchmarks based on agency experience. Actual rates vary by auction dynamics, creative quality, targeting, seasonality, and client vertical. Always confirm with platform reps for current pricing and minimum commitments.</div>
+              </Card>
+            </div>
+          )}
+
+          {/* PACING TRACKER */}
+          {activeSection === "pacing" && (
+            <div>
+              <SectionTitle>Campaign Pacing & Budget Tracker</SectionTitle>
+              <SectionDesc>Monitor daily spend against monthly budgets. Traffic light system flags campaigns that are over or under-pacing so you can adjust before it's too late.</SectionDesc>
+
+              <button onClick={() => setPacingRows(p => [...p, { campaign: `Campaign ${p.length + 1}`, budget: 50000, spent: 0, daysElapsed: 1, totalDays: 30 }])} style={{ padding: "8px 16px", borderRadius: 8, border: "1px solid #2D1768", background: "#2D176810", color: "#2D1768", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", marginBottom: 16 }}>+ Add Campaign</button>
+
+              <div style={{ overflowX: "auto" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+                  <thead>
+                    <tr style={{ borderBottom: "2px solid #d0d0e0" }}>
+                      {["Campaign", "Monthly Budget", "Spent to Date", "Day", "Total Days", "Daily Target", "Actual Daily", "Pacing", "Projected EOM", "Variance", "Status", ""].map(h => (
+                        <th key={h} style={{ padding: "8px 4px", textAlign: "left", color: "#555566", fontSize: 9, fontWeight: 700, textTransform: "uppercase" }}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {pacingRows.map((row, i) => {
+                      const dailyTarget = row.budget / row.totalDays;
+                      const idealSpent = dailyTarget * row.daysElapsed;
+                      const actualDaily = row.daysElapsed > 0 ? row.spent / row.daysElapsed : 0;
+                      const projectedEOM = actualDaily * row.totalDays;
+                      const pacingPct = idealSpent > 0 ? (row.spent / idealSpent) * 100 : 0;
+                      const variance = projectedEOM - row.budget;
+                      const variancePct = row.budget > 0 ? (variance / row.budget) * 100 : 0;
+                      const status = pacingPct >= 90 && pacingPct <= 110 ? "on-track" : pacingPct > 110 ? "over" : "under";
+                      const statusColor = status === "on-track" ? "#2a8c3e" : status === "over" ? "#cc3333" : "#b8860b";
+                      const statusBg = status === "on-track" ? "#e8f5e9" : status === "over" ? "#ffebee" : "#fff8e1";
+                      const statusIcon = status === "on-track" ? "🟢" : status === "over" ? "🔴" : "🟡";
+
+                      return (
+                        <tr key={i} style={{ borderBottom: "1px solid #f0f0f5" }}>
+                          <td style={{ padding: "6px" }}><input value={row.campaign} onChange={e => setPacingRows(p => p.map((r,ri) => ri === i ? {...r, campaign: e.target.value} : r))} style={{ width: 120, padding: "4px 6px", border: "1px solid #d0d0d8", borderRadius: 4, fontSize: 11, fontFamily: "inherit", color: "#1a1a2e", background: "#fff" }} /></td>
+                          <td style={{ padding: "6px" }}><input type="number" value={row.budget} onChange={e => setPacingRows(p => p.map((r,ri) => ri === i ? {...r, budget: Number(e.target.value)} : r))} style={{ width: 80, padding: "4px 6px", border: "1px solid #d0d0d8", borderRadius: 4, fontSize: 11, fontFamily: "monospace", color: "#1a1a2e", background: "#fff" }} /></td>
+                          <td style={{ padding: "6px" }}><input type="number" value={row.spent} onChange={e => setPacingRows(p => p.map((r,ri) => ri === i ? {...r, spent: Number(e.target.value)} : r))} style={{ width: 80, padding: "4px 6px", border: "1px solid #d0d0d8", borderRadius: 4, fontSize: 11, fontFamily: "monospace", color: "#1a1a2e", background: "#fff" }} /></td>
+                          <td style={{ padding: "6px" }}><input type="number" value={row.daysElapsed} onChange={e => setPacingRows(p => p.map((r,ri) => ri === i ? {...r, daysElapsed: Number(e.target.value)} : r))} style={{ width: 40, padding: "4px 6px", border: "1px solid #d0d0d8", borderRadius: 4, fontSize: 11, fontFamily: "monospace", color: "#1a1a2e", background: "#fff", textAlign: "center" }} /></td>
+                          <td style={{ padding: "6px" }}><input type="number" value={row.totalDays} onChange={e => setPacingRows(p => p.map((r,ri) => ri === i ? {...r, totalDays: Number(e.target.value)} : r))} style={{ width: 40, padding: "4px 6px", border: "1px solid #d0d0d8", borderRadius: 4, fontSize: 11, fontFamily: "monospace", color: "#1a1a2e", background: "#fff", textAlign: "center" }} /></td>
+                          <td style={{ padding: "6px", fontFamily: "monospace", color: "#555566" }}>${dailyTarget.toFixed(0)}</td>
+                          <td style={{ padding: "6px", fontFamily: "monospace", fontWeight: 600, color: statusColor }}>${actualDaily.toFixed(0)}</td>
+                          <td style={{ padding: "6px" }}><span style={{ padding: "2px 8px", borderRadius: 10, background: statusBg, color: statusColor, fontSize: 10, fontWeight: 700 }}>{pacingPct.toFixed(0)}%</span></td>
+                          <td style={{ padding: "6px", fontFamily: "monospace", fontWeight: 600, color: "#1a1a2e" }}>${projectedEOM.toLocaleString(undefined, {maximumFractionDigits: 0})}</td>
+                          <td style={{ padding: "6px", fontFamily: "monospace", fontWeight: 600, color: statusColor }}>{variance >= 0 ? "+" : ""}${variance.toLocaleString(undefined, {maximumFractionDigits: 0})} ({variancePct >= 0 ? "+" : ""}{variancePct.toFixed(1)}%)</td>
+                          <td style={{ padding: "6px", fontSize: 14 }}>{statusIcon}</td>
+                          <td style={{ padding: "6px" }}><button onClick={() => setPacingRows(p => p.filter((_,ri) => ri !== i))} style={{ background: "transparent", border: "none", color: "#cc3333", cursor: "pointer", fontSize: 12 }}>x</button></td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              <Card style={{ marginTop: 16 }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a2e", marginBottom: 8 }}>Pacing Legend</div>
+                <div style={{ display: "flex", gap: 20, fontSize: 11, color: "#555566" }}>
+                  <span>🟢 <strong style={{ color: "#2a8c3e" }}>On Track</strong> (90-110%)</span>
+                  <span>🟡 <strong style={{ color: "#b8860b" }}>Under-pacing</strong> (&lt;90%) - Increase bids/budgets or broaden targeting</span>
+                  <span>🔴 <strong style={{ color: "#cc3333" }}>Over-pacing</strong> (&gt;110%) - Reduce daily caps or narrow targeting</span>
+                </div>
+              </Card>
+            </div>
+          )}
+
+          {/* CROSS-MARKET PLANNING MATRIX */}
+          {activeSection === "marketmatrix" && (
+            <div>
+              <SectionTitle>Cross-Market Planning Matrix</SectionTitle>
+              <SectionDesc>Toggle platforms on/off per market. Auto-calculates total budget needed and flags markets where spend falls below platform learning minimums.</SectionDesc>
+
+              {(() => {
+                const markets = ["UAE", "KSA", "Kuwait", "Qatar", "UK", "US", "Germany", "France", "India", "China", "Singapore", "Australia"];
+                const plats = [
+                  { name: "Meta", min: 5000, icon: "Meta" },
+                  { name: "TikTok", min: 5000, icon: "TikTok" },
+                  { name: "Snap", min: 5000, icon: "Snap" },
+                  { name: "YouTube", min: 5000, icon: "YT" },
+                  { name: "Google", min: 10000, icon: "Ggl" },
+                  { name: "LinkedIn", min: 10000, icon: "Li" },
+                  { name: "X", min: 5000, icon: "X" },
+                  { name: "Prog", min: 20000, icon: "Prg" },
+                ];
+                const [matBudget, setMatBudget] = useState(100000);
+                const toggleCell = (market, plat) => setMarketMatrix(p => ({...p, [`${market}_${plat}`]: !p[`${market}_${plat}`]}));
+                const activeCount = Object.values(marketMatrix).filter(Boolean).length;
+                const perCell = activeCount > 0 ? matBudget / activeCount : 0;
+                const marketTotals = {};
+                markets.forEach(m => { marketTotals[m] = plats.filter(p => marketMatrix[`${m}_${p.name}`]).length * perCell; });
+
+                return (<>
+                  <Card style={{ marginBottom: 16, padding: 14 }}>
+                    <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+                      <div>
+                        <div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 4 }}>Total Monthly Budget (USD)</div>
+                        <input type="number" value={matBudget} onChange={e => setMatBudget(Number(e.target.value))} style={{ width: 140, padding: "8px 10px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, fontSize: 14, fontWeight: 700, fontFamily: "monospace", color: "#2D1768" }} />
+                      </div>
+                      <div style={{ fontSize: 11, color: "#555566" }}>
+                        Active cells: <strong>{activeCount}</strong> | Per cell: <strong>${perCell.toLocaleString(undefined, {maximumFractionDigits: 0})}</strong>
+                      </div>
+                    </div>
+                  </Card>
+
+                  <div style={{ overflowX: "auto" }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 11 }}>
+                      <thead>
+                        <tr>
+                          <th style={{ padding: "8px 6px", textAlign: "left", color: "#555566", fontSize: 9, fontWeight: 700, minWidth: 80 }}>MARKET</th>
+                          {plats.map(p => <th key={p.name} style={{ padding: "8px 4px", textAlign: "center", color: "#555566", fontSize: 9, fontWeight: 700, minWidth: 60 }}>{p.name}<br/><span style={{ color: "#9a9aaa", fontWeight: 400 }}>${(p.min/1000).toFixed(0)}K min</span></th>)}
+                          <th style={{ padding: "8px 6px", textAlign: "right", color: "#555566", fontSize: 9, fontWeight: 700 }}>TOTAL</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {markets.map(market => {
+                          const total = marketTotals[market];
+                          const hasIssue = plats.some(p => marketMatrix[`${market}_${p.name}`] && perCell < p.min);
+                          return (
+                            <tr key={market} style={{ borderBottom: "1px solid #f0f0f5" }}>
+                              <td style={{ padding: "6px", fontWeight: 700, color: "#1a1a2e" }}>{market}</td>
+                              {plats.map(p => {
+                                const key = `${market}_${p.name}`;
+                                const active = marketMatrix[key];
+                                const belowMin = active && perCell < p.min;
+                                return (
+                                  <td key={p.name} style={{ padding: "4px", textAlign: "center" }}>
+                                    <button onClick={() => toggleCell(market, p.name)} style={{
+                                      width: 36, height: 28, borderRadius: 6, border: belowMin ? "2px solid #cc3333" : active ? "2px solid #7AC143" : "1px solid #d0d0d8",
+                                      background: belowMin ? "#ffebee" : active ? "#e8f5e9" : "#f9f9fb",
+                                      color: active ? "#2a8c3e" : "#d0d0d8", fontSize: 12, fontWeight: 800, cursor: "pointer", fontFamily: "inherit"
+                                    }}>{active ? "✓" : ""}</button>
+                                  </td>
+                                );
+                              })}
+                              <td style={{ padding: "6px", textAlign: "right", fontFamily: "monospace", fontWeight: 700, color: total > 0 ? "#1a1a2e" : "#d0d0d8" }}>${total.toLocaleString(undefined, {maximumFractionDigits: 0})}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {Object.values(marketMatrix).some(Boolean) && plats.some(p => Object.entries(marketMatrix).some(([k,v]) => v && k.endsWith(`_${p.name}`) && perCell < p.min)) && (
+                    <Card style={{ marginTop: 16, background: "#ffebee", border: "1px solid #ffcdd2" }}>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: "#cc3333", marginBottom: 4 }}>Budget Warning</div>
+                      <div style={{ fontSize: 11, color: "#555566" }}>
+                        Some cells are below platform learning minimums (highlighted in red). At ${perCell.toLocaleString(undefined, {maximumFractionDigits: 0})} per cell, consider: reducing markets, reducing platforms per market, or increasing total budget. Platforms below minimum won't exit learning phase and will underperform.
+                      </div>
+                    </Card>
+                  )}
+                </>);
+              })()}
+            </div>
+          )}
+
+          {/* QBR GENERATOR */}
+          {activeSection === "qbr" && (
+            <div>
+              <SectionTitle>QBR / Report Template Generator</SectionTitle>
+              <SectionDesc>Input campaign results to generate a structured Quarterly Business Review with performance analysis, benchmarks, insights, and recommendations.</SectionDesc>
+
+              <Card style={{ marginBottom: 16, padding: 16 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 14 }}>
+                  <div>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 3 }}>Client Name</div>
+                    <input value={qbrData.client} onChange={e => setQbrData(p => ({...p, client: e.target.value}))} placeholder="e.g. OMNIYAT" style={{ width: "100%", padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, fontSize: 12, fontFamily: "inherit", color: "#1a1a2e", boxSizing: "border-box" }} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 3 }}>Reporting Period</div>
+                    <input value={qbrData.period} onChange={e => setQbrData(p => ({...p, period: e.target.value}))} placeholder="e.g. Q1 2026 (Jan-Mar)" style={{ width: "100%", padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, fontSize: 12, fontFamily: "inherit", color: "#1a1a2e", boxSizing: "border-box" }} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 3 }}>Total Spend (USD)</div>
+                    <input value={qbrData.totalSpend || ""} onChange={e => setQbrData(p => ({...p, totalSpend: e.target.value}))} placeholder="e.g. 250,000" style={{ width: "100%", padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, fontSize: 12, fontFamily: "inherit", color: "#1a1a2e", boxSizing: "border-box" }} />
+                  </div>
+                </div>
+
+                <div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 6 }}>Platform Results</div>
+                <button onClick={() => setQbrData(p => ({...p, platforms: [...(p.platforms || []), { platform: "Meta", spend: "", impressions: "", clicks: "", conversions: "", revenue: "" }]}))} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid #2D1768", background: "#2D176810", color: "#2D1768", fontSize: 10, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", marginBottom: 10 }}>+ Add Platform</button>
+
+                {(qbrData.platforms || []).map((plat, i) => (
+                  <div key={i} style={{ display: "grid", gridTemplateColumns: "100px 1fr 1fr 1fr 1fr 1fr 30px", gap: 6, marginBottom: 6, alignItems: "center" }}>
+                    <select value={plat.platform} onChange={e => setQbrData(p => ({...p, platforms: p.platforms.map((pl,pi) => pi === i ? {...pl, platform: e.target.value} : pl)}))} style={{ padding: "5px 4px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 4, fontSize: 10, fontFamily: "inherit", color: "#1a1a2e" }}>
+                      {["Meta", "TikTok", "Snapchat", "YouTube", "Google Search", "Google PMax", "LinkedIn", "X (Twitter)", "Programmatic", "Pinterest"].map(p => <option key={p}>{p}</option>)}
+                    </select>
+                    {["spend", "impressions", "clicks", "conversions", "revenue"].map(f => (
+                      <input key={f} value={plat[f]} onChange={e => setQbrData(p => ({...p, platforms: p.platforms.map((pl,pi) => pi === i ? {...pl, [f]: e.target.value} : pl)}))} placeholder={f.charAt(0).toUpperCase() + f.slice(1)} style={{ padding: "5px 6px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 4, fontSize: 10, fontFamily: "monospace", color: "#1a1a2e" }} />
+                    ))}
+                    <button onClick={() => setQbrData(p => ({...p, platforms: p.platforms.filter((_,pi) => pi !== i)}))} style={{ background: "transparent", border: "none", color: "#cc3333", cursor: "pointer", fontSize: 12 }}>x</button>
+                  </div>
+                ))}
+              </Card>
+
+              {(qbrData.platforms || []).length > 0 && qbrData.client && (
+                <div>
+                  <Card style={{ background: "#f0edf5", border: "1px solid #d0c0e0", marginBottom: 16, padding: 20 }}>
+                    <div style={{ fontSize: 18, fontWeight: 800, color: "#2D1768", marginBottom: 4 }}>{qbrData.client} - Quarterly Business Review</div>
+                    <div style={{ fontSize: 12, color: "#555566" }}>{qbrData.period} | Total Spend: ${qbrData.totalSpend || "N/A"}</div>
+                  </Card>
+
+                  <Card style={{ marginBottom: 16 }}>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: "#2D1768", marginBottom: 12 }}>Performance Summary by Platform</div>
+                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 11 }}>
+                      <thead>
+                        <tr style={{ borderBottom: "2px solid #d0d0e0" }}>
+                          {["Platform", "Spend", "Impressions", "Clicks", "CTR", "Conversions", "CPA", "Revenue", "ROAS"].map(h => (
+                            <th key={h} style={{ padding: "6px 4px", textAlign: "left", color: "#555566", fontSize: 9, fontWeight: 700 }}>{h}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(qbrData.platforms || []).map((plat, i) => {
+                          const spend = parseFloat(plat.spend) || 0;
+                          const imps = parseFloat(plat.impressions) || 0;
+                          const clicks = parseFloat(plat.clicks) || 0;
+                          const convs = parseFloat(plat.conversions) || 0;
+                          const rev = parseFloat(plat.revenue) || 0;
+                          const ctr = imps > 0 ? (clicks / imps * 100) : 0;
+                          const cpa = convs > 0 ? spend / convs : 0;
+                          const roas = spend > 0 ? rev / spend : 0;
+                          return (
+                            <tr key={i} style={{ borderBottom: "1px solid #f0f0f5" }}>
+                              <td style={{ padding: "6px 4px", fontWeight: 600, color: "#1a1a2e" }}>{plat.platform}</td>
+                              <td style={{ padding: "6px 4px", fontFamily: "monospace" }}>${spend.toLocaleString()}</td>
+                              <td style={{ padding: "6px 4px", fontFamily: "monospace" }}>{imps.toLocaleString()}</td>
+                              <td style={{ padding: "6px 4px", fontFamily: "monospace" }}>{clicks.toLocaleString()}</td>
+                              <td style={{ padding: "6px 4px", fontFamily: "monospace", color: ctr >= 1 ? "#2a8c3e" : "#b8860b" }}>{ctr.toFixed(2)}%</td>
+                              <td style={{ padding: "6px 4px", fontFamily: "monospace" }}>{convs.toLocaleString()}</td>
+                              <td style={{ padding: "6px 4px", fontFamily: "monospace", fontWeight: 600, color: "#2D1768" }}>{cpa > 0 ? `$${cpa.toFixed(2)}` : "-"}</td>
+                              <td style={{ padding: "6px 4px", fontFamily: "monospace" }}>{rev > 0 ? `$${rev.toLocaleString()}` : "-"}</td>
+                              <td style={{ padding: "6px 4px", fontFamily: "monospace", fontWeight: 700, color: roas >= 3 ? "#2a8c3e" : roas >= 1 ? "#b8860b" : "#cc3333" }}>{roas > 0 ? `${roas.toFixed(2)}x` : "-"}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </Card>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
+                    <Card style={{ padding: 16 }}>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>Key Insights</div>
+                      <div style={{ fontSize: 12, color: "#555566", lineHeight: 1.8 }}>
+                        {(() => {
+                          const ps = qbrData.platforms || [];
+                          const topSpend = [...ps].sort((a,b) => (parseFloat(b.spend)||0) - (parseFloat(a.spend)||0))[0];
+                          const topConv = [...ps].sort((a,b) => (parseFloat(b.conversions)||0) - (parseFloat(a.conversions)||0))[0];
+                          const bestCTR = [...ps].filter(p => parseFloat(p.impressions) > 0).sort((a,b) => ((parseFloat(b.clicks)||0)/(parseFloat(b.impressions)||1)) - ((parseFloat(a.clicks)||0)/(parseFloat(a.impressions)||1)))[0];
+                          return (<>
+                            {topSpend && <div>- Highest investment: <strong>{topSpend.platform}</strong> at ${parseFloat(topSpend.spend).toLocaleString()}</div>}
+                            {topConv && <div>- Top converter: <strong>{topConv.platform}</strong> with {parseFloat(topConv.conversions).toLocaleString()} conversions</div>}
+                            {bestCTR && <div>- Best engagement: <strong>{bestCTR.platform}</strong> with highest CTR</div>}
+                            <div>- Total platforms: <strong>{ps.length}</strong></div>
+                          </>);
+                        })()}
+                      </div>
+                    </Card>
+                    <Card style={{ padding: 16 }}>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>Recommendations</div>
+                      <div style={{ fontSize: 12, color: "#555566", lineHeight: 1.8 }}>
+                        {(() => {
+                          const ps = qbrData.platforms || [];
+                          const lowCTR = ps.filter(p => parseFloat(p.impressions) > 0 && (parseFloat(p.clicks)||0)/(parseFloat(p.impressions)||1) < 0.005);
+                          const highCPA = ps.filter(p => parseFloat(p.conversions) > 0 && (parseFloat(p.spend)||0)/(parseFloat(p.conversions)||1) > 100);
+                          return (<>
+                            {lowCTR.length > 0 && <div>- Review creative on <strong>{lowCTR.map(p => p.platform).join(", ")}</strong> - CTR below 0.5% suggests creative fatigue or poor targeting.</div>}
+                            {highCPA.length > 0 && <div>- Optimise <strong>{highCPA.map(p => p.platform).join(", ")}</strong> - CPA above $100, consider audience refinement or bid strategy change.</div>}
+                            <div>- Refresh creative assets quarterly - algorithmic platforms reward new creative.</div>
+                            <div>- Ensure all conversion tracking is verified before next quarter.</div>
+                          </>);
+                        })()}
+                      </div>
+                    </Card>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
