@@ -24,7 +24,7 @@ const SECTIONS = [
   { id: "ratecard", label: "Rate Card Database", num: "20" },
   { id: "pacing", label: "Pacing Tracker", num: "21" },
   { id: "marketmatrix", label: "Market Planning Matrix", num: "22" },
-  { id: "qbr", label: "Campaign Report Maker", num: "23" },
+  { id: "qbr", label: "Etihad Report Builder", num: "23" },
   { id: "glossary", label: "KPI Glossary", num: "24" },
 ];
 
@@ -616,7 +616,7 @@ export default function App() {
   const [pacingRows, setPacingRows] = useState([{ campaign: "Campaign 1", budget: 50000, spent: 0, daysElapsed: 1, totalDays: 30 }]);
   const [marketMatrix, setMarketMatrix] = useState({});
   const [matBudget, setMatBudget] = useState(100000);
-  const [qbrData, setQbrData] = useState({ client: "", period: "", objective: "", csvData: null, csvRaw: "", aiInsights: "", aiLoading: false });
+  const [qbrData, setQbrData] = useState({ campaign: "", period: "", objective: "", context: "", platforms: [], aiParsed: null, aiLoading: false });
   const [gameActive, setGameActive] = useState(false);
   const [gameTimer, setGameTimer] = useState(120);
   const [foundPikas, setFoundPikas] = useState({});
@@ -2994,108 +2994,317 @@ export default function App() {
             </div>
           )}
 
-          {/* CAMPAIGN REPORT MAKER */}
+
+          {/* ETIHAD REPORT BUILDER */}
           {activeSection === "qbr" && (
             <div>
-              <SectionTitle>End of Campaign Report Maker</SectionTitle>
-              <SectionDesc>Upload campaign data (CSV) or enter manually. AI analyses performance and generates a downloadable report deck.</SectionDesc>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 6 }}>
+                <div style={{ width: 40, height: 40, borderRadius: 8, background: "#1A1A2E", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3L21 12L12 21Z" fill="#BD8B13" opacity="0.8"/><path d="M7 12L12 7L17 12L12 17Z" fill="#BD8B13"/></svg>
+                </div>
+                <div>
+                  <div style={{ fontSize: 22, fontWeight: 800, color: "#1A1A2E", letterSpacing: "-0.02em" }}>Etihad Airways - Campaign Report Builder</div>
+                  <div style={{ fontSize: 11, color: "#BD8B13", fontWeight: 600 }}>Performance Analysis & Insights Deck Generator</div>
+                </div>
+              </div>
+              <SectionDesc>Upload weekly/monthly performance data with time periods. AI analyses trends, generates observations, and exports a branded Etihad PPTX deck.</SectionDesc>
 
-              <Card style={{ marginBottom: 16, padding: 16 }}>
-                <div style={{ fontSize: 14, fontWeight: 700, color: "#2D1768", marginBottom: 12 }}>Step 1: Campaign Details + Data</div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 14 }}>
-                  {[{k:"client",l:"Client",p:"e.g. OMNIYAT"},{k:"period",l:"Campaign / Period",p:"e.g. Q1 2026 UAE"},{k:"objective",l:"Objective",p:"Lead Generation"}].map(f => (
-                    <div key={f.k}><div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 3 }}>{f.l}</div>
-                    <input value={qbrData[f.k]||""} onChange={e => setQbrData(p => ({...p, [f.k]: e.target.value}))} placeholder={f.p} style={{ width: "100%", padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, fontSize: 12, fontFamily: "inherit", color: "#1a1a2e", boxSizing: "border-box" }} /></div>
+              <Card style={{ marginBottom: 16, padding: 18, borderLeft: "4px solid #BD8B13" }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#1A1A2E", marginBottom: 12 }}>Step 1: Campaign Details</div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 12 }}>
+                  {[
+                    { k: "campaign", l: "Campaign Name", p: "e.g. EY Brand Awareness - Q1 2026" },
+                    { k: "period", l: "Reporting Period", p: "e.g. January - March 2026" },
+                    { k: "objective", l: "Campaign Objective", p: "e.g. Awareness, Traffic, Bookings" },
+                  ].map(f => (
+                    <div key={f.k}>
+                      <div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 3 }}>{f.l}</div>
+                      <input value={qbrData[f.k] || ""} onChange={e => setQbrData(p => ({...p, [f.k]: e.target.value}))} placeholder={f.p} style={{ width: "100%", padding: "8px 10px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, fontSize: 12, fontFamily: "inherit", color: "#1a1a2e", boxSizing: "border-box" }} />
+                    </div>
                   ))}
                 </div>
-                <div style={{ marginBottom: 12 }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 3 }}>Upload CSV <span style={{ fontWeight: 400 }}>(columns: Platform, Spend, Impressions, Clicks, Conversions, Revenue)</span></div>
-                  <input type="file" accept=".csv" onChange={e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = ev => { const rows = ev.target.result.split("\n").filter(r => r.trim()); const data = rows.slice(1).map(r => { const c = r.split(",").map(s => s.trim()); return { platform: c[0]||"", spend: c[1]||"", impressions: c[2]||"", clicks: c[3]||"", conversions: c[4]||"", revenue: c[5]||"" }; }).filter(r => r.platform); setQbrData(p => ({...p, platforms: data})); }; r.readAsText(f); }} style={{ padding: "8px", background: "#f9f9fb", border: "1px dashed #d0d0d8", borderRadius: 6, fontSize: 11, fontFamily: "inherit", width: "100%" }} />
+                <div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 3 }}>Additional Context for AI Analysis</div>
+                  <textarea value={qbrData.context || ""} onChange={e => setQbrData(p => ({...p, context: e.target.value}))} placeholder={"Provide any context that would help the AI analyse performance: budget changes mid-flight, creative refreshes, seasonal factors (Ramadan, holidays), competitor activity, tracking issues, new routes launched, fare sales, etc."} style={{ width: "100%", minHeight: 70, padding: "8px 10px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, fontSize: 12, fontFamily: "inherit", color: "#1a1a2e", boxSizing: "border-box", resize: "vertical", lineHeight: 1.5 }} />
                 </div>
-                <button onClick={() => setQbrData(p => ({...p, platforms: [...(p.platforms||[]), {platform:"Meta",spend:"",impressions:"",clicks:"",conversions:"",revenue:""}]}))} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid #2D1768", background: "#2D176810", color: "#2D1768", fontSize: 10, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", marginBottom: 10 }}>+ Add Row Manually</button>
-                {(qbrData.platforms||[]).length > 0 && <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 11 }}>
-                  <thead><tr style={{ borderBottom: "2px solid #d0d0e0" }}>{["Platform","Spend","Impressions","Clicks","Conversions","Revenue",""].map(h => <th key={h} style={{ padding: "6px 4px", textAlign: "left", color: "#555566", fontSize: 9, fontWeight: 700 }}>{h}</th>)}</tr></thead>
-                  <tbody>{(qbrData.platforms||[]).map((p,i) => <tr key={i} style={{ borderBottom: "1px solid #f0f0f5" }}>
-                    <td style={{ padding: "4px" }}><select value={p.platform} onChange={e => setQbrData(prev => ({...prev, platforms: prev.platforms.map((pl,pi) => pi===i?{...pl,platform:e.target.value}:pl)}))} style={{ padding: "4px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 4, fontSize: 10, fontFamily: "inherit" }}>{["Meta","TikTok","Snapchat","YouTube","Google Search","Google PMax","LinkedIn","X (Twitter)","Programmatic","Pinterest","Other"].map(o => <option key={o}>{o}</option>)}</select></td>
-                    {["spend","impressions","clicks","conversions","revenue"].map(f => <td key={f} style={{ padding: "4px" }}><input value={p[f]} onChange={e => setQbrData(prev => ({...prev, platforms: prev.platforms.map((pl,pi) => pi===i?{...pl,[f]:e.target.value}:pl)}))} placeholder="0" style={{ width: 80, padding: "4px 6px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 4, fontSize: 10, fontFamily: "monospace" }} /></td>)}
-                    <td><button onClick={() => setQbrData(prev => ({...prev, platforms: prev.platforms.filter((_,pi) => pi!==i)}))} style={{ background: "transparent", border: "none", color: "#cc3333", cursor: "pointer" }}>x</button></td>
-                  </tr>)}</tbody>
-                </table>}
               </Card>
 
-              {(qbrData.platforms||[]).length > 0 && <Card style={{ marginBottom: 16, padding: 16 }}>
-                <div style={{ fontSize: 14, fontWeight: 700, color: "#2D1768", marginBottom: 12 }}>Step 2: Generate AI Report</div>
-                <div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 4 }}>Anthropic API Key</div>
-                <input type="password" id="qbrApiKey" placeholder="sk-ant-..." style={{ width: 300, padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, fontSize: 11, fontFamily: "monospace", marginBottom: 10, boxSizing: "border-box" }} />
-                <div><button onClick={async () => {
-                  const apiKey = document.getElementById("qbrApiKey")?.value;
-                  if (!apiKey) return;
-                  setQbrData(p => ({...p, aiLoading: true, aiParsed: null}));
-                  const summary = (qbrData.platforms||[]).map(p => { const sp=parseFloat(p.spend)||0,im=parseFloat(p.impressions)||0,cl=parseFloat(p.clicks)||0,cv=parseFloat(p.conversions)||0,rv=parseFloat(p.revenue)||0; return `${p.platform}: Spend $${sp}, Impressions ${im}, Clicks ${cl}, CTR ${im>0?(cl/im*100).toFixed(2):0}%, Conversions ${cv}, CPA $${cv>0?(sp/cv).toFixed(2):"N/A"}, Revenue $${rv}, ROAS ${sp>0?(rv/sp).toFixed(2):"N/A"}x`; }).join("\n");
-                  try {
-                    const res = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" }, body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 2000, messages: [{ role: "user", content: `You are a senior media strategist at PHD. Analyse this campaign data. Respond ONLY in valid JSON, no markdown.\n\nClient: ${qbrData.client}\nCampaign: ${qbrData.period}\nObjective: ${qbrData.objective||"Lead Generation"}\n\nData:\n${summary}\n\nJSON format:\n{"executive_summary":"string","blended_cpa":number,"top_performer":{"platform":"string","reason":"string"},"underperformer":{"platform":"string","reason":"string"},"key_insights":["string","string","string","string"],"recommendations":["string","string","string"],"next_quarter_actions":["string","string","string"],"budget_reallocation":[{"platform":"string","current_pct":number,"recommended_pct":number,"rationale":"string"}]}` }] }) });
-                    const data = await res.json();
-                    const text = data.content?.[0]?.text || "";
-                    const clean = text.replace(/```json|```/g, "").trim();
-                    setQbrData(p => ({...p, aiLoading: false, aiParsed: JSON.parse(clean)}));
-                  } catch(e) { setQbrData(p => ({...p, aiLoading: false})); }
-                }} disabled={qbrData.aiLoading} style={{ padding: "10px 24px", borderRadius: 8, border: "none", background: qbrData.aiLoading ? "#d0d0d8" : "#2D1768", color: "#fff", fontSize: 12, fontWeight: 700, cursor: qbrData.aiLoading ? "wait" : "pointer", fontFamily: "inherit" }}>{qbrData.aiLoading ? "Analysing..." : "Generate AI Report"}</button></div>
-              </Card>}
+              <Card style={{ marginBottom: 16, padding: 18, borderLeft: "4px solid #1A1A2E" }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#1A1A2E", marginBottom: 4 }}>Step 2: Performance Data</div>
+                <div style={{ fontSize: 11, color: "#6a6a7e", marginBottom: 12 }}>Upload CSV with time periods for trend analysis, or add rows manually.</div>
+
+                <div style={{ marginBottom: 12, padding: 12, background: "#f9f9fb", borderRadius: 8, border: "1px dashed #d0d0d8" }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 4 }}>Upload CSV</div>
+                  <div style={{ fontSize: 9, color: "#9a9aaa", marginBottom: 6 }}>Columns: Period, Platform, Spend, Impressions, Clicks, Conversions, Revenue</div>
+                  <input type="file" accept=".csv" onChange={e => {
+                    const f = e.target.files[0]; if (!f) return;
+                    const r = new FileReader(); r.onload = ev => {
+                      const rows = ev.target.result.split("\n").filter(r => r.trim());
+                      const data = rows.slice(1).map(r => { const c = r.split(",").map(s => s.trim()); return { period: c[0]||"", platform: c[1]||"", spend: c[2]||"0", impressions: c[3]||"0", clicks: c[4]||"0", conversions: c[5]||"0", revenue: c[6]||"0" }; }).filter(r => r.platform);
+                      setQbrData(p => ({...p, platforms: data}));
+                    }; r.readAsText(f);
+                  }} style={{ fontSize: 11, fontFamily: "inherit" }} />
+                </div>
+
+                <button onClick={() => setQbrData(p => ({...p, platforms: [...(p.platforms||[]), {period:"Week 1", platform:"Meta", spend:"", impressions:"", clicks:"", conversions:"", revenue:""}]}))} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid #1A1A2E", background: "#1A1A2E10", color: "#1A1A2E", fontSize: 10, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", marginBottom: 10 }}>+ Add Row</button>
+
+                {(qbrData.platforms||[]).length > 0 && (
+                  <div style={{ overflowX: "auto" }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 10 }}>
+                      <thead><tr style={{ borderBottom: "2px solid #1A1A2E" }}>{["Period","Platform","Spend","Impressions","Clicks","Conversions","Revenue",""].map(h => <th key={h} style={{ padding: "6px 4px", textAlign: "left", color: "#1A1A2E", fontSize: 9, fontWeight: 700 }}>{h}</th>)}</tr></thead>
+                      <tbody>{(qbrData.platforms||[]).map((p,i) => <tr key={i} style={{ borderBottom: "1px solid #f0f0f5" }}>
+                        <td style={{ padding: "3px" }}><input value={p.period} onChange={e => setQbrData(prev => ({...prev, platforms: prev.platforms.map((pl,pi) => pi===i?{...pl,period:e.target.value}:pl)}))} style={{ width: 70, padding: "4px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 4, fontSize: 10, fontFamily: "inherit" }} /></td>
+                        <td style={{ padding: "3px" }}><select value={p.platform} onChange={e => setQbrData(prev => ({...prev, platforms: prev.platforms.map((pl,pi) => pi===i?{...pl,platform:e.target.value}:pl)}))} style={{ padding: "4px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 4, fontSize: 10, fontFamily: "inherit" }}>{["Meta","TikTok","Snapchat","YouTube","Google Search","Google PMax","Google DV360","LinkedIn","X (Twitter)","Programmatic","Pinterest","Other"].map(o => <option key={o}>{o}</option>)}</select></td>
+                        {["spend","impressions","clicks","conversions","revenue"].map(f => <td key={f} style={{ padding: "3px" }}><input value={p[f]} onChange={e => setQbrData(prev => ({...prev, platforms: prev.platforms.map((pl,pi) => pi===i?{...pl,[f]:e.target.value}:pl)}))} placeholder="0" style={{ width: 75, padding: "4px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 4, fontSize: 10, fontFamily: "monospace" }} /></td>)}
+                        <td><button onClick={() => setQbrData(prev => ({...prev, platforms: prev.platforms.filter((_,pi) => pi!==i)}))} style={{ background: "transparent", border: "none", color: "#cc3333", cursor: "pointer", fontSize: 11 }}>x</button></td>
+                      </tr>)}</tbody>
+                    </table>
+                    <div style={{ fontSize: 10, color: "#6a6a7e", marginTop: 6 }}>{(qbrData.platforms||[]).length} rows | {[...new Set((qbrData.platforms||[]).map(p => p.period))].length} periods | {[...new Set((qbrData.platforms||[]).map(p => p.platform))].length} platforms</div>
+                  </div>
+                )}
+              </Card>
+
+              {(qbrData.platforms||[]).length > 0 && (
+                <Card style={{ marginBottom: 16, padding: 18, borderLeft: "4px solid #BD8B13" }}>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: "#1A1A2E", marginBottom: 4 }}>Step 3: Generate AI Analysis & PPTX</div>
+                  <div style={{ fontSize: 11, color: "#6a6a7e", marginBottom: 10 }}>AI will analyse trends over time, identify insights, and generate an Etihad-branded deck.</div>
+
+                  <div style={{ marginBottom: 10 }}>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 3 }}>Anthropic API Key</div>
+                    <input type="password" id="qbrApiKey" placeholder="sk-ant-..." style={{ width: 300, padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, fontSize: 11, fontFamily: "monospace", boxSizing: "border-box" }} />
+                  </div>
+
+                  <button onClick={async () => {
+                    const apiKey = document.getElementById("qbrApiKey")?.value;
+                    if (!apiKey) { alert("Please enter your API key"); return; }
+                    setQbrData(p => ({...p, aiLoading: true, aiParsed: null}));
+                    try {
+                      const ps = qbrData.platforms || [];
+                      const periods = [...new Set(ps.map(p => p.period))];
+                      const platNames = [...new Set(ps.map(p => p.platform))];
+
+                      const trendData = periods.map(period => {
+                        const periodRows = ps.filter(p => p.period === period);
+                        return { period, platforms: periodRows.map(r => ({ platform: r.platform, spend: parseFloat(r.spend)||0, impressions: parseFloat(r.impressions)||0, clicks: parseFloat(r.clicks)||0, conversions: parseFloat(r.conversions)||0, revenue: parseFloat(r.revenue)||0 })) };
+                      });
+
+                      const prompt = `You are a senior media strategist at PHD agency analysing an Etihad Airways digital campaign. Analyse this time-series performance data and generate a comprehensive report. Respond ONLY in valid JSON.
+
+Campaign: ${qbrData.campaign || "Etihad Campaign"}
+Period: ${qbrData.period || "N/A"}
+Objective: ${qbrData.objective || "N/A"}
+Additional Context: ${qbrData.context || "None provided"}
+
+Performance Data by Period:
+${JSON.stringify(trendData, null, 2)}
+
+JSON format:
+{
+  "executive_summary": "3-4 sentence overview of campaign performance",
+  "total_spend": number,
+  "total_conversions": number,
+  "blended_cpa": number,
+  "total_revenue": number,
+  "overall_roas": number,
+  "slide_observations": {
+    "overall_performance": ["bullet 1", "bullet 2", "bullet 3", "bullet 4"],
+    "platform_breakdown": ["bullet about top platform", "bullet about #2", "bullet about underperformer", "efficiency observation"],
+    "trend_analysis": ["trend observation over time", "what improved", "what declined", "seasonality note"],
+    "audience_creative": ["creative performance note", "audience insight", "format observation", "device/placement insight"],
+    "recommendations": ["recommendation 1", "recommendation 2", "recommendation 3", "recommendation 4"],
+    "next_steps": ["action 1", "action 2", "action 3"]
+  },
+  "platform_summary": [{"platform":"string","total_spend":number,"total_impressions":number,"total_clicks":number,"total_conversions":number,"ctr":number,"cpa":number,"roas":number,"trend":"improving/stable/declining","observation":"string"}],
+  "period_totals": [{"period":"string","total_spend":number,"total_impressions":number,"total_clicks":number,"total_conversions":number}],
+  "top_performer": {"platform":"string","reason":"string"},
+  "underperformer": {"platform":"string","reason":"string"},
+  "budget_reallocation": [{"platform":"string","current_pct":number,"recommended_pct":number,"rationale":"string"}]
+}`;
+
+                      const res = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" }, body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 3000, messages: [{ role: "user", content: prompt }] }) });
+                      const data = await res.json();
+                      if (data.error) { alert("API Error: " + (data.error.message || JSON.stringify(data.error))); setQbrData(p => ({...p, aiLoading: false})); return; }
+                      const text = data.content?.[0]?.text || "";
+                      const clean = text.replace(/```json|```/g, "").trim();
+                      const parsed = JSON.parse(clean);
+                      setQbrData(p => ({...p, aiParsed: parsed, aiLoading: false}));
+                    } catch (e) { alert("Error: " + e.message); setQbrData(p => ({...p, aiLoading: false})); }
+                  }} disabled={qbrData.aiLoading} style={{ padding: "10px 24px", borderRadius: 8, border: "none", background: qbrData.aiLoading ? "#d0d0d8" : "#1A1A2E", color: qbrData.aiLoading ? "#6a6a7e" : "#BD8B13", fontSize: 12, fontWeight: 700, cursor: qbrData.aiLoading ? "wait" : "pointer", fontFamily: "inherit" }}>{qbrData.aiLoading ? "Analysing performance data..." : "Generate AI Analysis"}</button>
+                </Card>
+              )}
 
               {qbrData.aiParsed && (() => {
                 const ai = qbrData.aiParsed;
-                const ps = qbrData.platforms||[];
-                const totalSpend = ps.reduce((a,p) => a+(parseFloat(p.spend)||0), 0);
-                const totalConvs = ps.reduce((a,p) => a+(parseFloat(p.conversions)||0), 0);
+                const obs = ai.slide_observations || {};
 
-                const downloadDeck = () => {
-                  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>@page{size:landscape;margin:0}body{font-family:Arial,sans-serif;margin:0;color:#1a1a2e}.slide{width:100%;min-height:100vh;padding:60px 80px;box-sizing:border-box;page-break-after:always;position:relative}.slide:last-child{page-break-after:avoid}.st{font-size:32px;font-weight:800;color:#2D1768;margin-bottom:8px}.ss{font-size:16px;color:#777;margin-bottom:40px}.bb{position:absolute;bottom:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#2D1768,#7AC143)}.bf{position:absolute;bottom:20px;right:40px;font-size:10px;color:#bbb}.kg{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:40px}.kb{padding:24px;border-radius:12px;background:#f5f5f7}.kl{font-size:12px;color:#777;text-transform:uppercase;font-weight:700}.kv{font-size:36px;font-weight:800;color:#2D1768;margin-top:8px}table{width:100%;border-collapse:collapse;font-size:13px}th{padding:10px;text-align:left;background:#2D1768;color:white;font-size:11px;text-transform:uppercase}td{padding:10px;border-bottom:1px solid #eee}.ic{padding:16px 20px;background:#f5f5f7;border-radius:8px;margin-bottom:10px;border-left:4px solid #2D1768}.rc{padding:16px 20px;background:#f0faf5;border-radius:8px;margin-bottom:10px;border-left:4px solid #7AC143}</style></head><body>
-                  <div class="slide" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:linear-gradient(135deg,#f8f6ff,#f0faf5)"><div style="font-size:14px;font-weight:700;color:#7AC143;letter-spacing:3px;margin-bottom:12px">PHD MEDIA</div><div style="font-size:48px;font-weight:800;color:#2D1768;margin-bottom:12px">${qbrData.client}</div><div style="font-size:22px;color:#555">${qbrData.period}</div><div style="font-size:16px;color:#999;margin-top:8px">End of Campaign Performance Report</div><div class="bb"></div></div>
-                  <div class="slide"><div class="st">Executive Summary</div><div class="ss">Campaign overview</div><p style="font-size:18px;line-height:1.8;color:#333;max-width:800px">${ai.executive_summary||""}</p><div class="kg" style="margin-top:40px"><div class="kb"><div class="kl">Total Spend</div><div class="kv">$${totalSpend.toLocaleString()}</div></div><div class="kb"><div class="kl">Conversions</div><div class="kv">${totalConvs.toLocaleString()}</div></div><div class="kb"><div class="kl">Blended CPA</div><div class="kv">$${ai.blended_cpa?.toFixed(2)||"N/A"}</div></div><div class="kb"><div class="kl">Platforms</div><div class="kv">${ps.length}</div></div></div><div class="bb"></div><div class="bf">PHD | Intelligence. Connected.</div></div>
-                  <div class="slide"><div class="st">Platform Performance</div><div class="ss">Detailed breakdown</div><table><thead><tr><th>Platform</th><th>Spend</th><th>Impressions</th><th>Clicks</th><th>CTR</th><th>Conversions</th><th>CPA</th><th>Revenue</th><th>ROAS</th></tr></thead><tbody>${ps.map(p=>{const s=parseFloat(p.spend)||0,im=parseFloat(p.impressions)||0,cl=parseFloat(p.clicks)||0,cv=parseFloat(p.conversions)||0,rv=parseFloat(p.revenue)||0;return`<tr><td><strong>${p.platform}</strong></td><td>$${s.toLocaleString()}</td><td>${im.toLocaleString()}</td><td>${cl.toLocaleString()}</td><td>${im>0?(cl/im*100).toFixed(2):0}%</td><td>${cv.toLocaleString()}</td><td>${cv>0?"$"+(s/cv).toFixed(2):"-"}</td><td>${rv>0?"$"+rv.toLocaleString():"-"}</td><td>${s>0&&rv>0?(rv/s).toFixed(2)+"x":"-"}</td></tr>`}).join("")}</tbody></table><div class="bb"></div><div class="bf">PHD | Intelligence. Connected.</div></div>
-                  <div class="slide"><div class="st">Key Insights</div><div class="ss">AI-powered analysis</div>${(ai.key_insights||[]).map((ins,i)=>`<div class="ic"><strong style="color:#2D1768">${i+1}.</strong> ${ins}</div>`).join("")}<div style="margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:20px"><div style="padding:20px;background:#e8f5e9;border-radius:8px"><div style="font-size:12px;color:#2a8c3e;font-weight:700;margin-bottom:6px">TOP PERFORMER</div><div style="font-size:16px;font-weight:700">${ai.top_performer?.platform||""}</div><div style="font-size:13px;color:#555">${ai.top_performer?.reason||""}</div></div><div style="padding:20px;background:#ffebee;border-radius:8px"><div style="font-size:12px;color:#cc3333;font-weight:700;margin-bottom:6px">NEEDS ATTENTION</div><div style="font-size:16px;font-weight:700">${ai.underperformer?.platform||""}</div><div style="font-size:13px;color:#555">${ai.underperformer?.reason||""}</div></div></div><div class="bb"></div><div class="bf">PHD | Intelligence. Connected.</div></div>
-                  <div class="slide"><div class="st">Recommendations</div><div class="ss">Strategic next steps</div>${(ai.recommendations||[]).map(r=>`<div class="rc">${r}</div>`).join("")}<div style="margin-top:20px"><div style="font-size:14px;font-weight:700;color:#2D1768;margin-bottom:12px">Next Quarter</div>${(ai.next_quarter_actions||[]).map((a,i)=>`<div style="padding:12px 16px;background:#fff8e1;border-radius:8px;margin-bottom:8px;border-left:4px solid #b8860b"><strong>${i+1}.</strong> ${a}</div>`).join("")}</div><div class="bb"></div><div class="bf">PHD | Intelligence. Connected.</div></div>
-                  ${ai.budget_reallocation?`<div class="slide"><div class="st">Budget Reallocation</div><div class="ss">Recommended shifts</div><table><thead><tr><th>Platform</th><th>Current %</th><th>Recommended %</th><th>Change</th><th>Rationale</th></tr></thead><tbody>${(ai.budget_reallocation||[]).map(b=>`<tr><td><strong>${b.platform}</strong></td><td>${b.current_pct}%</td><td style="color:#2D1768;font-weight:700">${b.recommended_pct}%</td><td style="color:${b.recommended_pct>b.current_pct?"#2a8c3e":"#cc3333"};font-weight:700">${b.recommended_pct>b.current_pct?"+":""}${b.recommended_pct-b.current_pct}%</td><td style="font-size:12px;color:#555">${b.rationale}</td></tr>`).join("")}</tbody></table><div class="bb"></div><div class="bf">PHD | Intelligence. Connected.</div></div>`:""}
-                  <div class="slide" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:linear-gradient(135deg,#f8f6ff,#f0faf5)"><div style="font-size:14px;font-weight:700;color:#7AC143;letter-spacing:3px;margin-bottom:12px">PHD MEDIA</div><div style="font-size:36px;font-weight:800;color:#2D1768">Thank You</div><div style="font-size:16px;color:#777;margin-top:8px">Intelligence. Connected.</div><div class="bb"></div></div></body></html>`;
-                  const blob = new Blob([html], {type:"text/html"});
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement("a"); a.href = url; a.download = `${(qbrData.client||"Report").replace(/\s+/g,"_")}_Report_${new Date().toISOString().split("T")[0]}.html`; a.click(); URL.revokeObjectURL(url);
+                const downloadPPTX = async () => {
+                  if (!window.PptxGenJS) {
+                    const script = document.createElement("script");
+                    script.src = "https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js";
+                    document.head.appendChild(script);
+                    await new Promise(r => { script.onload = r; });
+                  }
+                  const pptx = new window.PptxGenJS();
+                  pptx.layout = "LAYOUT_WIDE";
+                  pptx.author = "PHD Media";
+
+                  const EY_NAVY = "1A1A2E";
+                  const EY_GOLD = "BD8B13";
+
+                  const addSlide = (title, bullets, chartData) => {
+                    const slide = pptx.addSlide();
+                    slide.background = { color: "FFFFFF" };
+                    slide.addShape(pptx.ShapeType.rect, { x: 0, y: 0, w: "100%", h: 0.06, fill: { color: EY_GOLD } });
+                    slide.addShape(pptx.ShapeType.rect, { x: 0, y: 7.44, w: "100%", h: 0.06, fill: { color: EY_NAVY } });
+                    slide.addText("ETIHAD AIRWAYS", { x: 0.5, y: 0.2, w: 3, h: 0.3, fontSize: 8, color: EY_GOLD, fontFace: "Arial", bold: true, letterSpacing: 3 });
+                    slide.addText(title, { x: 0.5, y: 0.55, w: 8, h: 0.5, fontSize: 22, color: EY_NAVY, fontFace: "Arial", bold: true });
+                    slide.addText(qbrData.campaign || "Campaign Report", { x: 0.5, y: 1.0, w: 6, h: 0.3, fontSize: 11, color: "999999", fontFace: "Arial" });
+                    slide.addText("PHD | Intelligence. Connected.", { x: 9, y: 7.1, w: 4, h: 0.3, fontSize: 7, color: "BBBBBB", fontFace: "Arial", align: "right" });
+
+                    if (bullets && bullets.length > 0) {
+                      const bulletRows = bullets.map(b => ({ text: b, options: { fontSize: 12, color: "333333", fontFace: "Arial", bullet: { type: "bullet", color: EY_GOLD }, paraSpaceAfter: 8, lineSpacing: 18 } }));
+                      slide.addText(bulletRows, { x: 0.5, y: 1.5, w: chartData ? 5.5 : 12, h: 5, valign: "top" });
+                    }
+
+                    if (chartData) {
+                      try {
+                        slide.addChart(pptx.ChartType.bar, chartData, { x: 6.5, y: 1.5, w: 6.5, h: 4.5, showValue: false, catAxisLabelColor: "666666", catAxisLabelFontSize: 8, valAxisLabelColor: "666666", valAxisLabelFontSize: 8, chartColors: [EY_NAVY, EY_GOLD, "7AC143", "CC3333", "3B82F6", "8B5CF6"], showLegend: true, legendFontSize: 8, legendPos: "b" });
+                      } catch(e) { console.log("Chart error:", e); }
+                    }
+                    return slide;
+                  };
+
+                  // SLIDE 1: Title
+                  const s1 = pptx.addSlide();
+                  s1.background = { color: EY_NAVY };
+                  s1.addShape(pptx.ShapeType.rect, { x: 0, y: 7.2, w: "100%", h: 0.3, fill: { color: EY_GOLD } });
+                  s1.addText("ETIHAD AIRWAYS", { x: 1, y: 2, w: 11, h: 0.5, fontSize: 14, color: EY_GOLD, fontFace: "Arial", bold: true, letterSpacing: 5 });
+                  s1.addText(qbrData.campaign || "Campaign Report", { x: 1, y: 2.8, w: 11, h: 0.8, fontSize: 36, color: "FFFFFF", fontFace: "Arial", bold: true });
+                  s1.addText(qbrData.period || "", { x: 1, y: 3.8, w: 11, h: 0.4, fontSize: 16, color: "AAAAAA", fontFace: "Arial" });
+                  s1.addText("Prepared by PHD Media | Intelligence. Connected.", { x: 1, y: 6.5, w: 11, h: 0.3, fontSize: 10, color: "777777", fontFace: "Arial" });
+
+                  // SLIDE 2: Executive Summary
+                  const s2 = addSlide("Executive Summary", [
+                    ai.executive_summary || "",
+                    "",
+                    "Total Spend: $" + (ai.total_spend||0).toLocaleString(),
+                    "Total Conversions: " + (ai.total_conversions||0).toLocaleString(),
+                    "Blended CPA: $" + (ai.blended_cpa||0).toFixed(2),
+                    "Overall ROAS: " + (ai.overall_roas||0).toFixed(2) + "x",
+                  ]);
+
+                  // SLIDE 3: Overall Performance with chart
+                  const periodTotals = ai.period_totals || [];
+                  addSlide("Overall Performance", obs.overall_performance || [], periodTotals.length > 0 ? [
+                    { name: "Spend ($)", labels: periodTotals.map(p => p.period), values: periodTotals.map(p => p.total_spend) },
+                    { name: "Conversions", labels: periodTotals.map(p => p.period), values: periodTotals.map(p => p.total_conversions) },
+                  ] : null);
+
+                  // SLIDE 4: Platform Breakdown with chart
+                  const platSummary = ai.platform_summary || [];
+                  addSlide("Platform Performance", obs.platform_breakdown || [], platSummary.length > 0 ? [
+                    { name: "Spend ($)", labels: platSummary.map(p => p.platform), values: platSummary.map(p => p.total_spend) },
+                  ] : null);
+
+                  // SLIDE 5: Trend Analysis
+                  addSlide("Trend Analysis", obs.trend_analysis || [], periodTotals.length > 0 ? [
+                    { name: "CPA ($)", labels: periodTotals.map(p => p.period), values: periodTotals.map(p => p.total_conversions > 0 ? p.total_spend / p.total_conversions : 0) },
+                  ] : null);
+
+                  // SLIDE 6: Platform Detail Table
+                  const s6 = addSlide("Platform Detail", []);
+                  if (platSummary.length > 0) {
+                    const tableRows = [
+                      [{ text: "Platform", options: { bold: true, color: "FFFFFF", fill: { color: EY_NAVY }, fontSize: 9 } }, { text: "Spend", options: { bold: true, color: "FFFFFF", fill: { color: EY_NAVY }, fontSize: 9 } }, { text: "Impressions", options: { bold: true, color: "FFFFFF", fill: { color: EY_NAVY }, fontSize: 9 } }, { text: "Clicks", options: { bold: true, color: "FFFFFF", fill: { color: EY_NAVY }, fontSize: 9 } }, { text: "CTR", options: { bold: true, color: "FFFFFF", fill: { color: EY_NAVY }, fontSize: 9 } }, { text: "Conversions", options: { bold: true, color: "FFFFFF", fill: { color: EY_NAVY }, fontSize: 9 } }, { text: "CPA", options: { bold: true, color: "FFFFFF", fill: { color: EY_NAVY }, fontSize: 9 } }, { text: "Trend", options: { bold: true, color: "FFFFFF", fill: { color: EY_NAVY }, fontSize: 9 } }],
+                      ...platSummary.map((p, i) => [
+                        { text: p.platform, options: { fontSize: 9, fill: { color: i%2===0?"F5F5F7":"FFFFFF" } } },
+                        { text: "$"+((p.total_spend||0).toLocaleString()), options: { fontSize: 9, fill: { color: i%2===0?"F5F5F7":"FFFFFF" } } },
+                        { text: (p.total_impressions||0).toLocaleString(), options: { fontSize: 9, fill: { color: i%2===0?"F5F5F7":"FFFFFF" } } },
+                        { text: (p.total_clicks||0).toLocaleString(), options: { fontSize: 9, fill: { color: i%2===0?"F5F5F7":"FFFFFF" } } },
+                        { text: (p.ctr||0).toFixed(2)+"%", options: { fontSize: 9, fill: { color: i%2===0?"F5F5F7":"FFFFFF" } } },
+                        { text: (p.total_conversions||0).toLocaleString(), options: { fontSize: 9, fill: { color: i%2===0?"F5F5F7":"FFFFFF" } } },
+                        { text: "$"+(p.cpa||0).toFixed(2), options: { fontSize: 9, bold: true, color: EY_NAVY, fill: { color: i%2===0?"F5F5F7":"FFFFFF" } } },
+                        { text: p.trend||"", options: { fontSize: 9, color: p.trend==="improving"?"2A8C3E":p.trend==="declining"?"CC3333":"666666", fill: { color: i%2===0?"F5F5F7":"FFFFFF" } } },
+                      ])
+                    ];
+                    s6.addTable(tableRows, { x: 0.5, y: 1.5, w: 12, colW: [1.8, 1.2, 1.5, 1.2, 0.8, 1.3, 1.0, 1.0], fontSize: 9, border: { type: "solid", pt: 0.5, color: "E0E0E0" } });
+                  }
+
+                  // SLIDE 7: Recommendations
+                  addSlide("Recommendations & Next Steps", [...(obs.recommendations||[]), "", "NEXT STEPS:", ...(obs.next_steps||[])]);
+
+                  // SLIDE 8: Budget Reallocation
+                  if (ai.budget_reallocation && ai.budget_reallocation.length > 0) {
+                    addSlide("Budget Reallocation", ai.budget_reallocation.map(b => `${b.platform}: ${b.current_pct}% -> ${b.recommended_pct}% (${b.rationale})`), [
+                      { name: "Current %", labels: ai.budget_reallocation.map(b => b.platform), values: ai.budget_reallocation.map(b => b.current_pct) },
+                      { name: "Recommended %", labels: ai.budget_reallocation.map(b => b.platform), values: ai.budget_reallocation.map(b => b.recommended_pct) },
+                    ]);
+                  }
+
+                  // SLIDE 9: Thank You
+                  const s9 = pptx.addSlide();
+                  s9.background = { color: EY_NAVY };
+                  s9.addShape(pptx.ShapeType.rect, { x: 0, y: 7.2, w: "100%", h: 0.3, fill: { color: EY_GOLD } });
+                  s9.addText("Thank You", { x: 1, y: 2.5, w: 11, h: 1, fontSize: 40, color: "FFFFFF", fontFace: "Arial", bold: true, align: "center" });
+                  s9.addText("PHD Media | Intelligence. Connected.", { x: 1, y: 4, w: 11, h: 0.5, fontSize: 14, color: EY_GOLD, fontFace: "Arial", align: "center" });
+
+                  pptx.writeFile({ fileName: `Etihad_${(qbrData.campaign||"Report").replace(/\s+/g,"_")}_${new Date().toISOString().split("T")[0]}.pptx` });
                 };
 
                 return (<>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: "#2D1768", marginBottom: 12 }}>Step 3: Report Preview</div>
-                  <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-                    <button onClick={downloadDeck} style={{ padding: "10px 20px", borderRadius: 8, border: "none", background: "#2D1768", color: "#fff", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Download Report Deck</button>
-                    <div style={{ fontSize: 10, color: "#6a6a7e", alignSelf: "center" }}>Downloads as .html - open in browser then Print > Save as PDF</div>
-                  </div>
-
-                  <Card style={{ marginBottom: 12, padding: 24, background: "#f8f6ff", textAlign: "center", borderBottom: "4px solid #7AC143" }}>
-                    <div style={{ fontSize: 10, fontWeight: 700, color: "#7AC143", letterSpacing: 2 }}>PHD MEDIA</div>
-                    <div style={{ fontSize: 24, fontWeight: 800, color: "#2D1768", marginTop: 6 }}>{qbrData.client}</div>
-                    <div style={{ fontSize: 14, color: "#555566", marginTop: 4 }}>{qbrData.period}</div>
-                  </Card>
-
-                  <Card style={{ marginBottom: 12, padding: 20, borderBottom: "4px solid #2D1768" }}>
-                    <div style={{ fontSize: 16, fontWeight: 800, color: "#2D1768", marginBottom: 6 }}>Executive Summary</div>
-                    <div style={{ fontSize: 13, color: "#444455", lineHeight: 1.7, marginBottom: 16 }}>{ai.executive_summary}</div>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
-                      {[{l:"Total Spend",v:`$${totalSpend.toLocaleString()}`},{l:"Conversions",v:totalConvs.toLocaleString()},{l:"Blended CPA",v:`$${ai.blended_cpa?.toFixed(2)||"N/A"}`},{l:"Platforms",v:ps.length}].map(k => <div key={k.l} style={{ padding: 14, background: "#f5f5f7", borderRadius: 8, textAlign: "center" }}><div style={{ fontSize: 9, fontWeight: 700, color: "#6a6a7e", textTransform: "uppercase" }}>{k.l}</div><div style={{ fontSize: 22, fontWeight: 800, color: "#2D1768", marginTop: 4 }}>{k.v}</div></div>)}
+                  <Card style={{ marginBottom: 16, padding: 18, background: "#1A1A2E", border: "none" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <div>
+                        <div style={{ fontSize: 16, fontWeight: 800, color: "#BD8B13" }}>Analysis Complete</div>
+                        <div style={{ fontSize: 11, color: "#888" }}>{(ai.platform_summary||[]).length} platforms analysed across {(ai.period_totals||[]).length} periods</div>
+                      </div>
+                      <button onClick={downloadPPTX} style={{ padding: "12px 28px", borderRadius: 8, border: "2px solid #BD8B13", background: "transparent", color: "#BD8B13", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Download PPTX Deck</button>
                     </div>
                   </Card>
 
-                  <Card style={{ marginBottom: 12, padding: 20, borderBottom: "4px solid #2D1768" }}>
-                    <div style={{ fontSize: 16, fontWeight: 800, color: "#2D1768", marginBottom: 12 }}>Key Insights</div>
-                    {(ai.key_insights||[]).map((ins,i) => <div key={i} style={{ padding: "10px 14px", background: "#f5f5f7", borderRadius: 6, marginBottom: 6, borderLeft: "3px solid #2D1768", fontSize: 12, color: "#444455" }}><strong style={{ color: "#2D1768" }}>{i+1}.</strong> {ins}</div>)}
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginTop: 14 }}>
-                      <div style={{ padding: 14, background: "#e8f5e9", borderRadius: 8 }}><div style={{ fontSize: 9, fontWeight: 700, color: "#2a8c3e" }}>TOP PERFORMER</div><div style={{ fontSize: 14, fontWeight: 700, marginTop: 4 }}>{ai.top_performer?.platform}</div><div style={{ fontSize: 11, color: "#555566", marginTop: 2 }}>{ai.top_performer?.reason}</div></div>
-                      <div style={{ padding: 14, background: "#ffebee", borderRadius: 8 }}><div style={{ fontSize: 9, fontWeight: 700, color: "#cc3333" }}>NEEDS ATTENTION</div><div style={{ fontSize: 14, fontWeight: 700, marginTop: 4 }}>{ai.underperformer?.platform}</div><div style={{ fontSize: 11, color: "#555566", marginTop: 2 }}>{ai.underperformer?.reason}</div></div>
+                  <Card style={{ marginBottom: 12, padding: 20, borderBottom: "4px solid #BD8B13" }}>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: "#BD8B13", letterSpacing: 2, marginBottom: 4 }}>ETIHAD AIRWAYS</div>
+                    <div style={{ fontSize: 20, fontWeight: 800, color: "#1A1A2E" }}>{qbrData.campaign}</div>
+                    <div style={{ fontSize: 12, color: "#6a6a7e", marginTop: 2 }}>{qbrData.period}</div>
+                    <div style={{ fontSize: 13, color: "#444455", marginTop: 12, lineHeight: 1.7 }}>{ai.executive_summary}</div>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginTop: 16 }}>
+                      {[
+                        { l: "Total Spend", v: "$"+(ai.total_spend||0).toLocaleString() },
+                        { l: "Conversions", v: (ai.total_conversions||0).toLocaleString() },
+                        { l: "Blended CPA", v: "$"+(ai.blended_cpa||0).toFixed(2) },
+                        { l: "ROAS", v: (ai.overall_roas||0).toFixed(2)+"x" },
+                      ].map(m => <div key={m.l} style={{ padding: 12, background: "#f9f9fb", borderRadius: 8, textAlign: "center" }}><div style={{ fontSize: 9, color: "#6a6a7e", fontWeight: 700 }}>{m.l}</div><div style={{ fontSize: 20, fontWeight: 800, color: "#1A1A2E", marginTop: 4 }}>{m.v}</div></div>)}
                     </div>
                   </Card>
 
-                  <Card style={{ marginBottom: 12, padding: 20, borderBottom: "4px solid #7AC143" }}>
-                    <div style={{ fontSize: 16, fontWeight: 800, color: "#2D1768", marginBottom: 12 }}>Recommendations</div>
-                    {(ai.recommendations||[]).map((r,i) => <div key={i} style={{ padding: "10px 14px", background: "#f0faf5", borderRadius: 6, marginBottom: 6, borderLeft: "3px solid #7AC143", fontSize: 12, color: "#444455" }}>{r}</div>)}
-                  </Card>
+                  {Object.entries(obs).map(([key, bullets]) => (
+                    <Card key={key} style={{ marginBottom: 12, padding: 16 }}>
+                      <div style={{ fontSize: 14, fontWeight: 700, color: "#1A1A2E", marginBottom: 10, textTransform: "capitalize" }}>{key.replace(/_/g, " ")}</div>
+                      {(bullets||[]).map((b, i) => <div key={i} style={{ fontSize: 12, color: "#444455", marginBottom: 6, paddingLeft: 14, position: "relative", lineHeight: 1.6 }}><span style={{ position: "absolute", left: 0, color: "#BD8B13", fontWeight: 800 }}>-</span>{b}</div>)}
+                    </Card>
+                  ))}
+
+                  {(ai.platform_summary||[]).length > 0 && (
+                    <Card style={{ marginBottom: 12, padding: 16 }}>
+                      <div style={{ fontSize: 14, fontWeight: 700, color: "#1A1A2E", marginBottom: 10 }}>Platform Performance Summary</div>
+                      <div style={{ overflowX: "auto" }}>
+                        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 11 }}>
+                          <thead><tr style={{ borderBottom: "2px solid #1A1A2E" }}>{["Platform","Spend","Impressions","Clicks","CTR","Conversions","CPA","ROAS","Trend"].map(h => <th key={h} style={{ padding: "6px 4px", textAlign: "left", color: "#1A1A2E", fontSize: 9, fontWeight: 700 }}>{h}</th>)}</tr></thead>
+                          <tbody>{(ai.platform_summary||[]).map((p, i) => <tr key={i} style={{ borderBottom: "1px solid #f0f0f5" }}>
+                            <td style={{ padding: "6px 4px", fontWeight: 600 }}>{p.platform}</td>
+                            <td style={{ padding: "6px 4px", fontFamily: "monospace" }}>${(p.total_spend||0).toLocaleString()}</td>
+                            <td style={{ padding: "6px 4px", fontFamily: "monospace" }}>{(p.total_impressions||0).toLocaleString()}</td>
+                            <td style={{ padding: "6px 4px", fontFamily: "monospace" }}>{(p.total_clicks||0).toLocaleString()}</td>
+                            <td style={{ padding: "6px 4px", fontFamily: "monospace" }}>{(p.ctr||0).toFixed(2)}%</td>
+                            <td style={{ padding: "6px 4px", fontFamily: "monospace" }}>{(p.total_conversions||0).toLocaleString()}</td>
+                            <td style={{ padding: "6px 4px", fontFamily: "monospace", fontWeight: 700, color: "#1A1A2E" }}>${(p.cpa||0).toFixed(2)}</td>
+                            <td style={{ padding: "6px 4px", fontFamily: "monospace", color: (p.roas||0) >= 3 ? "#2a8c3e" : "#b8860b" }}>{(p.roas||0).toFixed(2)}x</td>
+                            <td style={{ padding: "6px 4px", fontSize: 10, fontWeight: 600, color: p.trend==="improving" ? "#2a8c3e" : p.trend==="declining" ? "#cc3333" : "#6a6a7e" }}>{p.trend}</td>
+                          </tr>)}</tbody>
+                        </table>
+                      </div>
+                    </Card>
+                  )}
                 </>);
               })()}
             </div>
