@@ -619,8 +619,8 @@ export default function App() {
   const [savedPlans, setSavedPlans] = useState([]);
 
   // ── SUPABASE CONFIG ──
-  const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
-  const SUPABASE_KEY = "YOUR_ANON_KEY";
+  const SUPABASE_URL = "https://erpufythihpjksutyqst.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycHVmeXRoaWhwamtzdXR5cXN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2Mjk5MzksImV4cCI6MjA5MTIwNTkzOX0.VCHbHzdRRbvStBR--EU_O5Lscwu39Z4AqFU95_zZQRs";
   // ──────────────────────
 
   const sbHeaders = { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY, "Content-Type": "application/json", "Prefer": "return=representation" };
