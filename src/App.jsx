@@ -26,6 +26,7 @@ const SECTIONS = [
   { id: "marketmatrix", label: "Market Planning Matrix", num: "22" },
   { id: "qbr", label: "Etihad Report Builder", num: "23" },
   { id: "glossary", label: "KPI Glossary", num: "24" },
+  { id: "admin", label: "Admin Panel", num: "⚙" },
 ];
 
 
@@ -590,14 +591,63 @@ const glossary = [
 ];
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => sessionStorage.getItem("playbook_auth") === "true");
-  const [loginUser, setLoginUser] = useState("");
-  const [loginPass, setLoginPass] = useState("");
-  const [loginError, setLoginError] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [authUser, setAuthUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [isApproved, setIsApproved] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [pendingApproval, setPendingApproval] = useState(false);
+  const [supaClient, setSupaClient] = useState(null);
   const [activeSection, setActiveSection] = useState("overview");
   const [search, setSearch] = useState("");
   const [checkedItems, setCheckedItems] = useState({});
   const [mobileNav, setMobileNav] = useState(false);
+
+  // ── SUPABASE AUTH ──
+  const ADMIN_EMAILS = ["mike.ernst8002@gmail.com"];
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js";
+    script.onload = () => {
+      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      setSupaClient(client);
+      client.auth.getSession().then(({ data }) => {
+        if (data.session?.user) {
+          handleAuthUser(client, data.session.user);
+        } else { setAuthLoading(false); }
+      });
+      client.auth.onAuthStateChange((event, session) => {
+        if (session?.user) { handleAuthUser(client, session.user); }
+        else { setIsLoggedIn(false); setAuthUser(null); setAuthLoading(false); }
+      });
+    };
+    document.head.appendChild(script);
+  }, []);
+
+  const handleAuthUser = async (client, user) => {
+    setAuthUser(user);
+    const email = user.email;
+    const isAdm = ADMIN_EMAILS.includes(email);
+    setIsAdmin(isAdm);
+    try {
+      const { data } = await client.from("approved_users").select("*").eq("email", email).single();
+      if (data) {
+        if (data.approved || isAdm) {
+          setIsApproved(true); setIsLoggedIn(true); setPendingApproval(false);
+          if (isAdm && data.role !== "admin") { await client.from("approved_users").update({ role: "admin" }).eq("email", email); }
+        } else { setPendingApproval(true); setIsLoggedIn(false); }
+      } else {
+        await client.from("approved_users").insert({ email, name: user.user_metadata?.full_name || email, avatar_url: user.user_metadata?.avatar_url || "", role: isAdm ? "admin" : "user", approved: isAdm });
+        if (isAdm) { setIsApproved(true); setIsLoggedIn(true); }
+        else { setPendingApproval(true); setIsLoggedIn(false); }
+      }
+    } catch { if (isAdm) { setIsApproved(true); setIsLoggedIn(true); } else { setPendingApproval(true); } }
+    setAuthLoading(false);
+  };
+
+  const signInWithGoogle = () => { if (supaClient) { supaClient.auth.signInWithOAuth({ provider: "google", options: { redirectTo: window.location.origin } }); } };
+  const signOut = () => { if (supaClient) { supaClient.auth.signOut(); setIsLoggedIn(false); setAuthUser(null); setIsApproved(false); setPendingApproval(false); } };
   const [vendorRegion, setVendorRegion] = useState("All Channels");
   const [creativePlatform, setCreativePlatform] = useState("All");
   const [funnelJourney, setFunnelJourney] = useState("E-commerce");
@@ -655,6 +705,8 @@ export default function App() {
       setSavedPlans(prev => prev.filter(p => p.id !== id));
     } catch (e) { alert("Delete failed: " + e.message); }
   };
+  const [adminUsers, setAdminUsers] = useState([]);
+  const [adminLoading, setAdminLoading] = useState(true);
   const [qbrData, setQbrData] = useState({ campaign: "", period: "", objective: "", context: "", platforms: [], aiParsed: null, aiLoading: false });
   const [gameActive, setGameActive] = useState(false);
   const [gameTimer, setGameTimer] = useState(120);
@@ -738,41 +790,46 @@ export default function App() {
   useEffect(() => { if (contentRef.current) contentRef.current.scrollTop = 0; }, [activeSection]);
 
   // ── SET YOUR CREDENTIALS HERE ──
-  const VALID_USER = "PHD";
-  const VALID_PASS = "PHD2026!";
-  // ────────────────────────────────
-
-  const handleLogin = () => {
-    if (loginUser === VALID_USER && loginPass === VALID_PASS) {
-      sessionStorage.setItem("playbook_auth", "true");
-      setIsLoggedIn(true);
-      setLoginError("");
-    } else {
-      setLoginError("Invalid username or password");
-    }
-  };
+  if (authLoading) {
+    return (
+      <div style={{ minHeight: "100vh", background: "#f5f5f7", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'DM Sans', 'Segoe UI', sans-serif" }}>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+        <div style={{ textAlign: "center" }}>
+          <div style={{ width: 40, height: 40, border: "3px solid #e0e0e8", borderTopColor: "#2D1768", borderRadius: "50%", animation: "spin 1s linear infinite", margin: "0 auto" }} />
+          <div style={{ fontSize: 12, color: "#6a6a7e", marginTop: 12 }}>Loading...</div>
+        </div>
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
+  }
 
   if (!isLoggedIn) {
     return (
       <div style={{ minHeight: "100vh", background: "#f5f5f7", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'DM Sans', 'Segoe UI', sans-serif" }}>
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-        <div style={{ width: 380, padding: 40, background: "#ffffff", borderRadius: 16, border: "1px solid #e0e0e8", boxShadow: "0 20px 60px rgba(0,0,0,.5)", borderTop: "3px solid #7AC143" }}>
+        <div style={{ width: 400, padding: 40, background: "#ffffff", borderRadius: 16, border: "1px solid #e0e0e8", boxShadow: "0 20px 60px rgba(0,0,0,.05)", borderTop: "3px solid #7AC143" }}>
           <div style={{ textAlign: "center", marginBottom: 32 }}>
-            <div style={{ marginBottom: 12 }}><img src="data:image/png;base64,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" alt="PHd" style={{ width: 160, height: "auto" }} /></div><div style={{ fontSize: 11, fontWeight: 700, color: "#7AC143", letterSpacing: "0.05em" }}>Intelligence. Connected.</div>
             <div style={{ fontSize: 18, fontWeight: 800, color: "#1a1a2e", marginTop: 6 }}>Global Media Planning Playbook</div>
-            <div style={{ fontSize: 11, color: "#7a7a8a", marginTop: 8 }}>Internal access only - enter your credentials</div>
+            <div style={{ fontSize: 11, color: "#7a7a8a", marginTop: 8 }}>Sign in with your agency Google account</div>
           </div>
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "#5a5a6e", marginBottom: 4 }}>Username</div>
-            <input value={loginUser} onChange={e => setLoginUser(e.target.value)} onKeyDown={e => e.key === "Enter" && handleLogin()} placeholder="Enter username" style={{ width: "100%", padding: "10px 14px", background: "#f5f5f7", border: "1px solid #e0e0e8", borderRadius: 8, color: "#1a1a2e", fontSize: 13, fontFamily: "inherit", boxSizing: "border-box", outline: "none" }} />
-          </div>
-          <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "#5a5a6e", marginBottom: 4 }}>Password</div>
-            <input type="password" value={loginPass} onChange={e => setLoginPass(e.target.value)} onKeyDown={e => e.key === "Enter" && handleLogin()} placeholder="Enter password" style={{ width: "100%", padding: "10px 14px", background: "#f5f5f7", border: "1px solid #e0e0e8", borderRadius: 8, color: "#1a1a2e", fontSize: 13, fontFamily: "inherit", boxSizing: "border-box", outline: "none" }} />
-          </div>
-          {loginError && <div style={{ fontSize: 11, color: "#cc3333", marginBottom: 12, textAlign: "center" }}>{loginError}</div>}
-          <button onClick={handleLogin} style={{ width: "100%", padding: "12px", borderRadius: 8, border: "none", background: "linear-gradient(135deg, #2D1768, #1a0e40)", color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Sign In</button>
-          <div style={{ fontSize: 9, color: "#2D176840", textAlign: "center", marginTop: 16 }}>Contact your team lead for access credentials</div>
+
+          {pendingApproval ? (
+            <div style={{ textAlign: "center", padding: 20 }}>
+              <div style={{ fontSize: 40, marginBottom: 12 }}>⏳</div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: "#1a1a2e", marginBottom: 8 }}>Approval Pending</div>
+              <div style={{ fontSize: 12, color: "#6a6a7e", lineHeight: 1.6, marginBottom: 16 }}>Your account ({authUser?.email}) has been registered. An admin needs to approve your access before you can use the playbook.</div>
+              <div style={{ fontSize: 11, color: "#9a9aaa" }}>Contact your team lead for access approval.</div>
+              <button onClick={signOut} style={{ marginTop: 16, padding: "8px 20px", borderRadius: 8, border: "1px solid #d0d0d8", background: "transparent", color: "#6a6a7e", fontSize: 11, cursor: "pointer", fontFamily: "inherit" }}>Sign out</button>
+            </div>
+          ) : (
+            <div>
+              <button onClick={signInWithGoogle} style={{ width: "100%", padding: "12px", borderRadius: 8, border: "1px solid #e0e0e8", background: "#ffffff", color: "#1a1a2e", fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, boxShadow: "0 2px 8px rgba(0,0,0,.06)" }}>
+                <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                Sign in with Google
+              </button>
+              <div style={{ fontSize: 9, color: "#2D176840", textAlign: "center", marginTop: 20 }}>PHD Media | Internal Use Only</div>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -804,7 +861,7 @@ export default function App() {
           <div style={{ fontSize: 10, color: "#7a7a8a", marginTop: 4 }}>Updated March 2026 · PHD</div>
         </div>
         <div style={{ flex: 1, overflowY: "auto", padding: "8px 8px" }}>
-          {SECTIONS.map(s => s.id === "divider" ? (
+          {SECTIONS.filter(s => s.id !== "admin" || isAdmin).map(s => s.id === "divider" ? (
             <div key={s.id} style={{ padding: "10px 12px", fontSize: 9, fontWeight: 800, color: "#2D1768", letterSpacing: "0.1em", textAlign: "center", borderTop: "1px solid #e0e0e8", borderBottom: "1px solid #e0e0e8", marginTop: 6, marginBottom: 6 }}>{s.label}</div>
           ) : (
             <button
@@ -822,8 +879,18 @@ export default function App() {
             </button>
           ))}
         </div>
-        <div style={{ padding: "12px 16px", borderTop: "1px solid #e5e5ea", fontSize: 10, color: "#9a9aaa" }}>
-          All benchmarks in USD · Global · Directional only
+        <div style={{ padding: "10px 16px", borderTop: "1px solid #e5e5ea" }}>
+          {authUser && (
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+              {authUser.user_metadata?.avatar_url && <img src={authUser.user_metadata.avatar_url} alt="" style={{ width: 24, height: 24, borderRadius: "50%" }} />}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 10, fontWeight: 600, color: "#1a1a2e", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{authUser.user_metadata?.full_name || authUser.email}</div>
+                {isAdmin && <div style={{ fontSize: 8, color: "#7AC143", fontWeight: 700 }}>ADMIN</div>}
+              </div>
+              <button onClick={signOut} style={{ padding: "3px 8px", borderRadius: 4, border: "1px solid #d0d0d8", background: "transparent", color: "#6a6a7e", fontSize: 9, cursor: "pointer", fontFamily: "inherit" }}>Sign out</button>
+            </div>
+          )}
+          <div style={{ fontSize: 10, color: "#9a9aaa" }}>All benchmarks in USD · Global · Directional only</div>
         </div>
       </nav>
 
@@ -3413,6 +3480,105 @@ JSON format:
                   </tbody>
                 </table>
               </div>
+            </div>
+          )}
+
+          {/* ADMIN PANEL */}
+          {activeSection === "admin" && isAdmin && (
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+                <div style={{ width: 36, height: 36, borderRadius: 8, background: "#2D1768", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 16, fontWeight: 800 }}>⚙</div>
+                <div>
+                  <div style={{ fontSize: 22, fontWeight: 800, color: "#1a1a2e" }}>Admin Panel</div>
+                  <div style={{ fontSize: 11, color: "#7AC143", fontWeight: 600 }}>User Management & Access Control</div>
+                </div>
+              </div>
+
+              {(() => {
+                const loadAdminUsers = () => { sbFetch("approved_users?order=created_at.desc").then(data => { if (Array.isArray(data)) setAdminUsers(data); setAdminLoading(false); }).catch(() => setAdminLoading(false)); };
+                if (adminLoading && adminUsers.length === 0) loadAdminUsers();
+
+                const toggleApproval = async (user) => {
+                  const newStatus = !user.approved;
+                  await fetch(SUPABASE_URL + "/rest/v1/approved_users?id=eq." + user.id, { method: "PATCH", headers: sbHeaders, body: JSON.stringify({ approved: newStatus }) });
+                  setAdminUsers(prev => prev.map(u => u.id === user.id ? {...u, approved: newStatus} : u));
+                };
+
+                const setRole = async (user, role) => {
+                  await fetch(SUPABASE_URL + "/rest/v1/approved_users?id=eq." + user.id, { method: "PATCH", headers: sbHeaders, body: JSON.stringify({ role }) });
+                  setAdminUsers(prev => prev.map(u => u.id === user.id ? {...u, role} : u));
+                };
+
+                const removeUser = async (user) => {
+                  if (!confirm("Remove " + user.email + "?")) return;
+                  await fetch(SUPABASE_URL + "/rest/v1/approved_users?id=eq." + user.id, { method: "DELETE", headers: sbHeaders });
+                  setAdminUsers(prev => prev.filter(u => u.id !== user.id));
+                };
+
+                const pending = adminUsers.filter(u => !u.approved);
+                const approved = adminUsers.filter(u => u.approved);
+
+                if (adminLoading && adminUsers.length === 0) return <div style={{ padding: 40, textAlign: "center", color: "#6a6a7e" }}>Loading users...</div>;
+
+                return (<>
+                  {pending.length > 0 && (
+                    <Card style={{ marginBottom: 16, padding: 16, borderLeft: "4px solid #b8860b", background: "#fffdf5" }}>
+                      <div style={{ fontSize: 14, fontWeight: 700, color: "#b8860b", marginBottom: 12 }}>Pending Approval ({pending.length})</div>
+                      {pending.map(user => (
+                        <div key={user.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 0", borderBottom: "1px solid #f0ead0" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                            {user.avatar_url && <img src={user.avatar_url} alt="" style={{ width: 32, height: 32, borderRadius: "50%" }} />}
+                            <div>
+                              <div style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e" }}>{user.name || user.email}</div>
+                              <div style={{ fontSize: 10, color: "#6a6a7e" }}>{user.email} - Requested {new Date(user.created_at).toLocaleDateString()}</div>
+                            </div>
+                          </div>
+                          <div style={{ display: "flex", gap: 6 }}>
+                            <button onClick={() => toggleApproval(user)} style={{ padding: "6px 14px", borderRadius: 6, border: "none", background: "#2a8c3e", color: "#fff", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Approve</button>
+                            <button onClick={() => removeUser(user)} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid #cc3333", background: "transparent", color: "#cc3333", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Reject</button>
+                          </div>
+                        </div>
+                      ))}
+                    </Card>
+                  )}
+
+                  <Card style={{ padding: 16 }}>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: "#2D1768", marginBottom: 12 }}>Approved Users ({approved.length})</div>
+                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+                      <thead><tr style={{ borderBottom: "2px solid #d0d0e0" }}>
+                        {["User", "Email", "Role", "Approved", "Joined", "Actions"].map(h => <th key={h} style={{ padding: "6px 4px", textAlign: "left", color: "#555566", fontSize: 9, fontWeight: 700, textTransform: "uppercase" }}>{h}</th>)}
+                      </tr></thead>
+                      <tbody>
+                        {approved.map(user => (
+                          <tr key={user.id} style={{ borderBottom: "1px solid #f0f0f5" }}>
+                            <td style={{ padding: "8px 4px" }}>
+                              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                                {user.avatar_url && <img src={user.avatar_url} alt="" style={{ width: 24, height: 24, borderRadius: "50%" }} />}
+                                <span style={{ fontWeight: 600 }}>{user.name || "—"}</span>
+                              </div>
+                            </td>
+                            <td style={{ padding: "8px 4px", color: "#555566" }}>{user.email}</td>
+                            <td style={{ padding: "8px 4px" }}>
+                              <select value={user.role} onChange={e => setRole(user, e.target.value)} style={{ padding: "3px 6px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 4, fontSize: 10, fontFamily: "inherit", color: user.role === "admin" ? "#2D1768" : "#1a1a2e" }}>
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                              </select>
+                            </td>
+                            <td style={{ padding: "8px 4px" }}><span style={{ color: "#2a8c3e", fontSize: 10, fontWeight: 700 }}>Active</span></td>
+                            <td style={{ padding: "8px 4px", color: "#6a6a7e", fontSize: 10 }}>{new Date(user.created_at).toLocaleDateString()}</td>
+                            <td style={{ padding: "8px 4px" }}>
+                              <div style={{ display: "flex", gap: 4 }}>
+                                <button onClick={() => toggleApproval(user)} style={{ padding: "3px 8px", borderRadius: 4, border: "1px solid #b8860b", background: "transparent", color: "#b8860b", fontSize: 9, cursor: "pointer", fontFamily: "inherit" }}>Revoke</button>
+                                <button onClick={() => removeUser(user)} style={{ padding: "3px 8px", borderRadius: 4, border: "1px solid #cc3333", background: "transparent", color: "#cc3333", fontSize: 9, cursor: "pointer", fontFamily: "inherit" }}>Remove</button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </Card>
+                </>);
+              })()}
             </div>
           )}
         </div>
