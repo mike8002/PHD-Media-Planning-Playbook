@@ -615,6 +615,7 @@ export default function App() {
   const [rateCardFilter, setRateCardFilter] = useState({ platform: "All", market: "All", objective: "All" });
   const [pacingRows, setPacingRows] = useState([{ campaign: "Campaign 1", budget: 50000, spent: 0, daysElapsed: 1, totalDays: 30 }]);
   const [marketMatrix, setMarketMatrix] = useState({});
+  const [matBudget, setMatBudget] = useState(100000);
   const [qbrData, setQbrData] = useState({ client: "", period: "", objective: "", csvData: null, csvRaw: "", aiInsights: "", aiLoading: false });
   const [gameActive, setGameActive] = useState(false);
   const [gameTimer, setGameTimer] = useState(120);
@@ -3009,7 +3010,25 @@ export default function App() {
               <SectionTitle>Campaign Pacing & Budget Tracker</SectionTitle>
               <SectionDesc>Monitor daily spend against monthly budgets. Traffic light system flags campaigns that are over or under-pacing so you can adjust before it's too late.</SectionDesc>
 
-              <button onClick={() => setPacingRows(p => [...p, { campaign: `Campaign ${p.length + 1}`, budget: 50000, spent: 0, daysElapsed: 1, totalDays: 30 }])} style={{ padding: "8px 16px", borderRadius: 8, border: "1px solid #2D1768", background: "#2D176810", color: "#2D1768", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", marginBottom: 16 }}>+ Add Campaign</button>
+              <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+                <button onClick={() => setPacingRows(p => [...p, { campaign: `Campaign ${p.length + 1}`, budget: 50000, spent: 0, daysElapsed: 1, totalDays: 30 }])} style={{ padding: "8px 16px", borderRadius: 8, border: "1px solid #2D1768", background: "#2D176810", color: "#2D1768", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>+ Add Campaign</button>
+                <button onClick={() => {
+                  const rows = pacingRows.map(row => {
+                    const dailyTarget = row.budget / row.totalDays;
+                    const actualDaily = row.daysElapsed > 0 ? row.spent / row.daysElapsed : 0;
+                    const projectedEOM = actualDaily * row.totalDays;
+                    const idealSpent = dailyTarget * row.daysElapsed;
+                    const pacingPct = idealSpent > 0 ? (row.spent / idealSpent) * 100 : 0;
+                    const variance = projectedEOM - row.budget;
+                    const status = pacingPct >= 90 && pacingPct <= 110 ? "On Track" : pacingPct > 110 ? "Over-pacing" : "Under-pacing";
+                    return `<tr><td>${row.campaign}</td><td>$${row.budget.toLocaleString()}</td><td>$${row.spent.toLocaleString()}</td><td>${row.daysElapsed}</td><td>${row.totalDays}</td><td>$${dailyTarget.toFixed(0)}</td><td>$${actualDaily.toFixed(0)}</td><td>${pacingPct.toFixed(0)}%</td><td>$${projectedEOM.toFixed(0)}</td><td>$${variance.toFixed(0)}</td><td>${status}</td></tr>`;
+                  }).join("");
+                  const html = `<html><head><meta charset="UTF-8"><style>td,th{font-family:Arial;font-size:10pt;padding:4px 8px;border:1px solid #ddd}th{background:#2D1768;color:white;font-weight:bold}</style></head><body><table><tr><th>Campaign</th><th>Monthly Budget</th><th>Spent to Date</th><th>Day</th><th>Total Days</th><th>Daily Target</th><th>Actual Daily</th><th>Pacing %</th><th>Projected EOM</th><th>Variance</th><th>Status</th></tr>${rows}</table></body></html>`;
+                  const blob = new Blob([html], { type: "application/vnd.ms-excel" });
+                  const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+                  a.download = `Pacing_Report_${new Date().toISOString().split("T")[0]}.xls`; a.click();
+                }} style={{ padding: "8px 16px", borderRadius: 8, border: "1px solid #7AC143", background: "#7AC14310", color: "#2a8c3e", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Export Excel</button>
+              </div>
 
               <div style={{ overflowX: "auto" }}>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
@@ -3084,7 +3103,6 @@ export default function App() {
                   { name: "X", min: 5000, icon: "X" },
                   { name: "Prog", min: 20000, icon: "Prg" },
                 ];
-                const [matBudget, setMatBudget] = useState(100000);
                 const toggleCell = (market, plat) => setMarketMatrix(p => ({...p, [`${market}_${plat}`]: !p[`${market}_${plat}`]}));
                 const activeCount = Object.values(marketMatrix).filter(Boolean).length;
                 const perCell = activeCount > 0 ? matBudget / activeCount : 0;
@@ -3150,6 +3168,113 @@ export default function App() {
                       </div>
                     </Card>
                   )}
+                </>);
+              })()}
+            </div>
+          )}
+
+          {/* CAMPAIGN REPORT MAKER */}
+          {activeSection === "qbr" && (
+            <div>
+              <SectionTitle>End of Campaign Report Maker</SectionTitle>
+              <SectionDesc>Upload campaign data (CSV) or enter manually. AI analyses performance and generates a downloadable report deck.</SectionDesc>
+
+              <Card style={{ marginBottom: 16, padding: 16 }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#2D1768", marginBottom: 12 }}>Step 1: Campaign Details + Data</div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 14 }}>
+                  {[{k:"client",l:"Client",p:"e.g. OMNIYAT"},{k:"period",l:"Campaign / Period",p:"e.g. Q1 2026 UAE"},{k:"objective",l:"Objective",p:"Lead Generation"}].map(f => (
+                    <div key={f.k}><div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 3 }}>{f.l}</div>
+                    <input value={qbrData[f.k]||""} onChange={e => setQbrData(p => ({...p, [f.k]: e.target.value}))} placeholder={f.p} style={{ width: "100%", padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, fontSize: 12, fontFamily: "inherit", color: "#1a1a2e", boxSizing: "border-box" }} /></div>
+                  ))}
+                </div>
+                <div style={{ marginBottom: 12 }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 3 }}>Upload CSV <span style={{ fontWeight: 400 }}>(columns: Platform, Spend, Impressions, Clicks, Conversions, Revenue)</span></div>
+                  <input type="file" accept=".csv" onChange={e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = ev => { const rows = ev.target.result.split("\n").filter(r => r.trim()); const data = rows.slice(1).map(r => { const c = r.split(",").map(s => s.trim()); return { platform: c[0]||"", spend: c[1]||"", impressions: c[2]||"", clicks: c[3]||"", conversions: c[4]||"", revenue: c[5]||"" }; }).filter(r => r.platform); setQbrData(p => ({...p, platforms: data})); }; r.readAsText(f); }} style={{ padding: "8px", background: "#f9f9fb", border: "1px dashed #d0d0d8", borderRadius: 6, fontSize: 11, fontFamily: "inherit", width: "100%" }} />
+                </div>
+                <button onClick={() => setQbrData(p => ({...p, platforms: [...(p.platforms||[]), {platform:"Meta",spend:"",impressions:"",clicks:"",conversions:"",revenue:""}]}))} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid #2D1768", background: "#2D176810", color: "#2D1768", fontSize: 10, fontWeight: 700, cursor: "pointer", fontFamily: "inherit", marginBottom: 10 }}>+ Add Row Manually</button>
+                {(qbrData.platforms||[]).length > 0 && <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 11 }}>
+                  <thead><tr style={{ borderBottom: "2px solid #d0d0e0" }}>{["Platform","Spend","Impressions","Clicks","Conversions","Revenue",""].map(h => <th key={h} style={{ padding: "6px 4px", textAlign: "left", color: "#555566", fontSize: 9, fontWeight: 700 }}>{h}</th>)}</tr></thead>
+                  <tbody>{(qbrData.platforms||[]).map((p,i) => <tr key={i} style={{ borderBottom: "1px solid #f0f0f5" }}>
+                    <td style={{ padding: "4px" }}><select value={p.platform} onChange={e => setQbrData(prev => ({...prev, platforms: prev.platforms.map((pl,pi) => pi===i?{...pl,platform:e.target.value}:pl)}))} style={{ padding: "4px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 4, fontSize: 10, fontFamily: "inherit" }}>{["Meta","TikTok","Snapchat","YouTube","Google Search","Google PMax","LinkedIn","X (Twitter)","Programmatic","Pinterest","Other"].map(o => <option key={o}>{o}</option>)}</select></td>
+                    {["spend","impressions","clicks","conversions","revenue"].map(f => <td key={f} style={{ padding: "4px" }}><input value={p[f]} onChange={e => setQbrData(prev => ({...prev, platforms: prev.platforms.map((pl,pi) => pi===i?{...pl,[f]:e.target.value}:pl)}))} placeholder="0" style={{ width: 80, padding: "4px 6px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 4, fontSize: 10, fontFamily: "monospace" }} /></td>)}
+                    <td><button onClick={() => setQbrData(prev => ({...prev, platforms: prev.platforms.filter((_,pi) => pi!==i)}))} style={{ background: "transparent", border: "none", color: "#cc3333", cursor: "pointer" }}>x</button></td>
+                  </tr>)}</tbody>
+                </table>}
+              </Card>
+
+              {(qbrData.platforms||[]).length > 0 && <Card style={{ marginBottom: 16, padding: 16 }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#2D1768", marginBottom: 12 }}>Step 2: Generate AI Report</div>
+                <div style={{ fontSize: 10, fontWeight: 700, color: "#6a6a7e", marginBottom: 4 }}>Anthropic API Key</div>
+                <input type="password" id="qbrApiKey" placeholder="sk-ant-..." style={{ width: 300, padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, fontSize: 11, fontFamily: "monospace", marginBottom: 10, boxSizing: "border-box" }} />
+                <div><button onClick={async () => {
+                  const apiKey = document.getElementById("qbrApiKey")?.value;
+                  if (!apiKey) return;
+                  setQbrData(p => ({...p, aiLoading: true, aiParsed: null}));
+                  const summary = (qbrData.platforms||[]).map(p => { const sp=parseFloat(p.spend)||0,im=parseFloat(p.impressions)||0,cl=parseFloat(p.clicks)||0,cv=parseFloat(p.conversions)||0,rv=parseFloat(p.revenue)||0; return `${p.platform}: Spend $${sp}, Impressions ${im}, Clicks ${cl}, CTR ${im>0?(cl/im*100).toFixed(2):0}%, Conversions ${cv}, CPA $${cv>0?(sp/cv).toFixed(2):"N/A"}, Revenue $${rv}, ROAS ${sp>0?(rv/sp).toFixed(2):"N/A"}x`; }).join("\n");
+                  try {
+                    const res = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" }, body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 2000, messages: [{ role: "user", content: `You are a senior media strategist at PHD. Analyse this campaign data. Respond ONLY in valid JSON, no markdown.\n\nClient: ${qbrData.client}\nCampaign: ${qbrData.period}\nObjective: ${qbrData.objective||"Lead Generation"}\n\nData:\n${summary}\n\nJSON format:\n{"executive_summary":"string","blended_cpa":number,"top_performer":{"platform":"string","reason":"string"},"underperformer":{"platform":"string","reason":"string"},"key_insights":["string","string","string","string"],"recommendations":["string","string","string"],"next_quarter_actions":["string","string","string"],"budget_reallocation":[{"platform":"string","current_pct":number,"recommended_pct":number,"rationale":"string"}]}` }] }) });
+                    const data = await res.json();
+                    const text = data.content?.[0]?.text || "";
+                    const clean = text.replace(/```json|```/g, "").trim();
+                    setQbrData(p => ({...p, aiLoading: false, aiParsed: JSON.parse(clean)}));
+                  } catch(e) { setQbrData(p => ({...p, aiLoading: false})); }
+                }} disabled={qbrData.aiLoading} style={{ padding: "10px 24px", borderRadius: 8, border: "none", background: qbrData.aiLoading ? "#d0d0d8" : "#2D1768", color: "#fff", fontSize: 12, fontWeight: 700, cursor: qbrData.aiLoading ? "wait" : "pointer", fontFamily: "inherit" }}>{qbrData.aiLoading ? "Analysing..." : "Generate AI Report"}</button></div>
+              </Card>}
+
+              {qbrData.aiParsed && (() => {
+                const ai = qbrData.aiParsed;
+                const ps = qbrData.platforms||[];
+                const totalSpend = ps.reduce((a,p) => a+(parseFloat(p.spend)||0), 0);
+                const totalConvs = ps.reduce((a,p) => a+(parseFloat(p.conversions)||0), 0);
+
+                const downloadDeck = () => {
+                  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>@page{size:landscape;margin:0}body{font-family:Arial,sans-serif;margin:0;color:#1a1a2e}.slide{width:100%;min-height:100vh;padding:60px 80px;box-sizing:border-box;page-break-after:always;position:relative}.slide:last-child{page-break-after:avoid}.st{font-size:32px;font-weight:800;color:#2D1768;margin-bottom:8px}.ss{font-size:16px;color:#777;margin-bottom:40px}.bb{position:absolute;bottom:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#2D1768,#7AC143)}.bf{position:absolute;bottom:20px;right:40px;font-size:10px;color:#bbb}.kg{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:40px}.kb{padding:24px;border-radius:12px;background:#f5f5f7}.kl{font-size:12px;color:#777;text-transform:uppercase;font-weight:700}.kv{font-size:36px;font-weight:800;color:#2D1768;margin-top:8px}table{width:100%;border-collapse:collapse;font-size:13px}th{padding:10px;text-align:left;background:#2D1768;color:white;font-size:11px;text-transform:uppercase}td{padding:10px;border-bottom:1px solid #eee}.ic{padding:16px 20px;background:#f5f5f7;border-radius:8px;margin-bottom:10px;border-left:4px solid #2D1768}.rc{padding:16px 20px;background:#f0faf5;border-radius:8px;margin-bottom:10px;border-left:4px solid #7AC143}</style></head><body>
+                  <div class="slide" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:linear-gradient(135deg,#f8f6ff,#f0faf5)"><div style="font-size:14px;font-weight:700;color:#7AC143;letter-spacing:3px;margin-bottom:12px">PHD MEDIA</div><div style="font-size:48px;font-weight:800;color:#2D1768;margin-bottom:12px">${qbrData.client}</div><div style="font-size:22px;color:#555">${qbrData.period}</div><div style="font-size:16px;color:#999;margin-top:8px">End of Campaign Performance Report</div><div class="bb"></div></div>
+                  <div class="slide"><div class="st">Executive Summary</div><div class="ss">Campaign overview</div><p style="font-size:18px;line-height:1.8;color:#333;max-width:800px">${ai.executive_summary||""}</p><div class="kg" style="margin-top:40px"><div class="kb"><div class="kl">Total Spend</div><div class="kv">$${totalSpend.toLocaleString()}</div></div><div class="kb"><div class="kl">Conversions</div><div class="kv">${totalConvs.toLocaleString()}</div></div><div class="kb"><div class="kl">Blended CPA</div><div class="kv">$${ai.blended_cpa?.toFixed(2)||"N/A"}</div></div><div class="kb"><div class="kl">Platforms</div><div class="kv">${ps.length}</div></div></div><div class="bb"></div><div class="bf">PHD | Intelligence. Connected.</div></div>
+                  <div class="slide"><div class="st">Platform Performance</div><div class="ss">Detailed breakdown</div><table><thead><tr><th>Platform</th><th>Spend</th><th>Impressions</th><th>Clicks</th><th>CTR</th><th>Conversions</th><th>CPA</th><th>Revenue</th><th>ROAS</th></tr></thead><tbody>${ps.map(p=>{const s=parseFloat(p.spend)||0,im=parseFloat(p.impressions)||0,cl=parseFloat(p.clicks)||0,cv=parseFloat(p.conversions)||0,rv=parseFloat(p.revenue)||0;return`<tr><td><strong>${p.platform}</strong></td><td>$${s.toLocaleString()}</td><td>${im.toLocaleString()}</td><td>${cl.toLocaleString()}</td><td>${im>0?(cl/im*100).toFixed(2):0}%</td><td>${cv.toLocaleString()}</td><td>${cv>0?"$"+(s/cv).toFixed(2):"-"}</td><td>${rv>0?"$"+rv.toLocaleString():"-"}</td><td>${s>0&&rv>0?(rv/s).toFixed(2)+"x":"-"}</td></tr>`}).join("")}</tbody></table><div class="bb"></div><div class="bf">PHD | Intelligence. Connected.</div></div>
+                  <div class="slide"><div class="st">Key Insights</div><div class="ss">AI-powered analysis</div>${(ai.key_insights||[]).map((ins,i)=>`<div class="ic"><strong style="color:#2D1768">${i+1}.</strong> ${ins}</div>`).join("")}<div style="margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:20px"><div style="padding:20px;background:#e8f5e9;border-radius:8px"><div style="font-size:12px;color:#2a8c3e;font-weight:700;margin-bottom:6px">TOP PERFORMER</div><div style="font-size:16px;font-weight:700">${ai.top_performer?.platform||""}</div><div style="font-size:13px;color:#555">${ai.top_performer?.reason||""}</div></div><div style="padding:20px;background:#ffebee;border-radius:8px"><div style="font-size:12px;color:#cc3333;font-weight:700;margin-bottom:6px">NEEDS ATTENTION</div><div style="font-size:16px;font-weight:700">${ai.underperformer?.platform||""}</div><div style="font-size:13px;color:#555">${ai.underperformer?.reason||""}</div></div></div><div class="bb"></div><div class="bf">PHD | Intelligence. Connected.</div></div>
+                  <div class="slide"><div class="st">Recommendations</div><div class="ss">Strategic next steps</div>${(ai.recommendations||[]).map(r=>`<div class="rc">${r}</div>`).join("")}<div style="margin-top:20px"><div style="font-size:14px;font-weight:700;color:#2D1768;margin-bottom:12px">Next Quarter</div>${(ai.next_quarter_actions||[]).map((a,i)=>`<div style="padding:12px 16px;background:#fff8e1;border-radius:8px;margin-bottom:8px;border-left:4px solid #b8860b"><strong>${i+1}.</strong> ${a}</div>`).join("")}</div><div class="bb"></div><div class="bf">PHD | Intelligence. Connected.</div></div>
+                  ${ai.budget_reallocation?`<div class="slide"><div class="st">Budget Reallocation</div><div class="ss">Recommended shifts</div><table><thead><tr><th>Platform</th><th>Current %</th><th>Recommended %</th><th>Change</th><th>Rationale</th></tr></thead><tbody>${(ai.budget_reallocation||[]).map(b=>`<tr><td><strong>${b.platform}</strong></td><td>${b.current_pct}%</td><td style="color:#2D1768;font-weight:700">${b.recommended_pct}%</td><td style="color:${b.recommended_pct>b.current_pct?"#2a8c3e":"#cc3333"};font-weight:700">${b.recommended_pct>b.current_pct?"+":""}${b.recommended_pct-b.current_pct}%</td><td style="font-size:12px;color:#555">${b.rationale}</td></tr>`).join("")}</tbody></table><div class="bb"></div><div class="bf">PHD | Intelligence. Connected.</div></div>`:""}
+                  <div class="slide" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:linear-gradient(135deg,#f8f6ff,#f0faf5)"><div style="font-size:14px;font-weight:700;color:#7AC143;letter-spacing:3px;margin-bottom:12px">PHD MEDIA</div><div style="font-size:36px;font-weight:800;color:#2D1768">Thank You</div><div style="font-size:16px;color:#777;margin-top:8px">Intelligence. Connected.</div><div class="bb"></div></div></body></html>`;
+                  const blob = new Blob([html], {type:"text/html"});
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement("a"); a.href = url; a.download = `${(qbrData.client||"Report").replace(/\s+/g,"_")}_Report_${new Date().toISOString().split("T")[0]}.html`; a.click(); URL.revokeObjectURL(url);
+                };
+
+                return (<>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: "#2D1768", marginBottom: 12 }}>Step 3: Report Preview</div>
+                  <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+                    <button onClick={downloadDeck} style={{ padding: "10px 20px", borderRadius: 8, border: "none", background: "#2D1768", color: "#fff", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Download Report Deck</button>
+                    <div style={{ fontSize: 10, color: "#6a6a7e", alignSelf: "center" }}>Downloads as .html - open in browser then Print > Save as PDF</div>
+                  </div>
+
+                  <Card style={{ marginBottom: 12, padding: 24, background: "#f8f6ff", textAlign: "center", borderBottom: "4px solid #7AC143" }}>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: "#7AC143", letterSpacing: 2 }}>PHD MEDIA</div>
+                    <div style={{ fontSize: 24, fontWeight: 800, color: "#2D1768", marginTop: 6 }}>{qbrData.client}</div>
+                    <div style={{ fontSize: 14, color: "#555566", marginTop: 4 }}>{qbrData.period}</div>
+                  </Card>
+
+                  <Card style={{ marginBottom: 12, padding: 20, borderBottom: "4px solid #2D1768" }}>
+                    <div style={{ fontSize: 16, fontWeight: 800, color: "#2D1768", marginBottom: 6 }}>Executive Summary</div>
+                    <div style={{ fontSize: 13, color: "#444455", lineHeight: 1.7, marginBottom: 16 }}>{ai.executive_summary}</div>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
+                      {[{l:"Total Spend",v:`$${totalSpend.toLocaleString()}`},{l:"Conversions",v:totalConvs.toLocaleString()},{l:"Blended CPA",v:`$${ai.blended_cpa?.toFixed(2)||"N/A"}`},{l:"Platforms",v:ps.length}].map(k => <div key={k.l} style={{ padding: 14, background: "#f5f5f7", borderRadius: 8, textAlign: "center" }}><div style={{ fontSize: 9, fontWeight: 700, color: "#6a6a7e", textTransform: "uppercase" }}>{k.l}</div><div style={{ fontSize: 22, fontWeight: 800, color: "#2D1768", marginTop: 4 }}>{k.v}</div></div>)}
+                    </div>
+                  </Card>
+
+                  <Card style={{ marginBottom: 12, padding: 20, borderBottom: "4px solid #2D1768" }}>
+                    <div style={{ fontSize: 16, fontWeight: 800, color: "#2D1768", marginBottom: 12 }}>Key Insights</div>
+                    {(ai.key_insights||[]).map((ins,i) => <div key={i} style={{ padding: "10px 14px", background: "#f5f5f7", borderRadius: 6, marginBottom: 6, borderLeft: "3px solid #2D1768", fontSize: 12, color: "#444455" }}><strong style={{ color: "#2D1768" }}>{i+1}.</strong> {ins}</div>)}
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginTop: 14 }}>
+                      <div style={{ padding: 14, background: "#e8f5e9", borderRadius: 8 }}><div style={{ fontSize: 9, fontWeight: 700, color: "#2a8c3e" }}>TOP PERFORMER</div><div style={{ fontSize: 14, fontWeight: 700, marginTop: 4 }}>{ai.top_performer?.platform}</div><div style={{ fontSize: 11, color: "#555566", marginTop: 2 }}>{ai.top_performer?.reason}</div></div>
+                      <div style={{ padding: 14, background: "#ffebee", borderRadius: 8 }}><div style={{ fontSize: 9, fontWeight: 700, color: "#cc3333" }}>NEEDS ATTENTION</div><div style={{ fontSize: 14, fontWeight: 700, marginTop: 4 }}>{ai.underperformer?.platform}</div><div style={{ fontSize: 11, color: "#555566", marginTop: 2 }}>{ai.underperformer?.reason}</div></div>
+                    </div>
+                  </Card>
+
+                  <Card style={{ marginBottom: 12, padding: 20, borderBottom: "4px solid #7AC143" }}>
+                    <div style={{ fontSize: 16, fontWeight: 800, color: "#2D1768", marginBottom: 12 }}>Recommendations</div>
+                    {(ai.recommendations||[]).map((r,i) => <div key={i} style={{ padding: "10px 14px", background: "#f0faf5", borderRadius: 6, marginBottom: 6, borderLeft: "3px solid #7AC143", fontSize: 12, color: "#444455" }}>{r}</div>)}
+                  </Card>
                 </>);
               })()}
             </div>
