@@ -616,6 +616,45 @@ export default function App() {
   const [pacingRows, setPacingRows] = useState([{ campaign: "Campaign 1", budget: 50000, spent: 0, daysElapsed: 1, totalDays: 30 }]);
   const [marketMatrix, setMarketMatrix] = useState({});
   const [matBudget, setMatBudget] = useState(100000);
+  const [savedPlans, setSavedPlans] = useState([]);
+
+  // ── SUPABASE CONFIG ──
+  const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
+  const SUPABASE_KEY = "YOUR_ANON_KEY";
+  // ──────────────────────
+
+  const sbHeaders = { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY, "Content-Type": "application/json", "Prefer": "return=representation" };
+  const sbFetch = async (path, opts = {}) => { const res = await fetch(SUPABASE_URL + "/rest/v1/" + path, { ...opts, headers: { ...sbHeaders, ...opts.headers } }); return res.json(); };
+
+  useEffect(() => {
+    if (SUPABASE_URL.includes("YOUR_PROJECT")) return;
+    sbFetch("media_plans?order=created_at.desc").then(data => { if (Array.isArray(data)) setSavedPlans(data.map(r => ({ ...r.data, id: r.id, savedAt: r.created_at, name: r.name }))); }).catch(() => {});
+  }, []);
+
+  const savePlan = async (plan) => {
+    const row = { name: plan.name || "Untitled", data: plan };
+    if (SUPABASE_URL.includes("YOUR_PROJECT")) {
+      const local = [...savedPlans, { ...plan, id: Date.now(), savedAt: new Date().toISOString() }];
+      setSavedPlans(local);
+      try { localStorage.setItem("phd_media_plans_backup", JSON.stringify(local)); } catch {}
+      return;
+    }
+    try {
+      const result = await sbFetch("media_plans", { method: "POST", body: JSON.stringify(row) });
+      if (Array.isArray(result) && result[0]) { setSavedPlans(prev => [{ ...result[0].data, id: result[0].id, savedAt: result[0].created_at, name: result[0].name }, ...prev]); }
+    } catch (e) { alert("Save failed: " + e.message); }
+  };
+
+  const deletePlan = async (id) => {
+    if (SUPABASE_URL.includes("YOUR_PROJECT")) {
+      setSavedPlans(prev => prev.filter(p => p.id !== id));
+      return;
+    }
+    try {
+      await fetch(SUPABASE_URL + "/rest/v1/media_plans?id=eq." + id, { method: "DELETE", headers: sbHeaders });
+      setSavedPlans(prev => prev.filter(p => p.id !== id));
+    } catch (e) { alert("Delete failed: " + e.message); }
+  };
   const [qbrData, setQbrData] = useState({ campaign: "", period: "", objective: "", context: "", platforms: [], aiParsed: null, aiLoading: false });
   const [gameActive, setGameActive] = useState(false);
   const [gameTimer, setGameTimer] = useState(120);
@@ -2503,6 +2542,24 @@ export default function App() {
             <div>
               <SectionTitle>AI Plan Generator</SectionTitle>
 
+              {savedPlans.length > 0 && (
+                <Card style={{ marginBottom: 16, padding: 14, borderLeft: "4px solid #2D1768" }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>Saved Media Plans ({savedPlans.length})</div>
+                  {savedPlans.map(plan => (
+                    <div key={plan.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid #f0f0f5" }}>
+                      <div>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: "#1a1a2e" }}>{plan.name}</div>
+                        <div style={{ fontSize: 10, color: "#6a6a7e" }}>Saved {new Date(plan.savedAt).toLocaleDateString()} | {plan.line_items?.length || 0} line items | ${plan.summary?.total_investment_usd?.toLocaleString() || "N/A"}</div>
+                      </div>
+                      <div style={{ display: "flex", gap: 6 }}>
+                        <button onClick={() => { navigator.clipboard.writeText(JSON.stringify(plan, null, 2)); alert("Plan JSON copied"); }} style={{ padding: "3px 8px", borderRadius: 4, border: "1px solid #d0d0d8", background: "transparent", color: "#6a6a7e", fontSize: 9, cursor: "pointer", fontFamily: "inherit" }}>Copy</button>
+                        <button onClick={() => deletePlan(plan.id)} style={{ padding: "3px 8px", borderRadius: 4, border: "1px solid #ffcdd2", background: "transparent", color: "#cc3333", fontSize: 9, cursor: "pointer", fontFamily: "inherit" }}>Delete</button>
+                      </div>
+                    </div>
+                  ))}
+                </Card>
+              )}
+
               {/* AUDIENCE SIZING MODULE */}
               <div style={{ marginBottom: 24, padding: 20, background: "#f0ecf5", borderRadius: 12, border: "1px solid #d0c0e0" }}>
                 <div style={{ fontSize: 15, fontWeight: 800, color: "#2D1768", marginBottom: 4 }}>👥 Audience & Persona Builder</div>
@@ -2654,6 +2711,7 @@ export default function App() {
                   return (<>
                     <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
                       <button onClick={downloadExcel} style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid #7AC143", background: "#eef8ee", color: "#7AC143", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>📥 Download as Excel (.xls)</button>
+                      <button onClick={() => { try { const plan = JSON.parse(aiResult); savePlan({ name: plan.campaign?.campaign_name || plan.campaign?.client || "Untitled Plan", campaign: plan.campaign, line_items: plan.line_items, summary: plan.summary, notes: plan.notes, prompt: aiPrompt }); alert("Plan saved!"); } catch { alert("Could not save - generate a plan first"); } }} style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid #2D1768", background: "#2D176810", color: "#2D1768", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Save Plan</button>
                       <button onClick={() => { navigator.clipboard.writeText(aiResult); }} style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid #d0d0d8", background: "transparent", color: "#5a5a6e", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>📋 Copy JSON</button>
                     </div>
 
@@ -3011,6 +3069,25 @@ export default function App() {
 
               <Card style={{ marginBottom: 16, padding: 18, borderLeft: "4px solid #BD8B13" }}>
                 <div style={{ fontSize: 14, fontWeight: 700, color: "#1A1A2E", marginBottom: 12 }}>Step 1: Campaign Details</div>
+                {savedPlans.length > 0 && (
+                  <div style={{ marginBottom: 14, padding: 12, background: "#f0edf5", borderRadius: 8, border: "1px solid #d0c0e0" }}>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: "#2D1768", marginBottom: 4 }}>Link to Saved Media Plan (optional)</div>
+                    <div style={{ fontSize: 9, color: "#6a6a7e", marginBottom: 6 }}>Select a saved plan to give the AI context on what was planned vs what actually happened.</div>
+                    <select onChange={e => {
+                      const plan = savedPlans.find(p => p.id === Number(e.target.value));
+                      if (plan) {
+                        setQbrData(p => ({...p,
+                          campaign: plan.name || p.campaign,
+                          linkedPlan: plan,
+                          context: (p.context || "") + "\n\nLinked Media Plan:\n" + (plan.line_items||[]).map(li => `${li.platform} - ${li.placement}: $${li.media_cost_usd} (${li.buying_unit} $${li.unit_cost})`).join("\n") + "\n\nPlanned Budget: $" + (plan.summary?.total_investment_usd || "N/A") + "\nPlanned Notes: " + (plan.notes||[]).join("; ")
+                        }));
+                      }
+                    }} style={{ width: "100%", padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, fontSize: 11, fontFamily: "inherit", color: "#1a1a2e" }}>
+                      <option value="">-- No plan linked --</option>
+                      {savedPlans.map(plan => <option key={plan.id} value={plan.id}>{plan.name} (saved {new Date(plan.savedAt).toLocaleDateString()})</option>)}
+                    </select>
+                  </div>
+                )}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 12 }}>
                   {[
                     { k: "campaign", l: "Campaign Name", p: "e.g. EY Brand Awareness - Q1 2026" },
@@ -3093,7 +3170,7 @@ export default function App() {
 Campaign: ${qbrData.campaign || "Etihad Campaign"}
 Period: ${qbrData.period || "N/A"}
 Objective: ${qbrData.objective || "N/A"}
-Additional Context: ${qbrData.context || "None provided"}
+Additional Context: ${qbrData.context || "None provided"}\n\nLinked Media Plan: ${qbrData.linkedPlan ? JSON.stringify({campaign: qbrData.linkedPlan.campaign, line_items: qbrData.linkedPlan.line_items?.map(li => ({platform: li.platform, placement: li.placement, planned_spend: li.media_cost_usd, buying_unit: li.buying_unit, unit_cost: li.unit_cost})), planned_total: qbrData.linkedPlan.summary?.total_investment_usd}) : "No plan linked - analyse actuals only"}
 
 Performance Data by Period:
 ${JSON.stringify(trendData, null, 2)}
