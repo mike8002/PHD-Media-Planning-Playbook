@@ -947,126 +947,328 @@ export default function App() {
 
           {/* CREATIVE PREVIEW MODAL */}
           {creativePreview && (() => {
-            const previews = {
-              feed_1x1: { title: "Feed Post - 1:1 Square", size: "1080×1080", platforms: "Meta, LinkedIn, X, Pinterest", ratio: "1:1",
-                tips: ["Safe default for all platforms - works everywhere", "Keep text under 20% of image area for Meta", "Logo in top-left corner for brand recall", "Strong CTA in bottom third"],
-                eyAd: { headline: "Fly Beyond Extraordinary", sub: "Abu Dhabi to London from $499", cta: "Book Now", scene: "Business class cabin with golden lighting" }},
-              feed_4x5: { title: "Feed Post - 4:5 Vertical", size: "1080×1350", platforms: "Meta Feed (mobile priority)", ratio: "4:5",
-                tips: ["Takes up 20% more screen than 1:1 on mobile", "Higher engagement rate vs square format", "Put key message in centre - top/bottom may crop in grid", "Best for single-image product/destination shots"],
-                eyAd: { headline: "The Residence", sub: "The only 3-room suite in the sky", cta: "Discover More", scene: "Aerial view of The Residence suite" }},
-              stories_916: { title: "Stories / Reels - 9:16 Full Vertical", size: "1080×1920", platforms: "Meta, TikTok, Snapchat, YouTube Shorts", ratio: "9:16",
-                tips: ["Keep top 250px and bottom 340px clear of text (safe zones)", "Hook in first 2 seconds - thumb-stopping moment", "Sound ON for Reels/TikTok, sound optional for Stories", "Native-looking content outperforms polished ads 3:1"],
-                eyAd: { headline: "Choose Well", sub: "Swipe up to explore 500+ destinations", cta: "Swipe Up ↑", scene: "POV walking through Zayed International Airport" }},
-              tiktok_infeed: { title: "TikTok In-Feed Video", size: "1080×1920", platforms: "TikTok, Spark Ads, Prime Time", ratio: "9:16",
-                tips: ["Creative IS targeting - algorithm matches content to audience", "Spark Ads (boosted organic) get 70% higher CTR", "Use trending audio and native transitions", "First 2 seconds determine if user watches or scrolls"],
-                eyAd: { headline: "POV: You upgraded ✈️", sub: "Business class hits different at 40,000ft", cta: "Learn More", scene: "UGC-style cabin tour with trending audio" }},
-              carousel: { title: "Carousel - Multi-Card", size: "1080×1080 per card", platforms: "Meta, LinkedIn", ratio: "1:1",
-                tips: ["2-10 cards - use 5-6 for optimal engagement", "Tell a story across cards or show multiple products", "First card is the hook - make it count", "Last card should have a clear CTA"],
-                eyAd: { headline: "5 Reasons to Fly Etihad", sub: "Swipe to explore →", cta: "Book Now", scene: "Card 1: Lounge → Card 2: Seats → Card 3: Dining → Card 4: WiFi → Card 5: CTA" }},
-              desktop_feed: { title: "Desktop Feed / Right Column", size: "1200×628 or 1:1", platforms: "Meta, LinkedIn, X (Desktop)", ratio: "16:9 or 1:1",
-                tips: ["Desktop users are in lean-back mode - longer copy OK", "Right column ads are small - bold imagery required", "Link preview card: 1200×628 with headline below", "Desktop CTR is typically lower but conversion rate higher"],
-                eyAd: { headline: "Abu Dhabi Stopover", sub: "Free 2-night hotel stay when you fly through Abu Dhabi", cta: "Learn More", scene: "Aerial view of Abu Dhabi skyline at sunset" }},
-              display_banners: { title: "Display / Programmatic Banners", size: "300×250, 728×90, 160×600, 320×50, 300×600", platforms: "GDN, DV360, Programmatic", ratio: "Various",
-                tips: ["300×250 (MPU) and 728×90 (leaderboard) cover 60% of inventory", "Always include: logo, headline, CTA button, key visual", "Max 3 elements - don't overcrowd small banners", "Animate sparingly - 15s max, 3 loops"],
-                eyAd: { headline: "Fly Etihad", sub: "Summer fares from $399", cta: "Book Now →", scene: "Aircraft livery with Abu Dhabi backdrop" }},
-              interstitial: { title: "Interstitial / Full-Screen Takeover", size: "320×480 or 1080×1920", platforms: "Programmatic, Apps", ratio: "2:3 or 9:16",
-                tips: ["Full-screen = maximum attention but use sparingly", "Always include clear close/skip button", "5-second exposure minimum before dismiss", "Best for high-impact awareness moments"],
-                eyAd: { headline: "Introducing A350", sub: "Experience our newest aircraft", cta: "Explore", scene: "Full-screen A350 aircraft beauty shot" }},
-              youtube_preroll: { title: "YouTube Pre-Roll Video", size: "1920×1080", platforms: "YouTube, Google Video Partners", ratio: "16:9",
-                tips: ["TrueView: users skip after 5s - front-load your message", "Bumper: 6s non-skippable - one message only", "Non-skip 15s: full message but keep it tight", "Add end cards and CTAs in final 5 seconds"],
-                eyAd: { headline: "Choose Well", sub: "15s brand film showing cabin experience", cta: "Visit etihad.com", scene: "Cinematic cabin walkthrough with orchestral score" }},
+            const EY = { navy: "#1A1A2E", gold: "#BD8B13", teal: "#1B4D4F", warm: "#F5E6C8", sky: "#87CEEB" };
+            const formats = {
+              feed_1x1: { title: "Feed Post - 1:1 Square", size: "1080x1080", platforms: "Meta, LinkedIn, X, Pinterest",
+                tips: ["Safe default - works across all platforms", "Keep text under 20% of image for Meta", "Logo top-left for brand recall", "Strong CTA in bottom third"],
+                mockup: (
+                  <div style={{ width: 300, background: "#fff", borderRadius: 8, boxShadow: "0 2px 20px rgba(0,0,0,.1)", overflow: "hidden" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 12px" }}>
+                      <div style={{ width: 32, height: 32, borderRadius: "50%", background: EY.teal, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 6, color: "#fff", fontWeight: 800, letterSpacing: 1 }}>EY</div>
+                      <div><div style={{ fontSize: 11, fontWeight: 700, color: "#1a1a2e" }}>Etihad Airways</div><div style={{ fontSize: 9, color: "#999" }}>Sponsored</div></div>
+                    </div>
+                    <div style={{ width: "100%", height: 300, background: "linear-gradient(135deg, #1B4D4F, #2a6a6e)", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <div style={{ textAlign: "center", padding: 20 }}>
+                        <div style={{ fontSize: 7, color: EY.gold, letterSpacing: 3, fontWeight: 700, marginBottom: 6 }}>ETIHAD AIRWAYS</div>
+                        <div style={{ fontSize: 22, fontWeight: 800, color: "#fff", lineHeight: 1.2, marginBottom: 8 }}>Plans change.<br/>Your ticket can too.</div>
+                        <div style={{ fontSize: 10, color: "rgba(255,255,255,.7)", marginBottom: 12 }}>No change fees until March 2027</div>
+                        <div style={{ display: "inline-block", padding: "6px 20px", background: EY.gold, color: "#fff", borderRadius: 20, fontSize: 10, fontWeight: 700 }}>Learn More</div>
+                      </div>
+                    </div>
+                    <div style={{ padding: "10px 12px", display: "flex", gap: 16 }}>{["❤️ 2.4K","💬 186","↗️ Share"].map(a => <span key={a} style={{ fontSize: 10, color: "#666" }}>{a}</span>)}</div>
+                  </div>
+                )},
+              feed_4x5: { title: "Feed Post - 4:5 Vertical", size: "1080x1350", platforms: "Meta Feed (mobile priority)",
+                tips: ["Takes up 20% more screen than 1:1", "Higher engagement rate vs square", "Key message in centre - edges may crop", "Best for destination/product hero shots"],
+                mockup: (
+                  <div style={{ width: 260, background: "#fff", borderRadius: 8, boxShadow: "0 2px 20px rgba(0,0,0,.1)", overflow: "hidden" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 12px" }}>
+                      <div style={{ width: 28, height: 28, borderRadius: "50%", background: EY.teal, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 5, color: "#fff", fontWeight: 800 }}>EY</div>
+                      <div><div style={{ fontSize: 10, fontWeight: 700 }}>Etihad Airways</div><div style={{ fontSize: 8, color: "#999" }}>Sponsored</div></div>
+                    </div>
+                    <div style={{ width: "100%", height: 325, background: "linear-gradient(180deg, #f0c27f, #4B1248)", position: "relative" }}>
+                      <div style={{ position: "absolute", bottom: 20, left: 16, right: 16, textAlign: "left" }}>
+                        <div style={{ fontSize: 6, color: EY.gold, letterSpacing: 2, fontWeight: 700 }}>THE RESIDENCE</div>
+                        <div style={{ fontSize: 18, fontWeight: 800, color: "#fff", lineHeight: 1.2, marginTop: 4 }}>The only 3-room<br/>suite in the sky</div>
+                        <div style={{ display: "inline-block", padding: "5px 16px", background: EY.gold, color: "#fff", borderRadius: 16, fontSize: 9, fontWeight: 700, marginTop: 8 }}>Discover More</div>
+                      </div>
+                    </div>
+                  </div>
+                )},
+              stories_916: { title: "Stories / Reels - 9:16", size: "1080x1920", platforms: "Meta, TikTok, Snapchat, Shorts",
+                tips: ["Keep top 250px + bottom 340px clear (safe zones)", "Hook in first 2 seconds", "Sound ON for Reels/TikTok, optional for Stories", "Native content outperforms polished ads 3:1"],
+                mockup: (
+                  <div style={{ width: 200, height: 360, background: "linear-gradient(180deg, #0f2027, #203a43, #2c5364)", borderRadius: 24, border: "3px solid #333", position: "relative", overflow: "hidden", boxShadow: "0 8px 30px rgba(0,0,0,.3)" }}>
+                    <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 24, background: "rgba(0,0,0,.3)", zIndex: 2, display: "flex", alignItems: "center", padding: "0 12px" }}>
+                      <div style={{ flex: 1, height: 2, background: "rgba(255,255,255,.2)", borderRadius: 1 }}><div style={{ width: "40%", height: "100%", background: "#fff", borderRadius: 1 }} /></div>
+                    </div>
+                    <div style={{ position: "absolute", top: 30, left: 10, display: "flex", alignItems: "center", gap: 6, zIndex: 2 }}>
+                      <div style={{ width: 28, height: 28, borderRadius: "50%", border: "2px solid " + EY.gold, background: EY.teal, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 5, color: "#fff", fontWeight: 800 }}>EY</div>
+                      <div style={{ fontSize: 10, color: "#fff", fontWeight: 600 }}>etihad</div>
+                    </div>
+                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 30%, rgba(0,0,0,.6))" }} />
+                    <div style={{ position: "absolute", bottom: 60, left: 14, right: 14 }}>
+                      <div style={{ fontSize: 20, fontWeight: 800, color: "#fff", lineHeight: 1.15, marginBottom: 4 }}>Choose Well ✈️</div>
+                      <div style={{ fontSize: 9, color: "rgba(255,255,255,.8)" }}>Abu Dhabi to 170+ destinations</div>
+                    </div>
+                    <div style={{ position: "absolute", bottom: 16, left: 14, right: 14, textAlign: "center" }}>
+                      <div style={{ padding: "8px", background: "rgba(255,255,255,.15)", backdropFilter: "blur(4px)", borderRadius: 8, fontSize: 10, color: "#fff", fontWeight: 700, border: "1px solid rgba(255,255,255,.2)" }}>Swipe Up to Book ↑</div>
+                    </div>
+                    <div style={{ position: "absolute", right: 10, bottom: 80, display: "flex", flexDirection: "column", gap: 14 }}>
+                      {["♡","💬","↗️","🔖"].map((e,i) => <div key={i} style={{ fontSize: 14, textAlign: "center" }}>{e}</div>)}
+                    </div>
+                  </div>
+                )},
+              tiktok_infeed: { title: "TikTok In-Feed", size: "1080x1920", platforms: "TikTok, Spark Ads",
+                tips: ["Creative IS targeting - algorithm matches to audience", "Spark Ads (boosted organic) get 70% higher CTR", "Use trending audio + native transitions", "First 2 seconds = watch or scroll decision"],
+                mockup: (
+                  <div style={{ width: 200, height: 360, background: "#000", borderRadius: 24, border: "3px solid #333", position: "relative", overflow: "hidden", boxShadow: "0 8px 30px rgba(0,0,0,.3)" }}>
+                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, #1a1a2e 0%, #0d1117 40%, #BD8B13 200%)" }} />
+                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 50%, rgba(0,0,0,.7))" }} />
+                    <div style={{ position: "absolute", top: "25%", left: "50%", transform: "translate(-50%,-50%)" }}>
+                      <div style={{ width: 50, height: 50, borderRadius: "50%", border: "2px solid rgba(255,255,255,.2)", display: "flex", alignItems: "center", justifyContent: "center" }}><div style={{ width: 0, height: 0, borderLeft: "14px solid white", borderTop: "9px solid transparent", borderBottom: "9px solid transparent", marginLeft: 4 }} /></div>
+                    </div>
+                    <div style={{ position: "absolute", bottom: 60, left: 12, right: 50 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6 }}>
+                        <div style={{ width: 24, height: 24, borderRadius: "50%", background: EY.teal, fontSize: 5, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800 }}>EY</div>
+                        <span style={{ fontSize: 10, color: "#fff", fontWeight: 700 }}>etihad</span>
+                        <span style={{ fontSize: 8, padding: "1px 6px", border: "1px solid #fff", borderRadius: 3, color: "#fff" }}>Follow</span>
+                      </div>
+                      <div style={{ fontSize: 10, color: "#fff", lineHeight: 1.4 }}>POV: You just got upgraded to Business ✈️ #etihad #travel #luxury</div>
+                      <div style={{ fontSize: 8, color: "rgba(255,255,255,.6)", marginTop: 4, display: "flex", alignItems: "center", gap: 4 }}>♪ original sound - etihad</div>
+                    </div>
+                    <div style={{ position: "absolute", right: 10, bottom: 80, display: "flex", flexDirection: "column", gap: 12, alignItems: "center" }}>
+                      {[["♡","48K"],["💬","2.1K"],["🔖",""],["↗️",""]].map(([e,n],i) => <div key={i} style={{ textAlign: "center" }}><div style={{ fontSize: 16 }}>{e}</div>{n && <div style={{ fontSize: 8, color: "#fff" }}>{n}</div>}</div>)}
+                    </div>
+                    <div style={{ position: "absolute", bottom: 12, left: 12, right: 12, padding: "6px 10px", background: EY.gold, borderRadius: 4, textAlign: "center", fontSize: 10, color: "#fff", fontWeight: 700 }}>Book Now | etihad.com</div>
+                  </div>
+                )},
+              carousel: { title: "Carousel - Multi-Card", size: "1080x1080 per card", platforms: "Meta, LinkedIn",
+                tips: ["2-10 cards, sweet spot is 5-6", "Tell a story or show features across cards", "First card is the hook", "Last card = clear CTA"],
+                mockup: (
+                  <div style={{ width: 320 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "0 0 10px" }}>
+                      <div style={{ width: 28, height: 28, borderRadius: "50%", background: EY.teal, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 5, color: "#fff", fontWeight: 800 }}>EY</div>
+                      <div><div style={{ fontSize: 10, fontWeight: 700 }}>Etihad Airways</div><div style={{ fontSize: 8, color: "#999" }}>Sponsored</div></div>
+                    </div>
+                    <div style={{ display: "flex", gap: 6, overflow: "hidden" }}>
+                      {[
+                        { bg: "linear-gradient(135deg,#1B4D4F,#2a8a6e)", label: "1. The Lounge", sub: "Relax before you fly" },
+                        { bg: "linear-gradient(135deg,#1A1A2E,#3a3a5e)", label: "2. Business", sub: "Flatbed seats" },
+                        { bg: "linear-gradient(135deg,#4B1248,#f0c27f)", label: "3. Dining", sub: "Chef-curated menus" },
+                        { bg: "linear-gradient(135deg,#0f2027,#87CEEB)", label: "4. Destinations", sub: "170+ cities" },
+                      ].map((c,i) => (
+                        <div key={i} style={{ width: 140, height: 140, borderRadius: 6, background: c.bg, flexShrink: 0, position: "relative", overflow: "hidden" }}>
+                          <div style={{ position: "absolute", bottom: 8, left: 8, right: 8 }}>
+                            <div style={{ fontSize: 10, fontWeight: 800, color: "#fff" }}>{c.label}</div>
+                            <div style={{ fontSize: 8, color: "rgba(255,255,255,.7)" }}>{c.sub}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "center", gap: 4, marginTop: 8 }}>{[0,1,2,3].map(i => <div key={i} style={{ width: 6, height: 6, borderRadius: "50%", background: i === 0 ? EY.teal : "#ddd" }} />)}</div>
+                  </div>
+                )},
+              desktop_feed: { title: "Desktop Feed", size: "1200x628", platforms: "Meta, LinkedIn, X (Desktop)",
+                tips: ["Desktop users = lean-back mode, longer copy OK", "Link preview: 1200x628 with headline below", "CTR lower but conversion rate higher than mobile", "Right column: bold imagery, minimal text"],
+                mockup: (
+                  <div style={{ width: 340, background: "#fff", borderRadius: 8, boxShadow: "0 2px 20px rgba(0,0,0,.1)", overflow: "hidden" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 12px" }}>
+                      <div style={{ width: 32, height: 32, borderRadius: "50%", background: EY.teal, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 6, color: "#fff", fontWeight: 800 }}>EY</div>
+                      <div><div style={{ fontSize: 11, fontWeight: 700 }}>Etihad Airways</div><div style={{ fontSize: 9, color: "#999" }}>Sponsored · &#127758;</div></div>
+                    </div>
+                    <div style={{ padding: "0 12px 8px", fontSize: 11, color: "#333", lineHeight: 1.4 }}>Discover Abu Dhabi with a free 2-night stopover. Explore the city between flights.</div>
+                    <div style={{ width: "100%", height: 180, background: "linear-gradient(135deg, #f0c27f, #1B4D4F)", position: "relative" }}>
+                      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <div style={{ textAlign: "center" }}><div style={{ fontSize: 24, fontWeight: 800, color: "#fff" }}>Abu Dhabi Stopover</div><div style={{ fontSize: 10, color: "rgba(255,255,255,.8)" }}>2 free nights when you fly through Abu Dhabi</div></div>
+                      </div>
+                    </div>
+                    <div style={{ padding: "8px 12px", background: "#f5f5f7", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <div><div style={{ fontSize: 9, color: "#999" }}>ETIHAD.COM</div><div style={{ fontSize: 11, fontWeight: 700, color: "#1a1a2e" }}>Book Your Stopover</div></div>
+                      <div style={{ padding: "5px 14px", background: EY.gold, color: "#fff", borderRadius: 4, fontSize: 10, fontWeight: 700 }}>Learn More</div>
+                    </div>
+                  </div>
+                )},
+              display_banners: { title: "Display / Programmatic", size: "300x250, 728x90, 160x600", platforms: "GDN, DV360, Programmatic",
+                tips: ["300x250 + 728x90 cover 60% of inventory", "Max 3 elements: logo, headline, CTA", "Don't overcrowd - especially 320x50 mobile", "15s max animation, 3 loops"],
+                mockup: (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "center" }}>
+                    <div style={{ width: 300, height: 100, background: EY.navy, borderRadius: 4, display: "flex", overflow: "hidden", border: "1px solid #333" }}>
+                      <div style={{ width: "40%", background: "linear-gradient(135deg,#1B4D4F,#2a8a6e)" }} />
+                      <div style={{ flex: 1, padding: "10px 14px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                        <div style={{ fontSize: 5, color: EY.gold, letterSpacing: 2, fontWeight: 700 }}>ETIHAD</div>
+                        <div style={{ fontSize: 12, fontWeight: 800, color: "#fff", lineHeight: 1.2, margin: "3px 0" }}>Summer Fares<br/>from $399</div>
+                        <div style={{ alignSelf: "flex-start", padding: "2px 10px", background: EY.gold, color: "#fff", borderRadius: 2, fontSize: 7, fontWeight: 700 }}>Book Now</div>
+                      </div>
+                    </div>
+                    <div style={{ width: 160, height: 220, background: EY.navy, borderRadius: 4, display: "flex", flexDirection: "column", overflow: "hidden", border: "1px solid #333" }}>
+                      <div style={{ height: "50%", background: "linear-gradient(180deg,#0f2027,#1B4D4F)" }} />
+                      <div style={{ flex: 1, padding: "8px 10px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center" }}>
+                        <div style={{ fontSize: 5, color: EY.gold, letterSpacing: 2, fontWeight: 700 }}>ETIHAD</div>
+                        <div style={{ fontSize: 11, fontWeight: 800, color: "#fff", lineHeight: 1.2, margin: "4px 0" }}>Beyond<br/>Borders</div>
+                        <div style={{ padding: "3px 12px", background: EY.gold, color: "#fff", borderRadius: 2, fontSize: 7, fontWeight: 700 }}>Explore</div>
+                      </div>
+                    </div>
+                  </div>
+                )},
+              interstitial: { title: "Interstitial / Takeover", size: "320x480 or 1080x1920", platforms: "Programmatic, Apps",
+                tips: ["Full-screen = maximum attention", "Clear close/skip button always", "5s minimum exposure before dismiss", "Best for high-impact awareness"],
+                mockup: (
+                  <div style={{ width: 220, height: 340, background: "linear-gradient(180deg,#0f2027,#1A1A2E,#1B4D4F)", borderRadius: 20, border: "3px solid #333", position: "relative", overflow: "hidden", boxShadow: "0 8px 30px rgba(0,0,0,.3)" }}>
+                    <div style={{ position: "absolute", top: 10, right: 10, width: 20, height: 20, borderRadius: "50%", background: "rgba(255,255,255,.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, color: "#fff", zIndex: 2 }}>×</div>
+                    <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 20 }}>
+                      <div style={{ fontSize: 7, color: EY.gold, letterSpacing: 3, fontWeight: 700, marginBottom: 12 }}>ETIHAD AIRWAYS</div>
+                      <div style={{ width: 50, height: 1, background: EY.gold, marginBottom: 12 }} />
+                      <div style={{ fontSize: 24, fontWeight: 800, color: "#fff", lineHeight: 1.15, marginBottom: 8 }}>Introducing<br/>the A350</div>
+                      <div style={{ fontSize: 10, color: "rgba(255,255,255,.6)", marginBottom: 16, lineHeight: 1.4 }}>Our newest aircraft.<br/>Reimagined for you.</div>
+                      <div style={{ padding: "8px 24px", background: EY.gold, color: "#fff", borderRadius: 20, fontSize: 10, fontWeight: 700 }}>Explore the A350</div>
+                    </div>
+                    <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 3, background: EY.gold }} />
+                  </div>
+                )},
+              youtube_preroll: { title: "YouTube Pre-Roll", size: "1920x1080", platforms: "YouTube, Google Video",
+                tips: ["TrueView: skip after 5s - front-load message", "Bumper: 6s non-skip, one message only", "Add end cards + CTAs in final 5 seconds", "16:9 only - no vertical on desktop YouTube"],
+                mockup: (
+                  <div style={{ width: 340, background: "#000", borderRadius: 8, overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,.3)" }}>
+                    <div style={{ width: "100%", height: 192, background: "linear-gradient(135deg,#1A1A2E,#1B4D4F)", position: "relative" }}>
+                      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <div style={{ textAlign: "center" }}>
+                          <div style={{ fontSize: 7, color: EY.gold, letterSpacing: 3, fontWeight: 700, marginBottom: 8 }}>ETIHAD AIRWAYS</div>
+                          <div style={{ fontSize: 20, fontWeight: 800, color: "#fff", lineHeight: 1.2 }}>Choose Well</div>
+                          <div style={{ fontSize: 9, color: "rgba(255,255,255,.6)", marginTop: 4 }}>Beyond Borders</div>
+                        </div>
+                      </div>
+                      <div style={{ position: "absolute", bottom: 8, left: 8, padding: "2px 8px", background: "rgba(0,0,0,.7)", borderRadius: 3, fontSize: 9, color: "#fff" }}>0:05 / 0:15</div>
+                      <div style={{ position: "absolute", bottom: 8, right: 8, padding: "3px 10px", background: "rgba(255,255,255,.9)", borderRadius: 3, fontSize: 9, color: "#333", fontWeight: 600 }}>Skip Ad ▸</div>
+                      <div style={{ position: "absolute", top: 8, right: 8, padding: "2px 6px", background: "rgba(0,0,0,.5)", borderRadius: 3, fontSize: 7, color: EY.gold }}>Ad · 0:15</div>
+                    </div>
+                    <div style={{ padding: "8px 10px", display: "flex", justifyContent: "space-between", alignItems: "center", background: "#0f0f0f" }}>
+                      <div style={{ fontSize: 10, color: "#fff", fontWeight: 600 }}>Etihad Airways - Choose Well</div>
+                      <div style={{ padding: "3px 8px", background: EY.gold, borderRadius: 3, fontSize: 8, color: "#fff", fontWeight: 700 }}>Visit Site</div>
+                    </div>
+                  </div>
+                )},
+              native: { title: "Native / In-Content", size: "1200x628 + text", platforms: "Taboola, Outbrain, Programmatic",
+                tips: ["Blends with editorial content", "Headline is the creative - make it click-worthy", "Image + headline + source logo format", "Avoid stock photo look - editorial style works best"],
+                mockup: (
+                  <div style={{ width: 300, background: "#fff", borderRadius: 6, boxShadow: "0 2px 12px rgba(0,0,0,.08)", overflow: "hidden", border: "1px solid #e0e0e8" }}>
+                    <div style={{ fontSize: 9, color: "#999", padding: "6px 10px", borderBottom: "1px solid #f0f0f5" }}>Recommended for you</div>
+                    <div style={{ display: "flex", gap: 10, padding: 10 }}>
+                      <div style={{ width: 100, height: 70, background: "linear-gradient(135deg,#f0c27f,#1B4D4F)", borderRadius: 4, flexShrink: 0 }} />
+                      <div>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a2e", lineHeight: 1.3 }}>This Abu Dhabi Stopover Deal Is Too Good to Miss</div>
+                        <div style={{ fontSize: 9, color: "#999", marginTop: 6, display: "flex", alignItems: "center", gap: 4 }}><div style={{ width: 12, height: 12, borderRadius: "50%", background: EY.teal }} />Etihad Airways | Sponsored</div>
+                      </div>
+                    </div>
+                  </div>
+                )},
+              ctv: { title: "Connected TV (CTV)", size: "1920x1080 HD", platforms: "Shahid, OSN+, YouTube CTV",
+                tips: ["16:9 only - always landscape", "15s and 30s standard durations", "Non-skippable = guaranteed full view", "Near 100% viewability on CTV"],
+                mockup: (
+                  <div style={{ width: 340, background: "#111", borderRadius: 10, overflow: "hidden", boxShadow: "0 4px 30px rgba(0,0,0,.4)", border: "3px solid #222" }}>
+                    <div style={{ width: "100%", height: 192, background: "linear-gradient(135deg,#1A1A2E,#1B4D4F,#0f2027)", position: "relative" }}>
+                      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <div style={{ textAlign: "center" }}>
+                          <div style={{ fontSize: 8, color: EY.gold, letterSpacing: 4, fontWeight: 700, marginBottom: 10 }}>ETIHAD AIRWAYS</div>
+                          <div style={{ width: 40, height: 1, background: EY.gold, margin: "0 auto 10px" }} />
+                          <div style={{ fontSize: 26, fontWeight: 800, color: "#fff", lineHeight: 1.1 }}>Beyond<br/>Borders</div>
+                          <div style={{ fontSize: 9, color: "rgba(255,255,255,.5)", marginTop: 8 }}>etihad.com</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div style={{ height: 8, background: "#222", display: "flex", alignItems: "center", justifyContent: "center" }}><div style={{ width: 20, height: 2, borderRadius: 1, background: "#444" }} /></div>
+                  </div>
+                )},
+              dooh: { title: "DOOH - Digital Billboard", size: "Varies by screen", platforms: "Dubai Mall, SZR, Riyadh",
+                tips: ["10-15 second loops, no audio", "Bold text - readable at distance", "Landscape or portrait depending on screen", "Book 2-4 weeks ahead for premium locations"],
+                mockup: (
+                  <div style={{ width: 320 }}>
+                    <div style={{ width: "100%", height: 160, background: EY.navy, borderRadius: 4, position: "relative", overflow: "hidden", border: "4px solid #555", boxShadow: "0 4px 20px rgba(0,0,0,.3)" }}>
+                      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg,#1A1A2E,#1B4D4F)" }} />
+                      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 20px" }}>
+                        <div>
+                          <div style={{ fontSize: 6, color: EY.gold, letterSpacing: 3, fontWeight: 700 }}>ETIHAD AIRWAYS</div>
+                          <div style={{ fontSize: 20, fontWeight: 800, color: "#fff", lineHeight: 1.15, marginTop: 6 }}>Abu Dhabi<br/>is calling</div>
+                          <div style={{ fontSize: 9, color: "rgba(255,255,255,.6)", marginTop: 4 }}>Fly from $399 return</div>
+                        </div>
+                        <div style={{ fontSize: 9, color: EY.gold, fontWeight: 700, padding: "4px 12px", border: "1px solid " + EY.gold, borderRadius: 3 }}>etihad.com</div>
+                      </div>
+                    </div>
+                    <div style={{ width: 10, height: 30, background: "#777", margin: "0 auto" }} />
+                    <div style={{ width: 60, height: 4, background: "#888", borderRadius: 2, margin: "0 auto" }} />
+                    <div style={{ fontSize: 8, color: "#999", textAlign: "center", marginTop: 6 }}>Sheikh Zayed Road - Digital Billboard</div>
+                  </div>
+                )},
+              youtube_masthead: { title: "YouTube Masthead", size: "Homepage takeover", platforms: "YouTube Desktop + Mobile",
+                tips: ["$50K-$200K/day depending on market", "Book 6-8 weeks ahead", "Auto-plays at top of YouTube homepage", "Maximum reach play - great for launches"],
+                mockup: (
+                  <div style={{ width: 340, background: "#0f0f0f", borderRadius: 8, overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,.3)" }}>
+                    <div style={{ display: "flex", alignItems: "center", padding: "8px 10px", gap: 8, background: "#202020" }}>
+                      <div style={{ fontSize: 14 }}>▶️</div><div style={{ height: 6, flex: 1, background: "#333", borderRadius: 3 }}><div style={{ width: "60%", height: "100%", background: "#fff", borderRadius: 3 }} /></div><div style={{ fontSize: 9, color: "#fff" }}>🔍 🔔 👤</div>
+                    </div>
+                    <div style={{ width: "100%", height: 140, background: "linear-gradient(135deg,#1A1A2E,#1B4D4F)", position: "relative" }}>
+                      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <div style={{ textAlign: "center" }}><div style={{ fontSize: 6, color: EY.gold, letterSpacing: 3, fontWeight: 700 }}>ETIHAD AIRWAYS</div><div style={{ fontSize: 16, fontWeight: 800, color: "#fff", marginTop: 4 }}>Your Journey Starts Here</div></div>
+                      </div>
+                      <div style={{ position: "absolute", bottom: 6, right: 8, padding: "2px 8px", background: EY.gold, borderRadius: 3, fontSize: 7, color: "#fff", fontWeight: 700 }}>Visit Site</div>
+                    </div>
+                    <div style={{ display: "flex", gap: 6, padding: "8px 10px" }}>
+                      {[1,2,3,4].map(i => <div key={i} style={{ width: 70, height: 40, background: "#1a1a1a", borderRadius: 4 }} />)}
+                    </div>
+                  </div>
+                )},
+              document_ad: { title: "Document Ad (Swipeable)", size: "1080x1080 per page", platforms: "LinkedIn",
+                tips: ["PDF/PPT uploaded as swipeable carousel", "Great for thought leadership + B2B", "Each page = swipe, aim for 5-10 pages", "Gate with lead form for downloads"],
+                mockup: (
+                  <div style={{ width: 260, background: "#fff", borderRadius: 8, boxShadow: "0 2px 20px rgba(0,0,0,.1)", overflow: "hidden" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 12px" }}>
+                      <div style={{ width: 28, height: 28, borderRadius: "50%", background: EY.teal, fontSize: 5, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800 }}>EY</div>
+                      <div><div style={{ fontSize: 10, fontWeight: 700 }}>Etihad Airways</div><div style={{ fontSize: 8, color: "#999" }}>4,200 followers</div></div>
+                    </div>
+                    <div style={{ width: "100%", height: 260, background: EY.navy, position: "relative", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 20, textAlign: "center" }}>
+                      <div style={{ fontSize: 7, color: EY.gold, letterSpacing: 2, fontWeight: 700, marginBottom: 8 }}>ETIHAD AIRWAYS</div>
+                      <div style={{ fontSize: 16, fontWeight: 800, color: "#fff", lineHeight: 1.2, marginBottom: 6 }}>Sustainability<br/>Report 2025</div>
+                      <div style={{ fontSize: 9, color: "rgba(255,255,255,.5)" }}>Our commitment to responsible aviation</div>
+                      <div style={{ position: "absolute", bottom: 8, right: 8, fontSize: 8, color: "rgba(255,255,255,.4)" }}>1 / 8</div>
+                    </div>
+                    <div style={{ padding: "8px 12px", fontSize: 9, color: EY.teal, fontWeight: 600, textAlign: "center" }}>← Swipe through pages →</div>
+                  </div>
+                )},
+              snap_fullscreen: { title: "Snapchat Full-Screen", size: "1080x1920", platforms: "Snapchat Ads, Story Ads",
+                tips: ["Swipe Up CTA is primary action", "6s Commercial format is non-skippable", "AR Lens for interactive experiences", "KSA/Kuwait: 60-70% penetration, essential market"],
+                mockup: (
+                  <div style={{ width: 200, height: 360, background: "#FFFC00", borderRadius: 24, border: "3px solid #333", position: "relative", overflow: "hidden", boxShadow: "0 8px 30px rgba(0,0,0,.3)" }}>
+                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg,#1A1A2E 0%,#1B4D4F 60%,#FFFC00 200%)" }} />
+                    <div style={{ position: "absolute", top: 14, left: 12, right: 12, display: "flex", justifyContent: "space-between", alignItems: "center", zIndex: 2 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <div style={{ width: 28, height: 28, borderRadius: "50%", border: "2px solid " + EY.gold, background: EY.teal, fontSize: 5, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800 }}>EY</div>
+                        <span style={{ fontSize: 10, color: "#fff", fontWeight: 700 }}>Etihad</span>
+                      </div>
+                      <span style={{ fontSize: 8, color: "rgba(255,255,255,.5)" }}>Ad</span>
+                    </div>
+                    <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 20 }}>
+                      <div>
+                        <div style={{ fontSize: 22, fontWeight: 800, color: "#fff", lineHeight: 1.15 }}>Escape to<br/>paradise ☀️</div>
+                        <div style={{ fontSize: 9, color: "rgba(255,255,255,.7)", marginTop: 6 }}>Maldives from $799 return</div>
+                      </div>
+                    </div>
+                    <div style={{ position: "absolute", bottom: 16, left: 14, right: 14, textAlign: "center" }}>
+                      <div style={{ padding: "10px", background: "rgba(255,255,255,.15)", borderRadius: 8, fontSize: 11, color: "#fff", fontWeight: 700, letterSpacing: 0.5, border: "1px solid rgba(255,255,255,.2)" }}>Swipe Up ↑</div>
+                    </div>
+                  </div>
+                )},
             };
-            const p = previews[creativePreview];
+            const p = formats[creativePreview];
             if (!p) { setCreativePreview(null); return null; }
 
             return (
-              <div onClick={() => setCreativePreview(null)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", backdropFilter: "blur(6px)", zIndex: 9998, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
-                <div onClick={e => e.stopPropagation()} style={{ width: 700, maxHeight: "90vh", overflow: "auto", background: "#fff", borderRadius: 16, boxShadow: "0 20px 60px rgba(0,0,0,.3)" }}>
-                  {/* Header */}
-                  <div style={{ padding: "20px 24px", borderBottom: "1px solid #e0e0e8", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div onClick={() => setCreativePreview(null)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", backdropFilter: "blur(8px)", zIndex: 9998, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+                <div onClick={e => e.stopPropagation()} style={{ width: 740, maxHeight: "90vh", overflow: "auto", background: "#fff", borderRadius: 16, boxShadow: "0 20px 60px rgba(0,0,0,.3)" }}>
+                  <div style={{ padding: "16px 24px", borderBottom: "1px solid #e0e0e8", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <div>
                       <div style={{ fontSize: 18, fontWeight: 800, color: "#1A1A2E" }}>{p.title}</div>
                       <div style={{ fontSize: 11, color: "#6a6a7e", marginTop: 2 }}>{p.size} | {p.platforms}</div>
                     </div>
-                    <button onClick={() => setCreativePreview(null)} style={{ width: 32, height: 32, borderRadius: "50%", border: "1px solid #e0e0e8", background: "transparent", color: "#6a6a7e", fontSize: 16, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>×</button>
+                    <button onClick={() => setCreativePreview(null)} style={{ width: 32, height: 32, borderRadius: "50%", border: "1px solid #e0e0e8", background: "transparent", color: "#6a6a7e", fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>x</button>
                   </div>
-
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 0 }}>
-                    {/* Left: Etihad Ad Mockup */}
-                    <div style={{ padding: 24, borderRight: "1px solid #f0f0f5", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <div style={{
-                        width: p.ratio === "16:9" ? 280 : p.ratio === "9:16" ? 160 : p.ratio === "Various" ? 240 : 200,
-                        height: p.ratio === "16:9" ? 158 : p.ratio === "9:16" ? 284 : p.ratio === "2:3 or 9:16" ? 260 : p.ratio === "Various" ? "auto" : 200,
-                        background: "linear-gradient(135deg, #1A1A2E 0%, #2a2a4e 100%)",
-                        borderRadius: p.ratio === "9:16" || p.ratio === "2:3 or 9:16" ? 20 : 8,
-                        overflow: "hidden", position: "relative",
-                        boxShadow: "0 8px 30px rgba(0,0,0,.2)",
-                        border: p.ratio === "9:16" || p.ratio === "2:3 or 9:16" ? "3px solid #333" : "none",
-                      }}>
-                        {/* Etihad brand bar */}
-                        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: "#BD8B13" }} />
-                        
-                        {/* Scenic background gradient */}
-                        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(26,26,46,0.3) 0%, rgba(26,26,46,0.1) 40%, rgba(189,139,19,0.15) 100%)" }} />
-                        
-                        {/* Content */}
-                        <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: p.ratio === "9:16" ? "16px 14px" : "12px 16px" }}>
-                          {/* Etihad logo area */}
-                          <div style={{ position: "absolute", top: p.ratio === "9:16" ? 16 : 10, left: p.ratio === "9:16" ? 14 : 16 }}>
-                            <div style={{ fontSize: 7, fontWeight: 700, color: "#BD8B13", letterSpacing: 2 }}>ETIHAD</div>
-                            <div style={{ fontSize: 5, color: "rgba(255,255,255,0.5)", letterSpacing: 1 }}>AIRWAYS</div>
-                          </div>
-
-                          {/* Decorative elements */}
-                          <div style={{ position: "absolute", top: "30%", left: "50%", transform: "translate(-50%, -50%)" }}>
-                            <svg width="60" height="60" viewBox="0 0 60 60" style={{ opacity: 0.08 }}><path d="M30 5 L55 30 L30 55 L5 30 Z" fill="#BD8B13"/></svg>
-                          </div>
-
-                          {/* Scene description */}
-                          <div style={{ fontSize: 6, color: "rgba(255,255,255,0.3)", marginBottom: 6, fontStyle: "italic" }}>{p.eyAd.scene}</div>
-                          
-                          {/* Headline */}
-                          <div style={{ fontSize: p.ratio === "9:16" ? 18 : 14, fontWeight: 800, color: "#fff", lineHeight: 1.2, marginBottom: 4 }}>{p.eyAd.headline}</div>
-                          
-                          {/* Subheadline */}
-                          <div style={{ fontSize: p.ratio === "9:16" ? 9 : 8, color: "rgba(255,255,255,0.75)", marginBottom: 8, lineHeight: 1.4 }}>{p.eyAd.sub}</div>
-                          
-                          {/* CTA */}
-                          <div style={{ alignSelf: "flex-start", padding: "4px 12px", background: "#BD8B13", color: "#fff", fontSize: 7, fontWeight: 700, borderRadius: 3, letterSpacing: 0.5 }}>{p.eyAd.cta}</div>
-                        </div>
-
-                        {/* Bottom brand bar */}
-                        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 2, background: "#BD8B13" }} />
-                      </div>
-                    </div>
-
-                    {/* Right: Specs & Tips */}
-                    <div style={{ padding: 24 }}>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: "#2D1768", marginBottom: 12 }}>Format Specs</div>
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 16 }}>
-                        <div style={{ padding: "8px 10px", background: "#f9f9fb", borderRadius: 6 }}>
-                          <div style={{ fontSize: 8, color: "#6a6a7e", fontWeight: 700 }}>RATIO</div>
-                          <div style={{ fontSize: 14, fontWeight: 800, color: "#1A1A2E" }}>{p.ratio}</div>
-                        </div>
-                        <div style={{ padding: "8px 10px", background: "#f9f9fb", borderRadius: 6 }}>
-                          <div style={{ fontSize: 8, color: "#6a6a7e", fontWeight: 700 }}>DIMENSIONS</div>
-                          <div style={{ fontSize: 11, fontWeight: 700, color: "#1A1A2E" }}>{p.size}</div>
-                        </div>
-                      </div>
-
-                      <div style={{ fontSize: 12, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>Best Practices</div>
-                      {p.tips.map((tip, i) => (
-                        <div key={i} style={{ fontSize: 11, color: "#444455", marginBottom: 6, paddingLeft: 12, position: "relative", lineHeight: 1.5 }}>
-                          <span style={{ position: "absolute", left: 0, color: "#BD8B13", fontWeight: 800 }}>-</span>
-                          {tip}
-                        </div>
-                      ))}
-
-                      <div style={{ marginTop: 14, padding: 10, background: "#fffdf5", borderRadius: 6, border: "1px solid #ffe082" }}>
-                        <div style={{ fontSize: 9, fontWeight: 700, color: "#b8860b", marginBottom: 3 }}>Etihad Creative Notes</div>
-                        <div style={{ fontSize: 10, color: "#666" }}>
-                          Always use approved Etihad brand assets. Headline font: Etihad Altis. Brand colours: Navy (#1A1A2E) and Gold (#BD8B13). All creative must go through brand approval before going live.
-                        </div>
+                  <div style={{ display: "flex" }}>
+                    <div style={{ flex: "0 0 55%", padding: 24, background: "#f9f9fb", display: "flex", alignItems: "center", justifyContent: "center", minHeight: 300 }}>{p.mockup}</div>
+                    <div style={{ flex: 1, padding: 24 }}>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: "#2D1768", marginBottom: 10 }}>Best Practices</div>
+                      {p.tips.map((t, i) => <div key={i} style={{ fontSize: 11, color: "#444455", marginBottom: 6, paddingLeft: 12, position: "relative", lineHeight: 1.5 }}><span style={{ position: "absolute", left: 0, color: "#BD8B13", fontWeight: 800 }}>-</span>{t}</div>)}
+                      <div style={{ marginTop: 14, padding: 10, background: "#f0edf5", borderRadius: 6, border: "1px solid #d0c0e0" }}>
+                        <div style={{ fontSize: 9, fontWeight: 700, color: "#2D1768", marginBottom: 3 }}>Etihad Brand Guidelines</div>
+                        <div style={{ fontSize: 10, color: "#555", lineHeight: 1.5 }}>Colours: Navy (#1A1A2E), Gold (#BD8B13), Teal (#1B4D4F). Logo: "ETIHAD BEYOND BORDERS". Always use approved assets from the Etihad brand portal.</div>
                       </div>
                     </div>
                   </div>
@@ -1074,6 +1276,7 @@ export default function App() {
               </div>
             );
           })()}
+
 
           {/* START GAME CTA - only when no game state */}
           {!gameActive && !gameWon && !gameOver && (
@@ -2269,8 +2472,8 @@ export default function App() {
                 </Card>
 
                 {/* Native Ad */}
-                <Card style={{ padding: 16, textAlign: "center" }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#2a8c3e", marginBottom: 8 }}>Native / In-Content</div>
+                <Card onClick={() => setCreativePreview("native")} style={{ padding: 16, textAlign: "center", cursor: "pointer", transition: "box-shadow 0.2s" }} hoverable>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#2a8c3e", marginBottom: 8 }}>Native / In-Content<span style={{ fontSize: 8, color: "#7AC143", display: "block", marginTop: 2 }}>Click to preview</span></div>
                   <div style={{ width: "100%", background: "#f5f5f7", borderRadius: 8, border: "1px solid #e0e0e8", padding: 8 }}>
                     {[1,2].map(i => <div key={i} style={{ height: 3, background: "#e0e0e8", borderRadius: 2, marginBottom: 3, width: `${95-i*10}%` }} />)}
                     <div style={{ border: "1px dashed #2a5040", borderRadius: 6, padding: 8, margin: "6px 0", background: "#f0faf5" }}>
@@ -2290,8 +2493,8 @@ export default function App() {
                 </Card>
 
                 {/* CTV */}
-                <Card style={{ padding: 16, textAlign: "center" }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#6a1b9a", marginBottom: 8 }}>CTV / OTT - 16:9</div>
+                <Card onClick={() => setCreativePreview("ctv")} style={{ padding: 16, textAlign: "center", cursor: "pointer", transition: "box-shadow 0.2s" }} hoverable>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#6a1b9a", marginBottom: 8 }}>CTV / OTT - 16:9<span style={{ fontSize: 8, color: "#7AC143", display: "block", marginTop: 2 }}>Click to preview</span></div>
                   <div style={{ width: "100%", background: "#f5f5f7", borderRadius: 4, border: "3px solid #d0d0d8", overflow: "hidden", position: "relative" }}>
                     <div style={{ paddingBottom: "56.25%", background: "#ede8f5", position: "relative" }}>
                       <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
@@ -2309,8 +2512,8 @@ export default function App() {
                 </Card>
 
                 {/* DOOH */}
-                <Card style={{ padding: 16, textAlign: "center" }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#b8860b", marginBottom: 8 }}>DOOH - Billboard</div>
+                <Card onClick={() => setCreativePreview("dooh")} style={{ padding: 16, textAlign: "center", cursor: "pointer", transition: "box-shadow 0.2s" }} hoverable>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#b8860b", marginBottom: 8 }}>DOOH - Billboard<span style={{ fontSize: 8, color: "#7AC143", display: "block", marginTop: 2 }}>Click to preview</span></div>
                   <div style={{ position: "relative" }}>
                     <div style={{ width: "100%", background: "#ede8f5", borderRadius: 3, border: "2px solid #d0d0d8", overflow: "hidden" }}>
                       <div style={{ paddingBottom: "50%", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
@@ -2328,8 +2531,8 @@ export default function App() {
                 </Card>
 
                 {/* YouTube Masthead */}
-                <Card style={{ padding: 16, textAlign: "center" }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#cc3333", marginBottom: 8 }}>YouTube Masthead</div>
+                <Card onClick={() => setCreativePreview("youtube_masthead")} style={{ padding: 16, textAlign: "center", cursor: "pointer", transition: "box-shadow 0.2s" }} hoverable>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#cc3333", marginBottom: 8 }}>YouTube Masthead<span style={{ fontSize: 8, color: "#7AC143", display: "block", marginTop: 2 }}>Click to preview</span></div>
                   <div style={{ width: "100%", background: "#f5f5f7", borderRadius: 8, border: "2px solid #d0d0d8", overflow: "hidden" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 4, padding: "4px 8px", background: "#ffffff", borderBottom: "1px solid #e0e0e8" }}>
                       <div style={{ fontSize: 8, color: "#cc3333" }}>▶</div>
@@ -2352,8 +2555,8 @@ export default function App() {
                 </Card>
 
                 {/* LinkedIn Document Ad */}
-                <Card style={{ padding: 16, textAlign: "center" }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>Document Ad (Swipeable)</div>
+                <Card onClick={() => setCreativePreview("document_ad")} style={{ padding: 16, textAlign: "center", cursor: "pointer", transition: "box-shadow 0.2s" }} hoverable>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>Document Ad (Swipeable)<span style={{ fontSize: 8, color: "#7AC143", display: "block", marginTop: 2 }}>Click to preview</span></div>
                   <div style={{ width: 140, margin: "0 auto", background: "#f5f5f7", borderRadius: 8, border: "1px solid #e0e0e8", padding: 8 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 6 }}>
                       <div style={{ width: 14, height: 14, borderRadius: "50%", background: "#e0e0e8" }} />
