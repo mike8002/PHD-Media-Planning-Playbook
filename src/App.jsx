@@ -780,8 +780,38 @@ export default function App() {
     );
   };
   const [audienceData, setAudienceData] = useState([
-    { persona: "Primary", description: "", market: "UAE", platform: "Meta", ageRange: "25-44", gender: "All", interests: "", estimatedSize: "", notes: "" },
+    { persona: "Primary", description: "", markets: ["UAE"], platform: "Meta", ageRange: "25-44", gender: "All", interests: "", estimatedSize: "", notes: "" },
   ]);
+  const [basePlanId, setBasePlanId] = useState(null);
+  const [historicData, setHistoricData] = useState(null);
+
+  const AUDIENCE_SIZES = {
+    Meta: { "UAE": {all:9800000,"18-24":1900000,"25-34":3400000,"25-44":5200000,"35-54":2800000,"55+":600000}, "KSA": {all:25000000,"18-24":5500000,"25-34":8500000,"25-44":13000000,"35-54":6500000,"55+":1200000}, "Kuwait": {all:4200000,"18-24":850000,"25-34":1400000,"25-44":2200000,"35-54":1100000,"55+":250000}, "Qatar": {all:3100000,"18-24":600000,"25-34":1050000,"25-44":1600000,"35-54":850000,"55+":180000}, "UK": {all:45000000,"18-24":7200000,"25-34":9800000,"25-44":18000000,"35-54":13000000,"55+":7500000}, "US": {all:195000000,"18-24":32000000,"25-34":42000000,"25-44":78000000,"35-54":55000000,"55+":32000000}, "India": {all:400000000,"18-24":95000000,"25-34":130000000,"25-44":200000000,"35-54":95000000,"55+":28000000}, "Germany": {all:32000000,"18-24":5000000,"25-34":7200000,"25-44":13500000,"35-54":9500000,"55+":5200000}, "Australia": {all:18000000,"18-24":3000000,"25-34":4200000,"25-44":7800000,"35-54":5200000,"55+":2800000}, "Singapore": {all:4500000,"18-24":750000,"25-34":1200000,"25-44":2000000,"35-54":1300000,"55+":450000} },
+    TikTok: { "UAE": {all:8200000,"18-24":2800000,"25-34":2600000,"25-44":3800000,"35-54":1200000,"55+":200000}, "KSA": {all:22000000,"18-24":8000000,"25-34":7500000,"25-44":10500000,"35-54":3200000,"55+":400000}, "UK": {all:24000000,"18-24":8500000,"25-34":7200000,"25-44":10500000,"35-54":4000000,"55+":800000}, "US": {all:120000000,"18-24":42000000,"25-34":35000000,"25-44":52000000,"35-54":18000000,"55+":4000000}, "India": {all:280000000,"18-24":95000000,"25-34":85000000,"25-44":120000000,"35-54":35000000,"55+":5000000} },
+    Snapchat: { "UAE": {all:4500000,"18-24":1800000,"25-34":1400000,"25-44":2000000,"35-54":500000}, "KSA": {all:18000000,"18-24":7500000,"25-34":5500000,"25-44":8000000,"35-54":2000000}, "Kuwait": {all:3200000,"18-24":1300000,"25-34":1000000,"25-44":1500000,"35-54":400000}, "UK": {all:18000000,"18-24":7000000,"25-34":5200000,"25-44":7500000,"35-54":2200000}, "US": {all:95000000,"18-24":35000000,"25-34":28000000,"25-44":40000000,"35-54":12000000} },
+    YouTube: { "UAE": {all:8500000,"18-24":1800000,"25-34":2800000,"25-44":4500000,"35-54":2200000,"55+":500000}, "KSA": {all:24000000,"18-24":5500000,"25-34":8000000,"25-44":12500000,"35-54":6000000,"55+":1200000}, "UK": {all:48000000,"18-24":8000000,"25-34":10500000,"25-44":19000000,"35-54":14000000,"55+":8000000}, "US": {all:210000000,"18-24":35000000,"25-34":45000000,"25-44":82000000,"35-54":58000000,"55+":35000000} },
+    LinkedIn: { "UAE": {all:6200000,"18-24":600000,"25-34":2500000,"25-44":4200000,"35-54":1400000,"55+":200000}, "KSA": {all:8500000,"18-24":800000,"25-34":3200000,"25-44":5500000,"35-54":2000000,"55+":300000}, "UK": {all:35000000,"18-24":3000000,"25-34":12000000,"25-44":22000000,"35-54":8500000,"55+":2000000}, "US": {all:100000000,"18-24":8000000,"25-34":32000000,"25-44":58000000,"35-54":25000000,"55+":8000000} },
+    "Google Search": { "UAE": {all:9500000}, "KSA": {all:28000000}, "UK": {all:55000000}, "US": {all:270000000}, "India": {all:600000000} },
+  };
+
+  const getAudienceSize = (platform, markets, ageRange) => {
+    let total = 0;
+    (markets || []).forEach(market => {
+      const platData = AUDIENCE_SIZES[platform];
+      if (platData && platData[market]) {
+        total += platData[market][ageRange] || platData[market]["all"] || 0;
+      }
+    });
+    return total;
+  };
+
+  const autoFillAudience = (idx) => {
+    setAudienceData(prev => prev.map((row, i) => {
+      if (i !== idx) return row;
+      const size = getAudienceSize(row.platform, row.markets, row.ageRange);
+      return { ...row, estimatedSize: size > 0 ? size.toLocaleString() : "" };
+    }));
+  };
   const contentRef = useRef(null);
 
   const toggleCheck = (key) => setCheckedItems(prev => ({ ...prev, [key]: !prev[key] }));
@@ -2967,52 +2997,123 @@ export default function App() {
               {/* AUDIENCE SIZING MODULE */}
               <div style={{ marginBottom: 24, padding: 20, background: "#f0ecf5", borderRadius: 12, border: "1px solid #d0c0e0" }}>
                 <div style={{ fontSize: 15, fontWeight: 800, color: "#2D1768", marginBottom: 4 }}>👥 Audience & Persona Builder</div>
-                <div style={{ fontSize: 12, color: "#555566", marginBottom: 14 }}>Define your target personas and estimate audience sizes per market before generating the plan.</div>
+                <div style={{ fontSize: 12, color: "#555566", marginBottom: 14 }}>Define your target personas - audience sizes auto-populate from platform data. Upload historic campaign data to help AI plan more accurately.</div>
 
+                {/* BASE ON EXISTING PLAN */}
+                {savedPlans.length > 0 && (
+                  <div style={{ marginBottom: 14, padding: 12, background: "#f9f9fb", borderRadius: 8, border: "1px solid #e0e0e8" }}>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: "#2D1768", marginBottom: 4 }}>Base on Existing Plan (optional)</div>
+                    <div style={{ fontSize: 9, color: "#6a6a7e", marginBottom: 6 }}>Load a previous plan as a starting point - AI will reference it for budget splits and platform mix.</div>
+                    <select value={basePlanId || ""} onChange={e => {
+                      const plan = savedPlans.find(p => p.id === (e.target.value.includes("-") ? e.target.value : Number(e.target.value)));
+                      if (plan) {
+                        setBasePlanId(plan.id);
+                        setAiPrompt(prev => prev || `Build on previous plan: ${plan.name}. Previous budget: $${plan.summary?.total_investment_usd?.toLocaleString() || "N/A"}. Adjust for new requirements.`);
+                      } else { setBasePlanId(null); }
+                    }} style={{ width: "100%", padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, fontSize: 11, fontFamily: "inherit", color: "#1a1a2e" }}>
+                      <option value="">-- Start from scratch --</option>
+                      {savedPlans.map(plan => <option key={plan.id} value={plan.id}>{plan.name} (${plan.summary?.total_investment_usd?.toLocaleString() || "N/A"} | {new Date(plan.savedAt).toLocaleDateString()})</option>)}
+                    </select>
+                  </div>
+                )}
+
+                {/* HISTORIC CAMPAIGN DATA */}
+                <div style={{ marginBottom: 14, padding: 12, background: "#fffdf5", borderRadius: 8, border: "1px solid #ffe082" }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "#b8860b", marginBottom: 4 }}>Upload Historic Campaign Data (optional)</div>
+                  <div style={{ fontSize: 9, color: "#6a6a7e", marginBottom: 6 }}>Upload past campaign results (CSV) so AI can learn from what worked. Columns: Platform, Spend, Impressions, Clicks, Conversions, CPA, ROAS</div>
+                  <input type="file" accept=".csv" onChange={e => {
+                    const f = e.target.files[0]; if (!f) return;
+                    const r = new FileReader(); r.onload = ev => {
+                      const rows = ev.target.result.split("\n").filter(r => r.trim());
+                      const data = rows.slice(1).map(r => r.split(",").map(s => s.trim())).filter(r => r[0]);
+                      setHistoricData({ headers: rows[0].split(",").map(s => s.trim()), rows: data, raw: ev.target.result });
+                    }; r.readAsText(f);
+                  }} style={{ fontSize: 11, fontFamily: "inherit" }} />
+                  {historicData && (
+                    <div style={{ marginTop: 8, padding: 8, background: "#fff", borderRadius: 6, border: "1px solid #e0e0e8" }}>
+                      <div style={{ fontSize: 10, fontWeight: 600, color: "#2a8c3e" }}>Loaded: {historicData.rows.length} rows of historic data</div>
+                      <div style={{ fontSize: 9, color: "#6a6a7e", marginTop: 2 }}>Columns: {historicData.headers.join(", ")}</div>
+                    </div>
+                  )}
+                </div>
+
+                {/* PERSONA ROWS */}
                 {audienceData.map((row, idx) => (
                   <div key={idx} style={{ background: "#ffffff", borderRadius: 10, padding: 14, marginBottom: 10, border: "1px solid #e0e0e8" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
                       <div style={{ fontSize: 12, fontWeight: 700, color: "#2D1768" }}>Persona {idx + 1}: {row.persona || "Unnamed"}</div>
-                      {audienceData.length > 1 && <button onClick={() => setAudienceData(prev => prev.filter((_,i) => i !== idx))} style={{ background: "transparent", border: "none", color: "#cc3333", cursor: "pointer", fontSize: 12 }}>Remove</button>}
+                      <div style={{ display: "flex", gap: 6 }}>
+                        <button onClick={() => autoFillAudience(idx)} style={{ padding: "3px 10px", borderRadius: 4, border: "1px solid #7AC143", background: "#7AC14310", color: "#2a8c3e", fontSize: 9, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>Auto-size</button>
+                        {audienceData.length > 1 && <button onClick={() => setAudienceData(prev => prev.filter((_,i) => i !== idx))} style={{ background: "transparent", border: "none", color: "#cc3333", cursor: "pointer", fontSize: 12 }}>Remove</button>}
+                      </div>
                     </div>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 8, marginBottom: 8 }}>
-                      {[
-                        { key: "persona", label: "Persona Name", placeholder: "e.g. HNWI Investors" },
-                        { key: "market", label: "Market", placeholder: "e.g. UAE, UK, China" },
-                        { key: "platform", label: "Primary Platform", placeholder: "e.g. Meta, LinkedIn" },
-                        { key: "ageRange", label: "Age Range", placeholder: "e.g. 30-55" },
-                      ].map(f => (
-                        <div key={f.key}>
-                          <div style={{ fontSize: 9, fontWeight: 700, color: "#6a6a7e", marginBottom: 2 }}>{f.label}</div>
-                          <input value={row[f.key]} onChange={e => setAudienceData(prev => prev.map((r,i) => i === idx ? {...r, [f.key]: e.target.value} : r))} placeholder={f.placeholder} style={{ width: "100%", padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, color: "#1a1a2e", fontSize: 11, fontFamily: "inherit", boxSizing: "border-box" }} />
+                      <div>
+                        <div style={{ fontSize: 9, fontWeight: 700, color: "#6a6a7e", marginBottom: 2 }}>Persona Name</div>
+                        <input value={row.persona} onChange={e => setAudienceData(prev => prev.map((r,i) => i === idx ? {...r, persona: e.target.value} : r))} placeholder="e.g. HNWI Investors" style={{ width: "100%", padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, color: "#1a1a2e", fontSize: 11, fontFamily: "inherit", boxSizing: "border-box" }} />
+                      </div>
+                      <div>
+                        <div style={{ fontSize: 9, fontWeight: 700, color: "#6a6a7e", marginBottom: 2 }}>Markets <span style={{ color: "#9a9aaa", fontWeight: 400 }}>(multi-select)</span></div>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
+                          {["UAE","KSA","Kuwait","Qatar","UK","US","India","Germany","Australia","Singapore"].map(m => (
+                            <button key={m} onClick={() => {
+                              setAudienceData(prev => prev.map((r,i) => {
+                                if (i !== idx) return r;
+                                const markets = r.markets || [];
+                                return {...r, markets: markets.includes(m) ? markets.filter(x => x !== m) : [...markets, m]};
+                              }));
+                            }} style={{ padding: "2px 6px", borderRadius: 3, border: "1px solid " + ((row.markets||[]).includes(m) ? "#2D1768" : "#d0d0d8"), background: (row.markets||[]).includes(m) ? "#2D176815" : "transparent", color: (row.markets||[]).includes(m) ? "#2D1768" : "#999", fontSize: 8, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{m}</button>
+                          ))}
                         </div>
-                      ))}
+                      </div>
+                      <div>
+                        <div style={{ fontSize: 9, fontWeight: 700, color: "#6a6a7e", marginBottom: 2 }}>Platform</div>
+                        <select value={row.platform} onChange={e => { setAudienceData(prev => prev.map((r,i) => i === idx ? {...r, platform: e.target.value} : r)); setTimeout(() => autoFillAudience(idx), 50); }} style={{ width: "100%", padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, color: "#1a1a2e", fontSize: 11, fontFamily: "inherit" }}>
+                          {["Meta","TikTok","Snapchat","YouTube","Google Search","LinkedIn","X (Twitter)","Programmatic"].map(p => <option key={p}>{p}</option>)}
+                        </select>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: 9, fontWeight: 700, color: "#6a6a7e", marginBottom: 2 }}>Age Range</div>
+                        <select value={row.ageRange} onChange={e => { setAudienceData(prev => prev.map((r,i) => i === idx ? {...r, ageRange: e.target.value} : r)); setTimeout(() => autoFillAudience(idx), 50); }} style={{ width: "100%", padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, color: "#1a1a2e", fontSize: 11, fontFamily: "inherit" }}>
+                          {["18-24","25-34","25-44","35-54","55+","all"].map(a => <option key={a}>{a}</option>)}
+                        </select>
+                      </div>
                     </div>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 8 }}>
-                      {[
-                        { key: "gender", label: "Gender", placeholder: "All / Male / Female" },
-                        { key: "interests", label: "Interests / Targeting", placeholder: "e.g. Luxury, Real Estate, Finance" },
-                        { key: "estimatedSize", label: "Est. Audience Size", placeholder: "e.g. 450,000" },
-                        { key: "notes", label: "Notes", placeholder: "e.g. CRM lookalikes, retargeting pool" },
-                      ].map(f => (
-                        <div key={f.key}>
-                          <div style={{ fontSize: 9, fontWeight: 700, color: "#6a6a7e", marginBottom: 2 }}>{f.label}</div>
-                          <input value={row[f.key]} onChange={e => setAudienceData(prev => prev.map((r,i) => i === idx ? {...r, [f.key]: e.target.value} : r))} placeholder={f.placeholder} style={{ width: "100%", padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, color: "#1a1a2e", fontSize: 11, fontFamily: "inherit", boxSizing: "border-box" }} />
-                        </div>
-                      ))}
+                      <div>
+                        <div style={{ fontSize: 9, fontWeight: 700, color: "#6a6a7e", marginBottom: 2 }}>Gender</div>
+                        <select value={row.gender} onChange={e => setAudienceData(prev => prev.map((r,i) => i === idx ? {...r, gender: e.target.value} : r))} style={{ width: "100%", padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, color: "#1a1a2e", fontSize: 11, fontFamily: "inherit" }}>
+                          {["All","Male","Female"].map(g => <option key={g}>{g}</option>)}
+                        </select>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: 9, fontWeight: 700, color: "#6a6a7e", marginBottom: 2 }}>Interests / Targeting</div>
+                        <input value={row.interests} onChange={e => setAudienceData(prev => prev.map((r,i) => i === idx ? {...r, interests: e.target.value} : r))} placeholder="e.g. Luxury, Travel, Finance" style={{ width: "100%", padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, color: "#1a1a2e", fontSize: 11, fontFamily: "inherit", boxSizing: "border-box" }} />
+                      </div>
+                      <div>
+                        <div style={{ fontSize: 9, fontWeight: 700, color: "#6a6a7e", marginBottom: 2 }}>Est. Audience Size <span style={{ color: "#7AC143" }}>●</span></div>
+                        <input value={row.estimatedSize} onChange={e => setAudienceData(prev => prev.map((r,i) => i === idx ? {...r, estimatedSize: e.target.value} : r))} placeholder="Auto or manual" style={{ width: "100%", padding: "6px 8px", background: row.estimatedSize ? "#f0faf5" : "#fff", border: "1px solid " + (row.estimatedSize ? "#c0e0d0" : "#d0d0d8"), borderRadius: 6, color: "#1a1a2e", fontSize: 11, fontFamily: "monospace", boxSizing: "border-box", fontWeight: 600 }} />
+                      </div>
+                      <div>
+                        <div style={{ fontSize: 9, fontWeight: 700, color: "#6a6a7e", marginBottom: 2 }}>Notes</div>
+                        <input value={row.notes} onChange={e => setAudienceData(prev => prev.map((r,i) => i === idx ? {...r, notes: e.target.value} : r))} placeholder="e.g. CRM lookalikes" style={{ width: "100%", padding: "6px 8px", background: "#fff", border: "1px solid #d0d0d8", borderRadius: 6, color: "#1a1a2e", fontSize: 11, fontFamily: "inherit", boxSizing: "border-box" }} />
+                      </div>
                     </div>
+                    {(row.markets||[]).length > 1 && row.estimatedSize && (
+                      <div style={{ marginTop: 6, fontSize: 9, color: "#6a6a7e" }}>Across {(row.markets||[]).length} markets: {(row.markets||[]).map(m => { const s = getAudienceSize(row.platform, [m], row.ageRange); return s > 0 ? `${m}: ${s.toLocaleString()}` : null; }).filter(Boolean).join(" | ")}</div>
+                    )}
                   </div>
                 ))}
 
-                <button onClick={() => setAudienceData(prev => [...prev, { persona: "", description: "", market: "", platform: "Meta", ageRange: "25-44", gender: "All", interests: "", estimatedSize: "", notes: "" }])} style={{ padding: "8px 16px", borderRadius: 8, border: "1px solid #2D1768", background: "#2D176810", color: "#2D1768", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>+ Add Persona</button>
+                <button onClick={() => setAudienceData(prev => [...prev, { persona: "", description: "", markets: [], platform: "Meta", ageRange: "25-44", gender: "All", interests: "", estimatedSize: "", notes: "" }])} style={{ padding: "8px 16px", borderRadius: 8, border: "1px solid #2D1768", background: "#2D176810", color: "#2D1768", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>+ Add Persona</button>
 
                 {audienceData.some(a => a.persona && a.estimatedSize) && (
                   <div style={{ marginTop: 14, padding: 12, background: "#f0faf5", borderRadius: 8, border: "1px solid #c0e0d0" }}>
                     <div style={{ fontSize: 11, fontWeight: 700, color: "#2a8c3e", marginBottom: 6 }}>Audience Summary</div>
                     <div style={{ display: "flex", gap: 16, flexWrap: "wrap", fontSize: 12, color: "#444455" }}>
                       <div><strong>Total Personas:</strong> {audienceData.filter(a => a.persona).length}</div>
-                      <div><strong>Total Est. Reach:</strong> {audienceData.reduce((sum, a) => sum + (parseInt(a.estimatedSize?.replace(/,/g, "")) || 0), 0).toLocaleString()}</div>
-                      <div><strong>Markets:</strong> {[...new Set(audienceData.filter(a => a.market).map(a => a.market))].join(", ") || "None"}</div>
+                      <div><strong>Total Est. Reach:</strong> {audienceData.reduce((sum, a) => sum + (parseInt(String(a.estimatedSize).replace(/,/g, "")) || 0), 0).toLocaleString()}</div>
+                      <div><strong>Markets:</strong> {[...new Set(audienceData.flatMap(a => a.markets || []))].join(", ") || "None"}</div>
                       <div><strong>Platforms:</strong> {[...new Set(audienceData.filter(a => a.platform).map(a => a.platform))].join(", ") || "None"}</div>
                     </div>
                   </div>
@@ -3047,7 +3148,7 @@ export default function App() {
                             notes: ["string - regional considerations, creative requirements, measurement setup, key risks"],
                             summary: { total_media_usd: "number", total_fees_usd: "number", total_investment_usd: "number" }
                           }
-                        })}\n\nProvide 3-6 line items with realistic regional benchmark numbers. Use real CPM/CPC/CPL ranges.\n\nBrief: ${aiPrompt}\n\nTarget Personas:\n${audienceData.filter(a => a.persona).map((a,i) => `Persona ${i+1}: ${a.persona} - Market: ${a.market}, Platform: ${a.platform}, Age: ${a.ageRange}, Gender: ${a.gender}, Interests: ${a.interests}, Est. Size: ${a.estimatedSize}, Notes: ${a.notes}`).join("\n")}` }]
+                        })}\n\nProvide 3-6 line items with realistic regional benchmark numbers. Use real CPM/CPC/CPL ranges.\n\nBrief: ${aiPrompt}\n\nTarget Personas:\n${audienceData.filter(a => a.persona).map((a,i) => `Persona ${i+1}: ${a.persona} - Markets: ${(a.markets||[]).join(", ")}, Platform: ${a.platform}, Age: ${a.ageRange}, Gender: ${a.gender}, Interests: ${a.interests}, Est. Size: ${a.estimatedSize}, Notes: ${a.notes}`).join("\n")}${basePlanId && savedPlans.find(p => p.id === basePlanId) ? `\n\nPREVIOUS PLAN TO BUILD ON:\n${JSON.stringify(savedPlans.find(p => p.id === basePlanId)?.line_items || [])}` : ""}${historicData ? `\n\nHISTORIC CAMPAIGN DATA (use to calibrate benchmarks):\n${historicData.raw}` : ""}` }]
                       })
                     });
                     const data = await res.json();
