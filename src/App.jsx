@@ -707,6 +707,7 @@ export default function App() {
   };
   const [adminUsers, setAdminUsers] = useState([]);
   const [adminLoading, setAdminLoading] = useState(true);
+  const [creativePreview, setCreativePreview] = useState(null);
   const [qbrData, setQbrData] = useState({ campaign: "", period: "", objective: "", context: "", platforms: [], aiParsed: null, aiLoading: false });
   const [gameActive, setGameActive] = useState(false);
   const [gameTimer, setGameTimer] = useState(120);
@@ -734,6 +735,7 @@ export default function App() {
   };
 
   window.__findPika = findPika;
+  window.__showCreativePreview = (format) => setCreativePreview(format);
   const foundCount = Object.keys(foundPikas).length;
 
   useEffect(() => {
@@ -942,6 +944,136 @@ export default function App() {
             </div>
           )}
           {showConfetti && <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 9999, overflow: "hidden" }}>{Array.from({length: 80}).map((_, i) => <div key={i} style={{ position: "absolute", left: `${Math.random() * 100}%`, top: -20, width: Math.random() * 10 + 5, height: Math.random() * 10 + 5, background: ["#FFD93D","#7AC143","#2D1768","#FF6B6B","#cc3333","#E8B800","#ff69b4","#00bcd4"][i % 8], borderRadius: Math.random() > 0.5 ? "50%" : "2px", animation: `confettiFall ${2 + Math.random() * 3}s ${Math.random() * 0.5}s ease-out forwards`, transform: `rotate(${Math.random() * 360}deg)` }} />)}</div>}
+
+          {/* CREATIVE PREVIEW MODAL */}
+          {creativePreview && (() => {
+            const previews = {
+              feed_1x1: { title: "Feed Post - 1:1 Square", size: "1080×1080", platforms: "Meta, LinkedIn, X, Pinterest", ratio: "1:1",
+                tips: ["Safe default for all platforms - works everywhere", "Keep text under 20% of image area for Meta", "Logo in top-left corner for brand recall", "Strong CTA in bottom third"],
+                eyAd: { headline: "Fly Beyond Extraordinary", sub: "Abu Dhabi to London from $499", cta: "Book Now", scene: "Business class cabin with golden lighting" }},
+              feed_4x5: { title: "Feed Post - 4:5 Vertical", size: "1080×1350", platforms: "Meta Feed (mobile priority)", ratio: "4:5",
+                tips: ["Takes up 20% more screen than 1:1 on mobile", "Higher engagement rate vs square format", "Put key message in centre - top/bottom may crop in grid", "Best for single-image product/destination shots"],
+                eyAd: { headline: "The Residence", sub: "The only 3-room suite in the sky", cta: "Discover More", scene: "Aerial view of The Residence suite" }},
+              stories_916: { title: "Stories / Reels - 9:16 Full Vertical", size: "1080×1920", platforms: "Meta, TikTok, Snapchat, YouTube Shorts", ratio: "9:16",
+                tips: ["Keep top 250px and bottom 340px clear of text (safe zones)", "Hook in first 2 seconds - thumb-stopping moment", "Sound ON for Reels/TikTok, sound optional for Stories", "Native-looking content outperforms polished ads 3:1"],
+                eyAd: { headline: "Choose Well", sub: "Swipe up to explore 500+ destinations", cta: "Swipe Up ↑", scene: "POV walking through Zayed International Airport" }},
+              tiktok_infeed: { title: "TikTok In-Feed Video", size: "1080×1920", platforms: "TikTok, Spark Ads, Prime Time", ratio: "9:16",
+                tips: ["Creative IS targeting - algorithm matches content to audience", "Spark Ads (boosted organic) get 70% higher CTR", "Use trending audio and native transitions", "First 2 seconds determine if user watches or scrolls"],
+                eyAd: { headline: "POV: You upgraded ✈️", sub: "Business class hits different at 40,000ft", cta: "Learn More", scene: "UGC-style cabin tour with trending audio" }},
+              carousel: { title: "Carousel - Multi-Card", size: "1080×1080 per card", platforms: "Meta, LinkedIn", ratio: "1:1",
+                tips: ["2-10 cards - use 5-6 for optimal engagement", "Tell a story across cards or show multiple products", "First card is the hook - make it count", "Last card should have a clear CTA"],
+                eyAd: { headline: "5 Reasons to Fly Etihad", sub: "Swipe to explore →", cta: "Book Now", scene: "Card 1: Lounge → Card 2: Seats → Card 3: Dining → Card 4: WiFi → Card 5: CTA" }},
+              desktop_feed: { title: "Desktop Feed / Right Column", size: "1200×628 or 1:1", platforms: "Meta, LinkedIn, X (Desktop)", ratio: "16:9 or 1:1",
+                tips: ["Desktop users are in lean-back mode - longer copy OK", "Right column ads are small - bold imagery required", "Link preview card: 1200×628 with headline below", "Desktop CTR is typically lower but conversion rate higher"],
+                eyAd: { headline: "Abu Dhabi Stopover", sub: "Free 2-night hotel stay when you fly through Abu Dhabi", cta: "Learn More", scene: "Aerial view of Abu Dhabi skyline at sunset" }},
+              display_banners: { title: "Display / Programmatic Banners", size: "300×250, 728×90, 160×600, 320×50, 300×600", platforms: "GDN, DV360, Programmatic", ratio: "Various",
+                tips: ["300×250 (MPU) and 728×90 (leaderboard) cover 60% of inventory", "Always include: logo, headline, CTA button, key visual", "Max 3 elements - don't overcrowd small banners", "Animate sparingly - 15s max, 3 loops"],
+                eyAd: { headline: "Fly Etihad", sub: "Summer fares from $399", cta: "Book Now →", scene: "Aircraft livery with Abu Dhabi backdrop" }},
+              interstitial: { title: "Interstitial / Full-Screen Takeover", size: "320×480 or 1080×1920", platforms: "Programmatic, Apps", ratio: "2:3 or 9:16",
+                tips: ["Full-screen = maximum attention but use sparingly", "Always include clear close/skip button", "5-second exposure minimum before dismiss", "Best for high-impact awareness moments"],
+                eyAd: { headline: "Introducing A350", sub: "Experience our newest aircraft", cta: "Explore", scene: "Full-screen A350 aircraft beauty shot" }},
+              youtube_preroll: { title: "YouTube Pre-Roll Video", size: "1920×1080", platforms: "YouTube, Google Video Partners", ratio: "16:9",
+                tips: ["TrueView: users skip after 5s - front-load your message", "Bumper: 6s non-skippable - one message only", "Non-skip 15s: full message but keep it tight", "Add end cards and CTAs in final 5 seconds"],
+                eyAd: { headline: "Choose Well", sub: "15s brand film showing cabin experience", cta: "Visit etihad.com", scene: "Cinematic cabin walkthrough with orchestral score" }},
+            };
+            const p = previews[creativePreview];
+            if (!p) { setCreativePreview(null); return null; }
+
+            return (
+              <div onClick={() => setCreativePreview(null)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", backdropFilter: "blur(6px)", zIndex: 9998, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+                <div onClick={e => e.stopPropagation()} style={{ width: 700, maxHeight: "90vh", overflow: "auto", background: "#fff", borderRadius: 16, boxShadow: "0 20px 60px rgba(0,0,0,.3)" }}>
+                  {/* Header */}
+                  <div style={{ padding: "20px 24px", borderBottom: "1px solid #e0e0e8", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div>
+                      <div style={{ fontSize: 18, fontWeight: 800, color: "#1A1A2E" }}>{p.title}</div>
+                      <div style={{ fontSize: 11, color: "#6a6a7e", marginTop: 2 }}>{p.size} | {p.platforms}</div>
+                    </div>
+                    <button onClick={() => setCreativePreview(null)} style={{ width: 32, height: 32, borderRadius: "50%", border: "1px solid #e0e0e8", background: "transparent", color: "#6a6a7e", fontSize: 16, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>×</button>
+                  </div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 0 }}>
+                    {/* Left: Etihad Ad Mockup */}
+                    <div style={{ padding: 24, borderRight: "1px solid #f0f0f5", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <div style={{
+                        width: p.ratio === "16:9" ? 280 : p.ratio === "9:16" ? 160 : p.ratio === "Various" ? 240 : 200,
+                        height: p.ratio === "16:9" ? 158 : p.ratio === "9:16" ? 284 : p.ratio === "2:3 or 9:16" ? 260 : p.ratio === "Various" ? "auto" : 200,
+                        background: "linear-gradient(135deg, #1A1A2E 0%, #2a2a4e 100%)",
+                        borderRadius: p.ratio === "9:16" || p.ratio === "2:3 or 9:16" ? 20 : 8,
+                        overflow: "hidden", position: "relative",
+                        boxShadow: "0 8px 30px rgba(0,0,0,.2)",
+                        border: p.ratio === "9:16" || p.ratio === "2:3 or 9:16" ? "3px solid #333" : "none",
+                      }}>
+                        {/* Etihad brand bar */}
+                        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: "#BD8B13" }} />
+                        
+                        {/* Scenic background gradient */}
+                        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(26,26,46,0.3) 0%, rgba(26,26,46,0.1) 40%, rgba(189,139,19,0.15) 100%)" }} />
+                        
+                        {/* Content */}
+                        <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: p.ratio === "9:16" ? "16px 14px" : "12px 16px" }}>
+                          {/* Etihad logo area */}
+                          <div style={{ position: "absolute", top: p.ratio === "9:16" ? 16 : 10, left: p.ratio === "9:16" ? 14 : 16 }}>
+                            <div style={{ fontSize: 7, fontWeight: 700, color: "#BD8B13", letterSpacing: 2 }}>ETIHAD</div>
+                            <div style={{ fontSize: 5, color: "rgba(255,255,255,0.5)", letterSpacing: 1 }}>AIRWAYS</div>
+                          </div>
+
+                          {/* Decorative elements */}
+                          <div style={{ position: "absolute", top: "30%", left: "50%", transform: "translate(-50%, -50%)" }}>
+                            <svg width="60" height="60" viewBox="0 0 60 60" style={{ opacity: 0.08 }}><path d="M30 5 L55 30 L30 55 L5 30 Z" fill="#BD8B13"/></svg>
+                          </div>
+
+                          {/* Scene description */}
+                          <div style={{ fontSize: 6, color: "rgba(255,255,255,0.3)", marginBottom: 6, fontStyle: "italic" }}>{p.eyAd.scene}</div>
+                          
+                          {/* Headline */}
+                          <div style={{ fontSize: p.ratio === "9:16" ? 18 : 14, fontWeight: 800, color: "#fff", lineHeight: 1.2, marginBottom: 4 }}>{p.eyAd.headline}</div>
+                          
+                          {/* Subheadline */}
+                          <div style={{ fontSize: p.ratio === "9:16" ? 9 : 8, color: "rgba(255,255,255,0.75)", marginBottom: 8, lineHeight: 1.4 }}>{p.eyAd.sub}</div>
+                          
+                          {/* CTA */}
+                          <div style={{ alignSelf: "flex-start", padding: "4px 12px", background: "#BD8B13", color: "#fff", fontSize: 7, fontWeight: 700, borderRadius: 3, letterSpacing: 0.5 }}>{p.eyAd.cta}</div>
+                        </div>
+
+                        {/* Bottom brand bar */}
+                        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 2, background: "#BD8B13" }} />
+                      </div>
+                    </div>
+
+                    {/* Right: Specs & Tips */}
+                    <div style={{ padding: 24 }}>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: "#2D1768", marginBottom: 12 }}>Format Specs</div>
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 16 }}>
+                        <div style={{ padding: "8px 10px", background: "#f9f9fb", borderRadius: 6 }}>
+                          <div style={{ fontSize: 8, color: "#6a6a7e", fontWeight: 700 }}>RATIO</div>
+                          <div style={{ fontSize: 14, fontWeight: 800, color: "#1A1A2E" }}>{p.ratio}</div>
+                        </div>
+                        <div style={{ padding: "8px 10px", background: "#f9f9fb", borderRadius: 6 }}>
+                          <div style={{ fontSize: 8, color: "#6a6a7e", fontWeight: 700 }}>DIMENSIONS</div>
+                          <div style={{ fontSize: 11, fontWeight: 700, color: "#1A1A2E" }}>{p.size}</div>
+                        </div>
+                      </div>
+
+                      <div style={{ fontSize: 12, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>Best Practices</div>
+                      {p.tips.map((tip, i) => (
+                        <div key={i} style={{ fontSize: 11, color: "#444455", marginBottom: 6, paddingLeft: 12, position: "relative", lineHeight: 1.5 }}>
+                          <span style={{ position: "absolute", left: 0, color: "#BD8B13", fontWeight: 800 }}>-</span>
+                          {tip}
+                        </div>
+                      ))}
+
+                      <div style={{ marginTop: 14, padding: 10, background: "#fffdf5", borderRadius: 6, border: "1px solid #ffe082" }}>
+                        <div style={{ fontSize: 9, fontWeight: 700, color: "#b8860b", marginBottom: 3 }}>Etihad Creative Notes</div>
+                        <div style={{ fontSize: 10, color: "#666" }}>
+                          Always use approved Etihad brand assets. Headline font: Etihad Altis. Brand colours: Navy (#1A1A2E) and Gold (#BD8B13). All creative must go through brand approval before going live.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
 
           {/* START GAME CTA - only when no game state */}
           {!gameActive && !gameWon && !gameOver && (
@@ -1961,8 +2093,8 @@ export default function App() {
 
                 {/* Phone: Feed 1:1 */}
                 {(creativePlatform === "All" || ["Meta","LinkedIn","X (Twitter)","Pinterest"].includes(creativePlatform)) && (
-                <Card style={{ padding: 16, textAlign: "center" }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>Feed Post - 1:1 Square</div>
+                <Card onClick={() => setCreativePreview("feed_1x1")} style={{ padding: 16, textAlign: "center", cursor: "pointer", transition: "box-shadow 0.2s" }} hoverable>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>Feed Post - 1:1 Square<span style={{ fontSize: 8, color: "#7AC143", display: "block", marginTop: 2 }}>Click to preview</span></div>
                   <div style={{ width: 140, margin: "0 auto", background: "#f5f5f7", borderRadius: 16, border: "2px solid #d0d0d8", padding: "8px 6px", position: "relative" }}>
                     <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#d0d0d8", margin: "0 auto 6px" }} />
                     <div style={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 4, padding: "0 4px" }}>
@@ -1984,8 +2116,8 @@ export default function App() {
 
                 {/* Phone: Feed 4:5 */}
                 {(creativePlatform === "All" || creativePlatform === "Meta") && (
-                <Card style={{ padding: 16, textAlign: "center" }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#b8860b", marginBottom: 8 }}>Feed Post - 4:5 Vertical</div>
+                <Card onClick={() => setCreativePreview("feed_4x5")} style={{ padding: 16, textAlign: "center", cursor: "pointer", transition: "box-shadow 0.2s" }} hoverable>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#b8860b", marginBottom: 8 }}>Feed Post - 4:5 Vertical<span style={{ fontSize: 8, color: "#7AC143", display: "block", marginTop: 2 }}>Click to preview</span></div>
                   <div style={{ width: 140, margin: "0 auto", background: "#f5f5f7", borderRadius: 16, border: "2px solid #d0d0d8", padding: "8px 6px" }}>
                     <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#d0d0d8", margin: "0 auto 6px" }} />
                     <div style={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 4, padding: "0 4px" }}>
@@ -2002,8 +2134,8 @@ export default function App() {
                 </Card>)}
 
                 {/* Phone: Stories/Reels 9:16 */}
-                <Card style={{ padding: 16, textAlign: "center" }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#6a1b9a", marginBottom: 8 }}>Stories / Reels - 9:16</div>
+                <Card onClick={() => setCreativePreview("stories_916")} style={{ padding: 16, textAlign: "center", cursor: "pointer", transition: "box-shadow 0.2s" }} hoverable>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#6a1b9a", marginBottom: 8 }}>Stories / Reels - 9:16<span style={{ fontSize: 8, color: "#7AC143", display: "block", marginTop: 2 }}>Click to preview</span></div>
                   <div style={{ width: 120, margin: "0 auto", background: "#ede8f5", borderRadius: 16, border: "2px solid #d0d0d8", height: 214, position: "relative", overflow: "hidden" }}>
                     <div style={{ position: "absolute", top: 6, left: 8, right: 8, display: "flex", alignItems: "center", gap: 4, zIndex: 2 }}>
                       <div style={{ width: 16, height: 16, borderRadius: "50%", border: "1.5px solid rgba(0,0,0,.15)" }} />
@@ -2030,8 +2162,8 @@ export default function App() {
                 </Card>
 
                 {/* Phone: TikTok In-Feed */}
-                <Card style={{ padding: 16, textAlign: "center" }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#6a1b9a", marginBottom: 8 }}>TikTok In-Feed</div>
+                <Card onClick={() => setCreativePreview("tiktok_infeed")} style={{ padding: 16, textAlign: "center", cursor: "pointer", transition: "box-shadow 0.2s" }} hoverable>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#6a1b9a", marginBottom: 8 }}>TikTok In-Feed<span style={{ fontSize: 8, color: "#7AC143", display: "block", marginTop: 2 }}>Click to preview</span></div>
                   <div style={{ width: 120, margin: "0 auto", background: "#ede8f5", borderRadius: 16, border: "2px solid #d0d0d8", height: 214, position: "relative", overflow: "hidden" }}>
                     <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#6a1b9a", fontSize: 10, fontWeight: 700, flexDirection: "column" }}>
                       <span>9:16</span>
@@ -2052,8 +2184,8 @@ export default function App() {
                 </Card>
 
                 {/* Carousel */}
-                <Card style={{ padding: 16, textAlign: "center" }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>Carousel - Multi-Card</div>
+                <Card onClick={() => setCreativePreview("carousel")} style={{ padding: 16, textAlign: "center", cursor: "pointer", transition: "box-shadow 0.2s" }} hoverable>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>Carousel - Multi-Card<span style={{ fontSize: 8, color: "#7AC143", display: "block", marginTop: 2 }}>Click to preview</span></div>
                   <div style={{ width: 140, margin: "0 auto", background: "#f5f5f7", borderRadius: 16, border: "2px solid #d0d0d8", padding: "8px 6px" }}>
                     <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#d0d0d8", margin: "0 auto 6px" }} />
                     <div style={{ display: "flex", gap: 4, overflow: "hidden" }}>
@@ -2073,8 +2205,8 @@ export default function App() {
                 </Card>
 
                 {/* Desktop: Browser Feed */}
-                <Card style={{ padding: 16, textAlign: "center" }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>Desktop Feed</div>
+                <Card onClick={() => setCreativePreview("desktop_feed")} style={{ padding: 16, textAlign: "center", cursor: "pointer", transition: "box-shadow 0.2s" }} hoverable>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#2D1768", marginBottom: 8 }}>Desktop Feed<span style={{ fontSize: 8, color: "#7AC143", display: "block", marginTop: 2 }}>Click to preview</span></div>
                   <div style={{ width: "100%", background: "#f5f5f7", borderRadius: 8, border: "2px solid #d0d0d8", overflow: "hidden" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 4, padding: "4px 8px", background: "#ffffff", borderBottom: "1px solid #e0e0e8" }}>
                       {["#ff5f57","#febc2e","#28c840"].map((c,i) => <div key={i} style={{ width: 5, height: 5, borderRadius: "50%", background: c }} />)}
@@ -2108,8 +2240,8 @@ export default function App() {
                 </Card>
 
                 {/* Display Banners */}
-                <Card style={{ padding: 16, textAlign: "center" }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#b8860b", marginBottom: 8 }}>Display Banners</div>
+                <Card onClick={() => setCreativePreview("display_banners")} style={{ padding: 16, textAlign: "center", cursor: "pointer", transition: "box-shadow 0.2s" }} hoverable>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#b8860b", marginBottom: 8 }}>Display Banners<span style={{ fontSize: 8, color: "#7AC143", display: "block", marginTop: 2 }}>Click to preview</span></div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 6, alignItems: "center" }}>
                     <div style={{ width: "100%", height: 22, background: "#e8e6ee", borderRadius: 3, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 8, color: "#b8860b", fontWeight: 600, border: "1px dashed #c0c0cc" }}>728 × 90 - Leaderboard</div>
                     <div style={{ display: "flex", gap: 6, width: "100%", justifyContent: "center" }}>
@@ -2122,8 +2254,8 @@ export default function App() {
                 </Card>
 
                 {/* Interstitial */}
-                <Card style={{ padding: 16, textAlign: "center" }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#cc3333", marginBottom: 8 }}>Interstitial / Takeover</div>
+                <Card onClick={() => setCreativePreview("interstitial")} style={{ padding: 16, textAlign: "center", cursor: "pointer", transition: "box-shadow 0.2s" }} hoverable>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#cc3333", marginBottom: 8 }}>Interstitial / Takeover<span style={{ fontSize: 8, color: "#7AC143", display: "block", marginTop: 2 }}>Click to preview</span></div>
                   <div style={{ width: 120, margin: "0 auto", background: "#f5f5f7", borderRadius: 16, border: "2px solid #d0d0d8", height: 200, position: "relative", overflow: "hidden" }}>
                     <div style={{ position: "absolute", inset: 8, background: "#f5eaea", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", border: "1px dashed #e0c0c0" }}>
                       <div style={{ fontSize: 8, color: "#cc3333", fontWeight: 700 }}>Full Screen</div>
