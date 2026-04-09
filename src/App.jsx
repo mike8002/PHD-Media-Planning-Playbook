@@ -542,21 +542,29 @@ const commonMistakes = [
 ];
 
 const platformUpdates = [
-  { platform: "Meta", update: "Andromeda Algorithm - Global Rollout", impact: "🔴", date: "Oct 2025", detail: "Creative is now the primary targeting signal. Supply 8–12 diverse creatives per campaign." },
-  { platform: "Meta", update: "Advantage+ Sales (replaces Shopping)", impact: "🔴", date: "Early 2026", detail: "Covers broader conversion objectives. Old API deprecated - migrate by Sep 2026." },
-  { platform: "Meta", update: "Threads Ads - Global Rollout", impact: "🔴", date: "Feb 2026", detail: "400M+ MAU. Image, video, carousel ads via Ads Manager." },
-  { platform: "Meta", update: "WhatsApp Status Ads Expanding", impact: "🔴", date: "Mar 2026", detail: "Auto-activates in Traffic campaigns. ~95%+ WhatsApp penetration in MENA, 60%+ India/LATAM." },
-  { platform: "Meta", update: "Detailed Targeting Exclusions Removed", impact: "🔴", date: "Mar 2025", detail: "Rely on creative signals, Value Rules, and first-party data (CAPI)." },
-  { platform: "TikTok", update: "Logo Takeover - NEW", impact: "🔴", date: "Mar 2026", detail: "Highest-impact format. Brand logo co-brands TikTok splash screen." },
-  { platform: "TikTok", update: "Prime Time - NEW", impact: "🔴", date: "Mar 2026", detail: "3 sequential ads, 15-min window. For live events." },
-  { platform: "TikTok", update: "TopReach - NEW", impact: "🔴", date: "Mar 2026", detail: "Bundles TopView + TopFeed in single buy." },
-  { platform: "TikTok", update: "TopView → CPM/Auction", impact: "🔴", date: "2023+", detail: "More targeting flexibility. Brand Takeover remains reservation." },
-  { platform: "Snapchat", update: "Total Snap Takeover - NEW", impact: "🔴", date: "Mar 2026", detail: "First ad across ALL app tabs. 97% users visit multiple tabs." },
-  { platform: "Snapchat", update: "Sponsored Snaps - Global", impact: "🔴", date: "2025", detail: "Ads in Chat/Inbox. High native feel. Inbox-first in KSA/Kuwait." },
-  { platform: "Snapchat", update: "Smart Bidding & Smart Budget", impact: "🟡", date: "May 2025", detail: "Auto CPA bidding and spend reallocation. Aligns with Meta Advantage+." },
-  { platform: "Cross-Platform", update: "9:16 Vertical is Default Standard", impact: "🔴", date: "2025–26", detail: "Meta confirmed 90% vertical by 2026. Non-vertical ads penalised." },
-  { platform: "Cross-Platform", update: "AI-Driven Creative Optimisation", impact: "🔴", date: "2025–26", detail: "All major platforms use AI for creative selection. Supply 8–12 variants." },
-  { platform: "Cross-Platform", update: "First-Party Data & Server-Side Essential", impact: "🔴", date: "2025–26", detail: "CAPI, Events API, Snap CAPI are measurement baseline." },
+  { platform: "Meta", update: "Andromeda Algorithm - Global Rollout", impact: "🔴", date: "Oct 2025", detail: "Creative is now the primary targeting signal. Supply 8-12 diverse creatives per campaign.", status: "Critical", statusColor: "#cc3333", why: "Without diverse creative, campaign performance will degrade. Algorithm needs creative variety to find audiences.", link: "https://www.facebook.com/business/news" },
+  { platform: "Meta", update: "Advantage+ Sales (replaces Shopping)", impact: "🔴", date: "Early 2026", detail: "Covers broader conversion objectives. Old API deprecated - migrate by Sep 2026.", status: "Critical", statusColor: "#cc3333", why: "Old campaigns will stop delivering. Must migrate all conversion campaigns before deadline.", link: "https://www.facebook.com/business/help/advantage-plus-shopping-campaigns" },
+  { platform: "Meta", update: "Threads Ads - Global Rollout", impact: "🟡", date: "Feb 2026", detail: "400M+ MAU. Image, video, carousel ads via Ads Manager.", status: "Test", statusColor: "#b8860b", why: "New inventory source. Worth testing but not critical. May offer lower CPMs during early adoption.", link: "https://about.fb.com/news/" },
+  { platform: "Meta", update: "WhatsApp Status Ads Expanding", impact: "🔴", date: "Mar 2026", detail: "Auto-activates in Traffic campaigns. ~95%+ WhatsApp penetration in MENA, 60%+ India/LATAM.", status: "Critical", statusColor: "#cc3333", why: "Ads auto-placed here. If creative isn't optimised for WhatsApp Status, budget will be wasted on poor placements.", link: "https://business.whatsapp.com/resources" },
+  { platform: "Meta", update: "Detailed Targeting Exclusions Removed", impact: "🔴", date: "Mar 2025", detail: "Rely on creative signals, Value Rules, and first-party data (CAPI).", status: "Critical", statusColor: "#cc3333", why: "Cannot exclude audiences the old way. Plans relying on exclusions need immediate restructuring.", link: "https://www.facebook.com/business/help/detailed-targeting" },
+  { platform: "TikTok", update: "Logo Takeover - NEW", impact: "🟡", date: "Mar 2026", detail: "Highest-impact format. Brand logo co-brands TikTok splash screen.", status: "Monitor", statusColor: "#b8860b", why: "Premium format for big-budget awareness campaigns. Monitor pricing and availability per market.", link: "https://ads.tiktok.com/help/article/about-brand-takeover" },
+  { platform: "TikTok", update: "Prime Time - NEW", impact: "🟡", date: "Mar 2026", detail: "3 sequential ads, 15-min window. For live events.", status: "Monitor", statusColor: "#b8860b", why: "Niche use case for live moments. Not relevant to all campaigns but powerful for event marketing.", link: "https://ads.tiktok.com/business/en/blog" },
+  { platform: "TikTok", update: "TopReach - NEW", impact: "🟡", date: "Mar 2026", detail: "Bundles TopView + TopFeed in single buy.", status: "Test", statusColor: "#b8860b", why: "Simplifies premium buying. Test for awareness campaigns - may offer better value than separate buys.", link: "https://ads.tiktok.com/help/" },
+  { platform: "TikTok", update: "TopView now CPM/Auction", impact: "🔴", date: "2023+", detail: "More targeting flexibility. Brand Takeover remains reservation.", status: "Critical", statusColor: "#cc3333", why: "Unlocks precision targeting on premium placement. Plans should shift from reservation to auction for better efficiency.", link: "https://ads.tiktok.com/help/article/about-topview" },
+  { platform: "Snapchat", update: "Total Snap Takeover - NEW", impact: "🟡", date: "Mar 2026", detail: "First ad across ALL app tabs. 97% users visit multiple tabs.", status: "Monitor", statusColor: "#b8860b", why: "Highest-reach Snap format. Essential for KSA/Kuwait campaigns where Snapchat dominates.", link: "https://forbusiness.snapchat.com/blog" },
+  { platform: "Snapchat", update: "Sponsored Snaps - Global", impact: "🔴", date: "2025", detail: "Ads in Chat/Inbox. High native feel. Inbox-first in KSA/Kuwait.", status: "Critical", statusColor: "#cc3333", why: "New high-attention placement. In MENA, inbox is primary Snapchat surface - must include in KSA/Kuwait plans.", link: "https://forbusiness.snapchat.com/advertising/sponsored-snaps" },
+  { platform: "Snapchat", update: "Smart Bidding & Smart Budget", impact: "🟢", date: "May 2025", detail: "Auto CPA bidding and spend reallocation. Aligns with Meta Advantage+.", status: "Adopt", statusColor: "#2a8c3e", why: "Reduces manual optimisation work and improves efficiency. Should be default for all conversion campaigns.", link: "https://forbusiness.snapchat.com/blog" },
+  { platform: "Cross-Platform", update: "9:16 Vertical is Default Standard", impact: "🔴", date: "2025-26", detail: "Meta confirmed 90% vertical by 2026. Non-vertical ads penalised.", status: "Critical", statusColor: "#cc3333", why: "Landscape/square creative will receive less distribution. All new creative must be produced in 9:16 first.", link: "https://www.facebook.com/business/news/vertical-video" },
+  { platform: "Cross-Platform", update: "AI-Driven Creative Optimisation", impact: "🔴", date: "2025-26", detail: "All major platforms use AI for creative selection. Supply 8-12 variants.", status: "Critical", statusColor: "#cc3333", why: "Single-creative campaigns cannot compete. AI needs volume to test and learn. Budget allocated to 1-2 creatives will underperform.", link: "https://www.facebook.com/business/help/advantage-plus-creative" },
+  { platform: "Cross-Platform", update: "First-Party Data & Server-Side Essential", impact: "🔴", date: "2025-26", detail: "CAPI, Events API, Snap CAPI are measurement baseline.", status: "Critical", statusColor: "#cc3333", why: "Without server-side tracking, 30-40% of conversions go unreported. Campaign optimisation is blind without this.", link: "https://developers.facebook.com/docs/marketing-api/conversions-api" },
+  { platform: "Google", update: "Performance Max - Asset Group Reporting", impact: "🔴", date: "2025", detail: "PMax now shows asset-level performance data. See which headlines, images, and videos drive results.", status: "Critical", statusColor: "#cc3333", why: "Previously a black box. Now you can optimise creative within PMax instead of guessing. Must review weekly.", link: "https://support.google.com/google-ads/answer/13258498" },
+  { platform: "Google", update: "Demand Gen Campaigns - Expanded", impact: "🔴", date: "2025-26", detail: "Replaces Discovery campaigns. Runs across YouTube, Gmail, Discover with AI-optimised creative combinations.", status: "Critical", statusColor: "#cc3333", why: "All Discovery campaigns auto-migrated. Demand Gen offers lookalike segments and video ads - plan accordingly.", link: "https://support.google.com/google-ads/answer/13695777" },
+  { platform: "Google", update: "Enhanced Conversions - Required", impact: "🔴", date: "2025", detail: "First-party data matching for conversion tracking. Uses hashed email/phone to recover lost conversions.", status: "Critical", statusColor: "#cc3333", why: "Google estimates 15-25% conversion loss without Enhanced Conversions. Non-negotiable for Search and PMax.", link: "https://support.google.com/google-ads/answer/11062876" },
+  { platform: "Google", update: "Broad Match + Smart Bidding Default", impact: "🔴", date: "2025-26", detail: "Google pushing broad match as default with AI bidding. Phrase/exact match losing volume.", status: "Critical", statusColor: "#cc3333", why: "Resist defaulting blindly - works well with Smart Bidding but requires strong negative keyword lists and conversion data.", link: "https://support.google.com/google-ads/answer/7478529" },
+  { platform: "Google", update: "Search Generative Experience (SGE) Impact", impact: "🔴", date: "2025-26", detail: "AI Overviews in Search results push organic and paid results lower. CTRs changing across verticals.", status: "Monitor", statusColor: "#b8860b", why: "Monitor CTR trends weekly. Some verticals seeing 20-30% CTR decline. May need to increase bids or shift to PMax.", link: "https://blog.google/products/search/generative-ai-search/" },
+  { platform: "YouTube", update: "YouTube Shorts Monetisation Expanded", impact: "🟡", date: "2025", detail: "Shorts ads now in auction alongside in-feed. 70B+ daily Shorts views globally.", status: "Adopt", statusColor: "#2a8c3e", why: "Massive reach at lower CPMs than standard YouTube. 9:16 creative required. Should be in every video plan.", link: "https://blog.youtube/news-and-events/shorts-ads/" },
+  { platform: "YouTube", update: "YouTube Select for CTV", impact: "🟡", date: "2025-26", detail: "Premium CTV inventory via YouTube Select. Top 5% of channels, brand-safe, living room experience.", status: "Test", statusColor: "#b8860b", why: "CTV viewing growing 30%+ YoY. YouTube Select guarantees premium placement. Test for awareness campaigns.", link: "https://ads.google.com/intl/en/home/campaigns/youtube-select/" },
+  { platform: "Google", update: "Consent Mode V2 - Required in EU/UK", impact: "🔴", date: "Mar 2025", detail: "Google Ads and GA4 require Consent Mode V2 for EU/UK campaigns. Non-compliant tags lose data.", status: "Critical", statusColor: "#cc3333", why: "Without Consent Mode V2, remarketing audiences and conversion data stop populating for EU/UK users. Immediate action.", link: "https://support.google.com/google-ads/answer/10000067" },
 ];
 
 const glossary = [
@@ -708,6 +716,7 @@ export default function App() {
   const [adminUsers, setAdminUsers] = useState([]);
   const [adminLoading, setAdminLoading] = useState(true);
   const [creativePreview, setCreativePreview] = useState(null);
+  const [updatePlatformFilter, setUpdatePlatformFilter] = useState("All");
   const [qbrData, setQbrData] = useState({ campaign: "", period: "", objective: "", context: "", platforms: [], aiParsed: null, aiLoading: false });
   const [gameActive, setGameActive] = useState(false);
   const [gameTimer, setGameTimer] = useState(120);
@@ -2129,16 +2138,46 @@ export default function App() {
             <div>
               <SectionTitle>Latest Platform Updates<Pika id="p9" /> (2025–2026)</SectionTitle>
               <SectionDesc>Verified updates from official newsrooms and trusted sources. Check before every campaign.</SectionDesc>
-              {platformUpdates.filter(u => !filterText || JSON.stringify(u).toLowerCase().includes(filterText)).map((u, i) => (
-                <Card key={i}>
+
+              <div style={{ display: "flex", gap: 12, marginBottom: 16, flexWrap: "wrap" }}>
+                {[
+                  { label: "Critical", color: "#cc3333", desc: "Must act now - directly impacts performance" },
+                  { label: "Adopt", color: "#2a8c3e", desc: "Proven improvement - make it default" },
+                  { label: "Test", color: "#b8860b", desc: "Worth testing - allocate small budget" },
+                  { label: "Monitor", color: "#b8860b", desc: "Track development - not actionable yet" },
+                ].map(s => (
+                  <div key={s.label} style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 10px", background: s.color + "08", borderRadius: 6, border: `1px solid ${s.color}20` }}>
+                    <span style={{ padding: "1px 6px", borderRadius: 8, background: s.color + "15", color: s.color, fontSize: 9, fontWeight: 700, border: `1px solid ${s.color}30` }}>{s.label}</span>
+                    <span style={{ fontSize: 10, color: "#555566" }}>{s.desc}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ display: "flex", gap: 6, marginBottom: 16, flexWrap: "wrap" }}>
+                {["All", ...new Set(platformUpdates.map(u => u.platform))].map(p => (
+                  <button key={p} onClick={() => setUpdatePlatformFilter(p)} style={{ padding: "5px 14px", borderRadius: 20, border: updatePlatformFilter === p ? "2px solid #2D1768" : "1px solid #d0d0d8", background: updatePlatformFilter === p ? "#2D176812" : "transparent", color: updatePlatformFilter === p ? "#2D1768" : "#6a6a7e", fontSize: 11, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}>{p} ({p === "All" ? platformUpdates.length : platformUpdates.filter(u => u.platform === p).length})</button>
+                ))}
+              </div>
+
+              {platformUpdates.filter(u => (updatePlatformFilter === "All" || u.platform === updatePlatformFilter) && (!filterText || JSON.stringify(u).toLowerCase().includes(filterText))).map((u, i) => (
+                <Card key={i} style={{ borderLeft: `4px solid ${u.statusColor}` }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
-                    <div>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e" }}>{u.update}</div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: "#1a1a2e" }}>{u.update}</div>
+                        <span style={{ padding: "2px 8px", borderRadius: 10, background: u.statusColor + "15", color: u.statusColor, fontSize: 9, fontWeight: 700, border: `1px solid ${u.statusColor}30`, whiteSpace: "nowrap" }}>{u.status}</span>
+                      </div>
                       <div style={{ fontSize: 11, color: "#5a5a6e" }}>{u.platform} · {u.date}</div>
                     </div>
                     <span style={{ fontSize: 18 }}>{u.impact}</span>
                   </div>
-                  <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.6 }}>{u.detail}</div>
+                  <div style={{ fontSize: 12, color: "#444455", lineHeight: 1.6, marginBottom: 8 }}>{u.detail}</div>
+                  <div style={{ fontSize: 11, color: u.statusColor, lineHeight: 1.5, padding: "6px 10px", background: u.statusColor + "08", borderRadius: 6, marginBottom: 8 }}>
+                    <strong>Why it matters:</strong> {u.why}
+                  </div>
+                  <a href={u.link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 10, color: "#2D1768", fontWeight: 600, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4 }}>
+                    View source ↗
+                  </a>
                 </Card>
               ))}
             </div>
