@@ -612,7 +612,7 @@ export default function App() {
   const [mobileNav, setMobileNav] = useState(false);
 
   // ── SUPABASE AUTH ──
-  const ADMIN_EMAILS = ["mike.ernst8002@gmail.com"];
+  const ADMIN_EMAILS = ["mike.ernst8002@gmail.com" "chatzisavva@gmail.com"];
 
   useEffect(() => {
     const script = document.createElement("script");
